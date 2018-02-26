@@ -13,16 +13,21 @@ import CoreLocation
 class ViewController: UIViewController, CLLocationManagerDelegate {
 
     var locationManager: CLLocationManager?
-    
+    let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
+        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053312, longitude: -87.672958)),
+        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.049702, longitude: -87.682169)),
+        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051679, longitude: -87.675106)),
+        ("Fran's", CLLocationCoordinate2D(latitude: 42.051575, longitude: -87.681413))
+    ]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // initialize location manager
         locationManager = CLLocationManager()
-        
         
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        //locationManager!.allowsBackgroundLocationUpdates = true
         
         if CLLocationManager.authorizationStatus() == .notDetermined {
             locationManager?.requestAlwaysAuthorization()
@@ -31,19 +36,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         locationManager?.startUpdatingLocation()
         
-    
-
-        let center1 = CLLocationCoordinate2D(latitude: 42.048157, longitude: -87.680825)
-        let region1 = CLCircularRegion(center: center1, radius: 100, identifier: "noyes1")
-        region1.notifyOnEntry = true
-        region1.notifyOnExit = false
+        // use our predefined locations to setup the geo-fences
+        for coffeeLocation in coffeeLocations {
+            let region = CLCircularRegion(center: coffeeLocation.1, radius: 100, identifier: coffeeLocation.0)
+            region.notifyOnEntry = true
+            region.notifyOnExit = false
         
-        
-        locationManager?.startMonitoring(for: region1)
-        print(locationManager!.monitoredRegions)
-        
-        sendNotification()
-
+            locationManager?.startMonitoring(for: region)
+        }
         
     }
 
@@ -58,16 +58,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Did enter region")
+        print("User entered within coffee region.")
         sendNotification()
     }
     
     
     func sendNotification(){
-        print("Sending notification")
+        print("Sending notification!")
         
         let content = UNMutableNotificationContent()
-        content.body = "YAY FOR IOS"
+        content.body = "Pick up coffee!"
         content.sound = UNNotificationSound.default()
         content.categoryIdentifier = ""
         

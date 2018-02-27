@@ -10,7 +10,7 @@ import UIKit
 import UserNotifications
 import CoreLocation
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class OrderViewController: UIViewController, CLLocationManagerDelegate {
 
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
@@ -59,15 +59,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
-        sendNotification()
+
+        let coffeeReq = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
+            print("Should be printing request...")
+            print(coffeeRequest)
+            self.sendNotification(coffeeRequest: coffeeRequest)
+        })
+        
     }
     
     
-    func sendNotification(){
-        print("Sending notification!")
+    func sendNotification(coffeeRequest: CoffeeRequest){
+
+        print("VIEW CONTROLLER: sendign coffee pickup notification")
         
         let content = UNMutableNotificationContent()
-        content.body = "Pick up coffee!"
+        content.body = coffeeRequest.requester + " needs a " + coffeeRequest.orderDescription + "!";
         content.sound = UNNotificationSound.default()
         content.categoryIdentifier = ""
         

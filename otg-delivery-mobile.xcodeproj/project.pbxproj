@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		2238817F203F55370012707C /* route1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2238817E203F55370012707C /* route1.gpx */; };
 		22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278820129CCE005BA4B9 /* AppDelegate.swift */; };
-		22AD278B20129CCE005BA4B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278A20129CCE005BA4B9 /* ViewController.swift */; };
+		22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278A20129CCE005BA4B9 /* OrderViewController.swift */; };
 		22AD278E20129CCE005BA4B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD278C20129CCE005BA4B9 /* Main.storyboard */; };
 		22AD279020129CCE005BA4B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22AD278F20129CCE005BA4B9 /* Assets.xcassets */; };
 		22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */; };
+		22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD7F122043D308008A877B /* CoffeeRequest.swift */; };
 		22DBDBD8203F5471006A068F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22DBDBD7203F5471006A068F /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -20,11 +21,12 @@
 		2238817E203F55370012707C /* route1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = route1.gpx; sourceTree = "<group>"; };
 		22AD278520129CCE005BA4B9 /* otg-delivery-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "otg-delivery-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AD278820129CCE005BA4B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		22AD278A20129CCE005BA4B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		22AD278A20129CCE005BA4B9 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		22AD278D20129CCE005BA4B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		22AD278F20129CCE005BA4B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		22AD279220129CCE005BA4B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22AD279420129CCE005BA4B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
 		22DBDBD7203F5471006A068F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,11 +63,12 @@
 			children = (
 				2238817E203F55370012707C /* route1.gpx */,
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
-				22AD278A20129CCE005BA4B9 /* ViewController.swift */,
+				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
 				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
+				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
 			);
 			path = "otg-delivery-mobile";
 			sourceTree = "<group>";
@@ -144,7 +147,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22AD278B20129CCE005BA4B9 /* ViewController.swift in Sources */,
+				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
+				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

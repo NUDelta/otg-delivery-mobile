@@ -14,7 +14,7 @@
 		22AD279020129CCE005BA4B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22AD278F20129CCE005BA4B9 /* Assets.xcassets */; };
 		22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */; };
 		22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD7F122043D308008A877B /* CoffeeRequest.swift */; };
-		22DBDBD8203F5471006A068F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22DBDBD7203F5471006A068F /* Default-568h@2x.png */; };
+		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +27,7 @@
 		22AD279220129CCE005BA4B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22AD279420129CCE005BA4B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
-		22DBDBD7203F5471006A068F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		22BD7F142045E733008A877B /* coffee-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coffee-icon.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +44,6 @@
 		22AD277C20129CCE005BA4B9 = {
 			isa = PBXGroup;
 			children = (
-				22DBDBD7203F5471006A068F /* Default-568h@2x.png */,
 				22AD278720129CCE005BA4B9 /* otg-delivery-mobile */,
 				22AD278620129CCE005BA4B9 /* Products */,
 			);
@@ -61,6 +60,7 @@
 		22AD278720129CCE005BA4B9 /* otg-delivery-mobile */ = {
 			isa = PBXGroup;
 			children = (
+				22BD7F162045E741008A877B /* image-resources */,
 				2238817E203F55370012707C /* route1.gpx */,
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
@@ -71,6 +71,14 @@
 				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
 			);
 			path = "otg-delivery-mobile";
+			sourceTree = "<group>";
+		};
+		22BD7F162045E741008A877B /* image-resources */ = {
+			isa = PBXGroup;
+			children = (
+				22BD7F142045E733008A877B /* coffee-icon.png */,
+			);
+			path = "image-resources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,10 +141,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2238817F203F55370012707C /* route1.gpx in Resources */,
+				22BD7F152045E733008A877B /* coffee-icon.png in Resources */,
 				22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */,
 				22AD279020129CCE005BA4B9 /* Assets.xcassets in Resources */,
 				22AD278E20129CCE005BA4B9 /* Main.storyboard in Resources */,
-				22DBDBD8203F5471006A068F /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

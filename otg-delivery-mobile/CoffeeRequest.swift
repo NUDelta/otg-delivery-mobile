@@ -16,8 +16,11 @@ struct CoffeeRequest : Codable{
     let orderDescription: String;
 }
 
+// Encode and decode CoffeeRequest cobjects
+
 extension CoffeeRequest {
     
+    //Method that grabs a CoffeeRequest from server and parses into object
     static func getCoffeeRequest(completionHandler: @escaping (CoffeeRequest) -> Void) {
         
         let session: URLSession = URLSession.shared
@@ -50,4 +53,17 @@ extension CoffeeRequest {
         task.resume()
         
     }
+    
+    //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
+    static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
+        do {
+            let jsonEncoder = JSONEncoder()
+            let jsonData = try jsonEncoder.encode(coffeeRequest)
+            let jsonString = String(data: jsonData, encoding: .utf8)
+            print("COFFEE REQUEST: JSON Serialized String: " + jsonString!)
+        }
+        
+        catch { print("Data could not be converted to JSON format.") }
+    }
+    
 }

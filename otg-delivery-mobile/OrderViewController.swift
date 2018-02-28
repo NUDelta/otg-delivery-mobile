@@ -63,6 +63,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         let coffeeReq = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
             print("Should be printing request...")
             print(coffeeRequest)
+            CoffeeRequest.postCoffeeRequest(coffeeRequest: coffeeRequest)
             self.sendNotification(coffeeRequest: coffeeRequest)
         })
         
@@ -71,7 +72,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     
     func sendNotification(coffeeRequest: CoffeeRequest){
 
-        print("VIEW CONTROLLER: sendign coffee pickup notification")
+        print("VIEW CONTROLLER: sending coffee pickup notification")
         
         let content = UNMutableNotificationContent()
         content.body = coffeeRequest.requester + " needs a " + coffeeRequest.orderDescription + "!";

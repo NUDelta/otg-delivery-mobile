@@ -60,21 +60,26 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
-        let coffeeReq = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
+        _ = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
             print("Should be printing request...")
-            print(coffeeRequest)
-            self.sendNotification(coffeeRequest: coffeeRequest)
+            print(coffeeRequest ?? "Request not set...")
+            
+            if let coffeeReq = coffeeRequest {
+                self.sendNotification(locationName: region.identifier, coffeeRequest: coffeeReq)
+            }
+            
         })
         
     }
     
     
-    func sendNotification(coffeeRequest: CoffeeRequest){
+    func sendNotification(locationName: String, coffeeRequest: CoffeeRequest){
 
         print("VIEW CONTROLLER: sending coffee pickup notification")
         
         let content = UNMutableNotificationContent()
-        content.body = coffeeRequest.requester + " needs a " + coffeeRequest.orderDescription + "!";
+        content.title = coffeeRequest.requester + " needs coffee!"
+        content.body = "Please pick up a " + coffeeRequest.orderDescription + " from " + locationName;
         content.sound = UNNotificationSound.default()
         content.categoryIdentifier = ""
         

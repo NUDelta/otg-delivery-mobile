@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    //private static let apiUrl = "https://secure-wave-26416.herokuapp.com/api/requests"
-    private static let apiUrl: String = "http://localhost:8080/api/requests"
+    private static let apiUrl: String = "https://secure-wave-26416.herokuapp.com/api/requests"
+    //private static let apiUrl: String = "http://localhost:8080/api/requests"
     
     //all fields that go into a request
     let requester: String;
@@ -25,7 +25,7 @@ struct CoffeeRequest : Codable{
 extension CoffeeRequest {
     
     //Method that grabs a CoffeeRequest from server and parses into object
-    static func getCoffeeRequest(completionHandler: @escaping (CoffeeRequest) -> Void) {
+    static func getCoffeeRequest(completionHandler: @escaping (CoffeeRequest?) -> Void) {
         
         let session: URLSession = URLSession.shared
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -33,24 +33,23 @@ extension CoffeeRequest {
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             
-            do{
-                print("COFFEE REQUEST: request data received!")
-                
-                var coffeeRequest: CoffeeRequest?
-                let decoder = JSONDecoder()
-                
+            print("COFFEE REQUEST: request data received!")
+    
+            var coffeeRequest: CoffeeRequest?
+            let httpResponse = response as? HTTPURLResponse
+            print(httpResponse?.statusCode)
+            
+            if(httpResponse?.statusCode != 400){
                 do {
+                    let decoder = JSONDecoder()
                     coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
                     print(coffeeRequest)
-                    completionHandler(coffeeRequest!)
                 } catch {
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)
-                    completionHandler(coffeeRequest!)
                 }
-                
             }
-            
+            completionHandler(coffeeRequest)
         }
         
         task.resume()

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2238817F203F55370012707C /* route1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2238817E203F55370012707C /* route1.gpx */; };
+		2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A2992049C8FA00CE518B /* OrderModalViewController.swift */; };
+		2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A29B2049CD7A00CE518B /* LoginViewController.swift */; };
 		22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278820129CCE005BA4B9 /* AppDelegate.swift */; };
 		22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278A20129CCE005BA4B9 /* OrderViewController.swift */; };
 		22AD278E20129CCE005BA4B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD278C20129CCE005BA4B9 /* Main.storyboard */; };
@@ -19,6 +21,8 @@
 
 /* Begin PBXFileReference section */
 		2238817E203F55370012707C /* route1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = route1.gpx; sourceTree = "<group>"; };
+		2246A2992049C8FA00CE518B /* OrderModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModalViewController.swift; sourceTree = "<group>"; };
+		2246A29B2049CD7A00CE518B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		22AD278520129CCE005BA4B9 /* otg-delivery-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "otg-delivery-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AD278820129CCE005BA4B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22AD278A20129CCE005BA4B9 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
 				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
+				2246A2992049C8FA00CE518B /* OrderModalViewController.swift */,
+				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 			);
 			path = "otg-delivery-mobile";
 			sourceTree = "<group>";
@@ -156,7 +162,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
+				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
+				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

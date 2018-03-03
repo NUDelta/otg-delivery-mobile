@@ -63,7 +63,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         let coffeeReq = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
             print("Should be printing request...")
             print(coffeeRequest)
-            CoffeeRequest.postCoffeeRequest(coffeeRequest: coffeeRequest)
             self.sendNotification(coffeeRequest: coffeeRequest)
         })
         

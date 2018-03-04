@@ -16,8 +16,9 @@ struct CoffeeRequest : Codable{
     //private static let apiUrl: String = "http://localhost:8080/api/requests"
     
     //all fields that go into a request
-    let requester: String;
-    let orderDescription: String;
+    let requester: String
+    let orderDescription: String
+    let timeFrame: String?
 }
 
 // Encode and decode CoffeeRequest cobjects
@@ -64,7 +65,7 @@ extension CoffeeRequest {
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requester),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
-            URLQueryItem(name: "timeFrame", value: "10"),
+            URLQueryItem(name: "timeFrame", value: coffeeRequest.timeFrame!),
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)

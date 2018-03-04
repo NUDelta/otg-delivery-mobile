@@ -23,7 +23,7 @@ class OrderModalViewController: UIViewController {
         let timeFrame = timeframeText?.text
         
         //create coffee request from data
-        let testRequest: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!)
+        let testRequest: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, timeFrame: timeFrame)
         CoffeeRequest.postCoffeeRequest(coffeeRequest: testRequest)
         
         //dismiss modal

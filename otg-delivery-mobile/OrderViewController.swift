@@ -60,7 +60,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
-        _ = CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
+            CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
             print("Should be printing request...")
             print(coffeeRequest ?? "Request not set...")
             

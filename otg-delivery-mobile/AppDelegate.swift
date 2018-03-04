@@ -18,8 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Registering categories for local notifications")
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { (granted, error) in
             if (granted) {
+                
+                // setup notification categories
+                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "Accept", options: [.foreground])
+                let rejectAction = UNNotificationAction(identifier: "rejectNotification", title: "Reject", options: [.destructive])
+                
+                let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectAction], intentIdentifiers: [], options: [])
+
                 // setup notification categories
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                UNUserNotificationCenter.current().setNotificationCategories([category])
                 
                 // setup remote notifications
                 DispatchQueue.main.async {
@@ -42,6 +50,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
+    //Handle user response to notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let defaults = UserDefaults.standard
+        let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
+        
+        switch response.actionIdentifier {
+            
+            case "acceptNotification":
+                
+                CoffeeRequest.acceptCoffeeRequestForID(requestId: latestNotificationId as! String, completionHandler: {
+                    print("NOTIFICATION ACTION: request successfully accepted.")
+                })
+            
+            case "rejectNotification":
+                print("NOTIFICATION ACTION: request rejected.")
+            
+            default:
+                print("NOTIFICATION ACTION: bizarre other action pressed")
+        }
+        
+        //not sure why this needs to be here
+        completionHandler()
+        
+    }
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

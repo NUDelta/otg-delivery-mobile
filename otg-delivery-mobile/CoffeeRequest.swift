@@ -12,13 +12,14 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    private static let apiUrl: String = "https://secure-wave-26416.herokuapp.com/api/requests"
-    //private static let apiUrl: String = "http://localhost:8080/api/requests"
+    //private static let apiUrl: String = "https://secure-wave-26416.herokuapp.com/api/requests"
+    private static let apiUrl: String = "http://localhost:8080/api/requests"
     
     //all fields that go into a request
     let requester: String
     let orderDescription: String
     let timeFrame: String?
+    let requestId: String?
 }
 
 // Encode and decode CoffeeRequest cobjects
@@ -60,7 +61,7 @@ extension CoffeeRequest {
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
 
-        
+
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requester),
@@ -84,9 +85,25 @@ extension CoffeeRequest {
         }
             
         task.resume()
-            
-    
+        
     }
     
-    
+    //Method that takes an ID and accepts the request
+    //Method that grabs a CoffeeRequest from server and parses into object
+    static func acceptCoffeeRequestForID(requestId: String, completionHandler: @escaping () -> Void) {
+        
+        let session: URLSession = URLSession.shared
+        let url = URL(string: CoffeeRequest.apiUrl + "/accept/" + requestId)
+        let requestURL = URLRequest(url: url!)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            
+            print("COFFEE REQUEST: accepted request, handling server stuff.")
+            completionHandler()
+            
+        }
+        
+        task.resume()
+        
+    }
 }

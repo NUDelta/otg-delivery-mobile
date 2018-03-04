@@ -60,11 +60,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
-            CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
+        CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
             print("Should be printing request...")
             print(coffeeRequest ?? "Request not set...")
             
             if let coffeeReq = coffeeRequest {
+                
+                //set most recent request in user defaults
+                let defaults = UserDefaults.standard
+                defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
+                
                 self.sendNotification(locationName: region.identifier, coffeeRequest: coffeeReq)
             }
             
@@ -80,8 +85,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         let content = UNMutableNotificationContent()
         content.title = coffeeRequest.requester + " needs coffee!"
         content.body = "Please pick up a " + coffeeRequest.orderDescription + " from " + locationName;
+        content.categoryIdentifier = "requestNotification"
         content.sound = UNNotificationSound.default()
-        content.categoryIdentifier = ""
         
         let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
         let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)

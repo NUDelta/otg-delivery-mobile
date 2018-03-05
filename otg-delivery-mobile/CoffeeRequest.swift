@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    //private static let apiUrl: String = "https://secure-wave-26416.herokuapp.com/api/requests"
-    private static let apiUrl: String = "http://localhost:8080/api/requests"
+    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/api/requests"
+    //private static let apiUrl: String = "http://localhost:8080/api/requests"
     
     //all fields that go into a request
     let requester: String

@@ -14,10 +14,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
 
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
-        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053312, longitude: -87.672958)),
-        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.049702, longitude: -87.682169)),
-        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051679, longitude: -87.675106)),
-        ("Fran's", CLLocationCoordinate2D(latitude: 42.051575, longitude: -87.681413))
+        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
+        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
+        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
+        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
+        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
+        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088))
     ]
 
     override func viewDidLoad() {

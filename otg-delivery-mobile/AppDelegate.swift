@@ -64,6 +64,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     print("NOTIFICATION ACTION: request successfully accepted.")
                 })
             
+                let acceptedAlert = UIAlertView()
+                acceptedAlert.title = "Thanks!"
+                acceptedAlert.message = "You're awesome for picking up coffee! Please let the requester know through Slack that you're on your way."
+                acceptedAlert.addButton(withTitle: "Ok")
+                acceptedAlert.show()
+            
             case "rejectNotification":
                 print("NOTIFICATION ACTION: request rejected.")
             

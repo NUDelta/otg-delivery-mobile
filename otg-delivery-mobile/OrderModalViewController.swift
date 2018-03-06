@@ -36,6 +36,11 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate {
         submissionAlert.show()
     }
     
+    @IBAction func cancelPressed(sender: UIButton){
+        //dismiss modal
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

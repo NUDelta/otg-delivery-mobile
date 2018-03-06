@@ -13,7 +13,7 @@
         <!--Order View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="OrderViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mainOrderViewController" id="BYZ-38-t0r" customClass="OrderViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,7 +79,7 @@
                                         <color key="tintColor" red="0.98039215690000003" green="0.97254901959999995" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Cancel"/>
                                         <connections>
-                                            <action selector="submitPressedWithSender:" destination="Xv5-sw-fZT" eventType="touchUpInside" id="6XV-E6-adq"/>
+                                            <action selector="cancelPressedWithSender:" destination="Xv5-sw-fZT" eventType="touchUpInside" id="qrl-FI-Gwn"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFv-NF-msJ">
@@ -185,7 +185,7 @@
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Log me in!"/>
                                                 <connections>
-                                                    <segue destination="BYZ-38-t0r" kind="show" id="wZf-zk-lfW"/>
+                                                    <segue destination="BYZ-38-t0r" kind="show" identifier="loginTransitionSegue" id="wZf-zk-lfW"/>
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nickname" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fc2-cj-wxV">

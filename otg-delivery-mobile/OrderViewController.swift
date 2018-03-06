@@ -68,7 +68,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
             
             if let coffeeReq = coffeeRequest {
                 
-                //set most recent request in user defaults
+                //Set most recent request in user defaults
                 let defaults = UserDefaults.standard
                 defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
                 

@@ -47,39 +47,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
         
+        //If the user has username set, no need to mess with this... let our
+        //Friend segway onto bigger and better ViewControllers
+        if(UserDefaults.standard.object(forKey: "username") != nil){
+            print("APP DELEGATE: username set, performing segue.")
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let mainController = storyboard.instantiateViewController(withIdentifier: "mainOrderViewController")
+            
+            self.window?.makeKeyAndVisible()
+            self.window?.rootViewController?.present(mainController, animated: true, completion: nil)
+            
+        }
+        
         return true
     }
-
+	
     //Handle user response to notification
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        let defaults = UserDefaults.standard
-        let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
-        
+        //Switch over user response to our notification
         switch response.actionIdentifier {
             
             case "acceptNotification":
-                
-                CoffeeRequest.acceptCoffeeRequestForID(requestId: latestNotificationId as! String, completionHandler: {
-                    print("NOTIFICATION ACTION: request successfully accepted.")
-                })
-            
-                let acceptedAlert = UIAlertView()
-                acceptedAlert.title = "Thanks!"
-                acceptedAlert.message = "You're awesome for picking up coffee! Please let the requester know through Slack that you're on your way."
-                acceptedAlert.addButton(withTitle: "Ok")
-                acceptedAlert.show()
-            
+                acceptLatestRequest()
             case "rejectNotification":
+                //If rejected, log to console but do nothing
+                //Should log this to server for research purposes perhaps??
                 print("NOTIFICATION ACTION: request rejected.")
-            
             default:
-                print("NOTIFICATION ACTION: bizarre other action pressed")
+                acceptLatestRequest()
+            
         }
         
         //not sure why this needs to be here
         completionHandler()
         
+    }
+    
+    //Method that accepts the latest request stored in UserDefaults
+    //And notifies the user on next steps.
+    func acceptLatestRequest() {
+        
+        //Since we set the latestNotificationID in UserDefaults each time user enters a Geofence
+        //If the task is accepted, we can pull it out from there and use it to talk to server
+        let defaults = UserDefaults.standard
+        let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
+        
+        CoffeeRequest.acceptCoffeeRequestForID(requestId: latestNotificationId as! String, completionHandler: {
+            print("NOTIFICATION ACTION: request successfully accepted.")
+        })
+        
+        //Create and show alert
+        let acceptedAlert = UIAlertView()
+        acceptedAlert.title = "Thanks!"
+        acceptedAlert.message = "You're awesome for picking up coffee! Please let the requester know through Slack that you're on your way."
+        acceptedAlert.addButton(withTitle: "Ok")
+        acceptedAlert.show()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

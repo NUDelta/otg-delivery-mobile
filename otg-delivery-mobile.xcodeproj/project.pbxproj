@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		220788D2204F194100DA1026 /* Delta_Enterprise_Export.sh in Resources */ = {isa = PBXBuildFile; fileRef = 220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */; };
 		2238817F203F55370012707C /* route1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2238817E203F55370012707C /* route1.gpx */; };
 		2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A2992049C8FA00CE518B /* OrderModalViewController.swift */; };
 		2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A29B2049CD7A00CE518B /* LoginViewController.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Delta_Enterprise_Export.sh; sourceTree = "<group>"; };
 		2238817E203F55370012707C /* route1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = route1.gpx; sourceTree = "<group>"; };
 		2246A2992049C8FA00CE518B /* OrderModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModalViewController.swift; sourceTree = "<group>"; };
 		2246A29B2049CD7A00CE518B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 		22BD7F162045E741008A877B /* image-resources */ = {
 			isa = PBXGroup;
 			children = (
+				220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */,
 				22BD7F142045E733008A877B /* coffee-icon.png */,
 			);
 			path = "image-resources";
@@ -119,7 +122,7 @@
 				TargetAttributes = {
 					22AD278420129CCE005BA4B9 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -148,6 +151,7 @@
 			files = (
 				2238817F203F55370012707C /* route1.gpx in Resources */,
 				22BD7F152045E733008A877B /* coffee-icon.png in Resources */,
+				220788D2204F194100DA1026 /* Delta_Enterprise_Export.sh in Resources */,
 				22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */,
 				22AD279020129CCE005BA4B9 /* Assets.xcassets in Resources */,
 				22AD278E20129CCE005BA4B9 /* Main.storyboard in Resources */,
@@ -302,12 +306,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = W4E2C6X642;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.northwestern.delta.otg-delivery-mobile";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "7eec7c7a-1e91-4342-baab-e5c0e7e75ac8";
+				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -317,12 +325,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W4E2C6X642;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Northwestern University";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
+				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_STYLE[sdk=*]" = Manual;
+				DEVELOPMENT_TEAM = 823S57WQK3;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.northwestern.delta.otg-delivery-mobile";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
+				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab J";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

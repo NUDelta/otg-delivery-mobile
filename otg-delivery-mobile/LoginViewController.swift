@@ -10,6 +10,8 @@ import UIKit
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
+    var didLogIn: (() -> Void)?
+    
     @IBOutlet weak var usernameField: UITextField?
 
     override func viewDidLoad() {
@@ -34,8 +36,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true);
     }
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    @IBAction func createLogIn() {
         //save session username as user default
         //TODO in future check for this default before loading view
         //and if found, navigate straight to main view
@@ -44,6 +45,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         defaults.set(usernameText!, forKey: "username")
         
         print("LOGIN: transitioning to main view")
+        didLogIn?()
     }
 
 }

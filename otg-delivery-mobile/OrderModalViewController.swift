@@ -8,25 +8,41 @@
 
 import UIKit
 
-class OrderModalViewController: UIViewController, UITextFieldDelegate {
-
+class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
+    
+    @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var orderText: UITextField?
-    @IBOutlet weak var timeframeText: UITextField?
-
+ 
+    var selectedPlace: String?
+    var dueDate: Int?
+    
+    @IBAction func valueChanged(_ sender: UIDatePicker) {
+        print(sender.date.timeIntervalSince1970)
+        dueDate = Int(sender.date.timeIntervalSince1970)
+    }
+    
+    
     @IBAction func submitPressed(sender: UIButton){
     
         let defaults = UserDefaults.standard
         let requesterName = defaults.object(forKey: "username")
         
-        //grab relevant form data
+        //Grab relevant form data
         let orderDescription = orderText?.text
-        let timeFrame = timeframeText?.text
         
-        //create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, timeFrame: timeFrame, requestId: nil)
+        let requestEndTime = Int(picker!.date.timeIntervalSince1970)
+        let currentTime = Int(Date().timeIntervalSince1970)
+        let timeDifference = requestEndTime - currentTime;
+        
+        //Should grab the Date for the request expiration and store in database instead
+        //It makes more sense to query over those values
+        let requestMinutes = String(timeDifference / 60)
+        
+        //Create coffee request from data
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, timeFrame: requestMinutes, requestId: nil)
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         
-        //dismiss modal
+        //Dismiss modal
         dismiss(animated: true, completion: nil)
         
         let submissionAlert = UIAlertView()
@@ -37,16 +53,14 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func cancelPressed(sender: UIButton){
-        //dismiss modal
+        //Dismiss modal
         dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        //Do any additional setup after loading the view.
         self.orderText?.delegate = self
-        self.timeframeText?.delegate = self
     }
     
     //Return on text field
@@ -58,21 +72,5 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true);
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

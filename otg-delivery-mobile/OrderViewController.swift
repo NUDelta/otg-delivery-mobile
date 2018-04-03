@@ -48,12 +48,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         }
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //If user logged in, peace
+        if UserDefaults.standard.object(forKey: "username") == nil {
+            performSegue(withIdentifier: "loginSegue", sender: nil)
+        }
+    }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print(locations.last!)
@@ -98,6 +101,21 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
                 print("Error in notifying from Pre-Tracker: \(error)")
             }
         })
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard segue.identifier == "loginSegue",
+            let navController = segue.destination as? UINavigationController,
+            let controller = navController.viewControllers.first as? LoginViewController else {
+                return
+        }
+        
+        controller.didLogIn = { [weak self] in
+            DispatchQueue.main.async {
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+    
     }
 
 

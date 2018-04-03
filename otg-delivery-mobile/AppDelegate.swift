@@ -47,18 +47,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
         
-        //If the user has username set, no need to mess with this... let our
-        //Friend segway onto bigger and better ViewControllers
-        if(UserDefaults.standard.object(forKey: "username") != nil){
-            print("APP DELEGATE: username set, performing segue.")
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let mainController = storyboard.instantiateViewController(withIdentifier: "mainOrderViewController")
-            
-            self.window?.makeKeyAndVisible()
-            self.window?.rootViewController?.present(mainController, animated: true, completion: nil)
-            
-        }
-        
         return true
     }
 	

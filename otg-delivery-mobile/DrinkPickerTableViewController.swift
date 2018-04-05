@@ -8,11 +8,15 @@
 
 import UIKit
 
+protocol DrinkPickerModalDelegate {
+    func drinkPicked(drinkText: String)
+}
 
 class DrinkPickerTableViewController: UITableViewController {
     
     //Returned to parent
-    var chosenDrinkOrder: String?
+    var delegate: DrinkPickerModalDelegate?
+    var selectedDrink: Drink?
     
     //Overrides
     override func viewDidLoad() {
@@ -35,20 +39,24 @@ class DrinkPickerTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedDrink = drinkData[indexPath.row]
-        drinkOrderNotification(forDrink: selectedDrink)
+        selectedDrink = drinkData[indexPath.row]
+        drinkOrderNotification(forDrink: selectedDrink!)
     }
     
     
     //Create and show custom notification given chosen drink
     func drinkOrderNotification(forDrink drink: Drink) {
-        let alert = UIAlertController(title: "Finalize order", message: "Choose drink size", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Choose Size", message: "Pick from these sizes", preferredStyle: .alert)
         
         for price in drink.prices {
             let currentTitle = String.init(format: "%@: $%.2f", price.0.asString(), price.1)
             
             alert.addAction(UIAlertAction(title: currentTitle, style: .default, handler: { _ in
-                self.chosenDrinkOrder = currentTitle
+                let chosenDrinkSizeAndPrice = currentTitle
+                let finalOrderString = String.init(format: "<%@> %@", self.selectedDrink!.name, chosenDrinkSizeAndPrice)
+                
+                self.delegate?.drinkPicked(drinkText: finalOrderString)
+                self.dismiss(animated: true, completion: nil)
             }))
             
         }

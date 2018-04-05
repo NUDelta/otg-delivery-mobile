@@ -8,30 +8,32 @@
 
 import UIKit
 
-class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
-    
+class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var pickDrinkButton: UIButton!
+    @IBOutlet weak var drinkOrderLabel: UILabel!
     @IBOutlet weak var orderText: UITextField?
     
     var selectedPlace: String?
     var dueDate: Int?
     var coffeeOrder: String?
 
+    
+    //When date picker value changes
     @IBAction func valueChanged(_ sender: UIDatePicker) {
         print(sender.date.timeIntervalSince1970)
         dueDate = Int(sender.date.timeIntervalSince1970)
     }
     
-    
+    //When the submissions is entered
     @IBAction func submitPressed(sender: UIButton){
     
         let defaults = UserDefaults.standard
         let requesterName = defaults.object(forKey: "username")
         
         //Grab relevant form data
-        let orderDescription = orderText?.text
+        let orderDescription = drinkOrderLabel.text
         
         let requestEndTime = Int(picker!.date.timeIntervalSince1970)
         let currentTime = Int(Date().timeIntervalSince1970)
@@ -55,18 +57,27 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         submissionAlert.show()
     }
    
-    
+    //When the cancel button on the toolbar is pressed
     @IBAction func cancelPressed(sender: UIBarButtonItem){
         //Dismiss modal
         dismiss(animated: true, completion: nil)
     }
     
+    //Present modal
+    @IBAction func drinkSelectionButtonPressed(sender: UIButton){
+        //Create an instance of the drink picker
+        let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+        drinkPickerModal.delegate = self
+        
+        self.present(drinkPickerModal, animated: true, completion: nil)
+    }
+    
     //-=-=-=-=-=-=-=-=-=-=-
     //Handle drink choice
     //-=-=-=-=-=-=-=-=-=-=-
-    func setOrderValue(order: String){
-        coffeeOrder = order
-        print(self.coffeeOrder)
+    func drinkPicked(drinkText: String) {
+        drinkOrderLabel.text = drinkText
+        print(drinkText)
     }
     
     //-=-=-=-=-=-=-=-=-=-=-

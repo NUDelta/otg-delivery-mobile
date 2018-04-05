@@ -10,12 +10,15 @@ import UIKit
 
 class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
     
+    
     @IBOutlet weak var picker: UIDatePicker!
+    @IBOutlet weak var pickDrinkButton: UIButton!
     @IBOutlet weak var orderText: UITextField?
- 
+    
     var selectedPlace: String?
     var dueDate: Int?
-    
+    var coffeeOrder: String?
+
     @IBAction func valueChanged(_ sender: UIDatePicker) {
         print(sender.date.timeIntervalSince1970)
         dueDate = Int(sender.date.timeIntervalSince1970)
@@ -51,19 +54,24 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         submissionAlert.addButton(withTitle: "Ok")
         submissionAlert.show()
     }
+   
     
-    @IBAction func cancelPressed(sender: UIButton){
+    @IBAction func cancelPressed(sender: UIBarButtonItem){
         //Dismiss modal
         dismiss(animated: true, completion: nil)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //Do any additional setup after loading the view.
-        self.orderText?.delegate = self
+    //-=-=-=-=-=-=-=-=-=-=-
+    //Handle drink choice
+    //-=-=-=-=-=-=-=-=-=-=-
+    func setOrderValue(order: String){
+        coffeeOrder = order
+        print(self.coffeeOrder)
     }
     
+    //-=-=-=-=-=-=-=-=-=-=-
     //Return on text field
+    //-=-=-=-=-=-=-=-=-=-=-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -71,6 +79,12 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true);
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //Do any additional setup after loading the view.
+        self.orderText?.delegate = self
     }
 
 }

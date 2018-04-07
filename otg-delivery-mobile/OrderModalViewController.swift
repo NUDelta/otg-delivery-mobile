@@ -13,6 +13,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var pickDrinkButton: UIButton!
     @IBOutlet weak var drinkOrderLabel: UILabel!
+    @IBOutlet weak var drinkPriceLabel: UILabel!
     @IBOutlet weak var orderText: UITextField?
     
     var selectedPlace: String?
@@ -75,9 +76,11 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     //-=-=-=-=-=-=-=-=-=-=-
     //Handle drink choice
     //-=-=-=-=-=-=-=-=-=-=-
-    func drinkPicked(drinkText: String) {
-        drinkOrderLabel.text = drinkText
-        print(drinkText)
+    func drinkPicked(drinkChoice: Drink, sizeIndex: Int) {
+        let priceString = String.init(format: "$%@", drinkChoice.prices)
+        
+        drinkOrderLabel.text = String.init(format: "[%@] %@", drinkChoice.prices[sizeIndex].0.asString(), drinkChoice.name)
+        drinkPriceLabel.text = String.init(format: "$%.2f", drinkChoice.prices[sizeIndex].1)
     }
     
     //-=-=-=-=-=-=-=-=-=-=-

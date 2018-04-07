@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DrinkPickerModalDelegate {
-    func drinkPicked(drinkText: String)
+    func drinkPicked(drinkChoice: Drink, sizeIndex: Int)
 }
 
 class DrinkPickerTableViewController: UITableViewController {
@@ -48,14 +48,14 @@ class DrinkPickerTableViewController: UITableViewController {
     func drinkOrderNotification(forDrink drink: Drink) {
         let alert = UIAlertController(title: "Choose Size", message: "Pick from these sizes", preferredStyle: .alert)
         
-        for price in drink.prices {
+        for (index, price) in drink.prices.enumerated() {
             let currentTitle = String.init(format: "%@: $%.2f", price.0.asString(), price.1)
             
             alert.addAction(UIAlertAction(title: currentTitle, style: .default, handler: { _ in
                 let chosenDrinkSizeAndPrice = currentTitle
                 let finalOrderString = String.init(format: "<%@> %@", self.selectedDrink!.name, chosenDrinkSizeAndPrice)
                 
-                self.delegate?.drinkPicked(drinkText: finalOrderString)
+                self.delegate?.drinkPicked(drinkChoice: drink, sizeIndex: index)
                 self.dismiss(animated: true, completion: nil)
             }))
             

@@ -42,6 +42,5 @@ let drinkData = [
     Drink(name: "Latte", prices: [(.Small, 3.50), (.Large, 4.00)]),
     Drink(name: "Mocha", prices: [(.Small, 3.75), (.Large, 4.40)]),
     Drink(name: "White Mocha", prices: [(.Small, 3.75), (.Large, 4.40)]),
-    Drink(name: "White Mocha", prices: [(.Small, 3.75), (.Medium, 5.00), (DrinkSize.Large, 4.40)])
 
 ]

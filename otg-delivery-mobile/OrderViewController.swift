@@ -14,12 +14,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
 
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
-        //("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
-        //("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
-        //("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
-        //("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
+        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
+        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
+        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
+        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
         ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
-        //("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088))
+        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088))
     ]
 
     override func viewDidLoad() {
@@ -66,7 +66,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         print("User entered within coffee region.")
 
         CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
-            print("Should be printing request...")
+            print("Printing request...")
             print(coffeeRequest ?? "Request not set...")
             
             if let coffeeReq = coffeeRequest {
@@ -86,6 +86,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     func sendNotification(locationName: String, coffeeRequest: CoffeeRequest){
 
         print("VIEW CONTROLLER: sending coffee pickup notification")
+
+        //Log to server that user is being notified
+        sendLoggingEvent(forLocation: locationName, forRequest: coffeeRequest)
         
         let content = UNMutableNotificationContent()
         content.title = coffeeRequest.requester + " needs coffee!"
@@ -101,6 +104,40 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
                 print("Error in notifying from Pre-Tracker: \(error)")
             }
         })
+    }
+    
+    func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
+        
+        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/api/logging"
+        let apiUrl: String = "http://localhost:8080/api/logging"
+        
+        let defaults = UserDefaults.standard
+        let requesterName = defaults.object(forKey: "username")
+        
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "username", value: requesterName as? String),
+            URLQueryItem(name: "locationEntered", value: locationName),
+            URLQueryItem(name: "eventType", value: "NOTIFIED"),
+            URLQueryItem(name: "requestId", value: request.requestId),
+        ]
+        
+        let url = URL(string: apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("LOGGING: Logged notification to server.")
+        }
+        
+        task.resume()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

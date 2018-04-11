@@ -45,7 +45,6 @@ extension CoffeeRequest {
                 do {
                     let decoder = JSONDecoder()
                     coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
-                    print(coffeeRequest)
                 } catch {
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)

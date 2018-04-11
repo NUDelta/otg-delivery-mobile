@@ -33,7 +33,7 @@
                                     <constraint firstAttribute="height" constant="50" id="dp8-Nh-x7r"/>
                                 </constraints>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" title="Caffeinate me!"/>
+                                <state key="normal" title="☕ Caffeinate me"/>
                                 <connections>
                                     <segue destination="kf8-FI-hR3" kind="presentation" id="x20-KN-YRt"/>
                                 </connections>

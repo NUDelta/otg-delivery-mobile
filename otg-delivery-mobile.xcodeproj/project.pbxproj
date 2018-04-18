@@ -21,6 +21,7 @@
 		22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */; };
 		22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD7F122043D308008A877B /* CoffeeRequest.swift */; };
 		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
+		3941C5582082F28B00B70356 /* MyRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		22AD279420129CCE005BA4B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
 		22BD7F142045E733008A877B /* coffee-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coffee-icon.png"; sourceTree = "<group>"; };
+		3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
+				3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */,
 				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
 				228907D820756C6800072961 /* DrinkData.swift */,
@@ -177,6 +180,7 @@
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
 				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
 				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,
+				3941C5582082F28B00B70356 /* MyRequestTableViewCell.swift in Sources */,
 				228907D920756C6800072961 /* DrinkData.swift in Sources */,
 				228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,

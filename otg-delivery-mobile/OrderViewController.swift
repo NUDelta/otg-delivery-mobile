@@ -10,8 +10,11 @@ import UIKit
 import UserNotifications
 import CoreLocation
 
-class OrderViewController: UIViewController, CLLocationManagerDelegate {
-
+class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+    var myRequests = [CoffeeRequest]()
+    @IBOutlet weak var myRequestTableView: UITableView!
+    
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
         ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
@@ -37,7 +40,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         locationManager?.startUpdatingLocation()
-        
         // use our predefined locations to setup the geo-fences
         for coffeeLocation in coffeeLocations {
             let region = CLCircularRegion(center: coffeeLocation.1, radius: 100, identifier: coffeeLocation.0)
@@ -46,6 +48,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         
             locationManager?.startMonitoring(for: region)
         }
+        
+        // Initialize My Requests table
+        self.myRequestTableView.delegate = self
+        self.myRequestTableView.dataSource = self
+        
+        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequest in
+            print("Printing my requests...")
+            print(coffeeRequest ?? "Current user does not have any requests")
+            DispatchQueue.main.async {
+                self.myRequests += [coffeeRequest!]
+                self.myRequestTableView.reloadData()
+            }
+        })
         
     }
     
@@ -65,7 +80,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
-        CoffeeRequest.getCoffeeRequest(completionHandler: { coffeeRequest in
+        CoffeeRequest.getUnfilledCoffeeRequest(completionHandler: { coffeeRequest in
             print("Printing request...")
             print(coffeeRequest ?? "Request not set...")
             
@@ -108,8 +123,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
     
     func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
         
-        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/api/logging"
-        let apiUrl: String = "http://localhost:8080/api/logging"
+        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
+        let apiUrl: String = "http://localhost:8080/logging"
         
         let defaults = UserDefaults.standard
         let requesterName = defaults.object(forKey: "username")
@@ -154,6 +169,54 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate {
         }
     
     }
+    
+    // MARK: Table View Configuration
+    
+    //Return number of sections in table view
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    // Return number of rows in table view
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.myRequests.count
+    }
+    
+    // Configure and display cells in table view
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRequestTableViewCell", for: indexPath) as? MyRequestTableViewCell else {
+            fatalError("The dequeued cell is not an instance of MyRequestTableViewCell")
+        }
+        
+        // Grab request to render
+        let request = myRequests[indexPath.row]
+        
+        // Configure display cell
+        cell.orderLabel.text = request.orderDescription
+        cell.statusLabel.text = "Open"
+        
+        return cell
+    }
+    
+    /*
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
+    /*
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
 
 
 }

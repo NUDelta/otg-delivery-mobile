@@ -160,7 +160,21 @@ extension CoffeeRequest {
         }
         
         task.resume()
+    }
+  
+    // Method that takes an ID and deletes the request from the database
+    static func deleteRequest(with_id id: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: "http://localhost:8080/requests/\(id)")
+        //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
+        var requestURL = URLRequest(url: url!)
         
-
+        requestURL.httpMethod = "DELETE"
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Delete request \(id).")
+        }
+        
+        task.resume()
     }
 }

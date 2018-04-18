@@ -54,10 +54,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.myRequestTableView.dataSource = self
         
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequest in
-            print("Printing my requests...")
-            print(coffeeRequest ?? "Current user does not have any requests")
+            guard let existingRequest = coffeeRequest else {
+                print("Current user does not have any requests")
+                return
+            }
+            
             DispatchQueue.main.async {
-                self.myRequests += [coffeeRequest!]
+                self.myRequests += [existingRequest]
                 self.myRequestTableView.reloadData()
             }
         })
@@ -197,26 +200,29 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         return cell
     }
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
+ 
+     // Support conditional editing of the table view.
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+         // Return false if you do not want the specified item to be editable.
+         return true
      }
-     */
     
-    /*
+    
+    
      // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+         if editingStyle == .delete {
+             // Delete the row from the data source
+            let deletedRequest = myRequests.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // Delete request from database
+            let deleteID = deletedRequest.requestId
+            CoffeeRequest.deleteRequest(with_id: deleteID!)
+            self.myRequestTableView.reloadData()
+         }
      }
-     }
-     */
+    
 
 
 }

@@ -12,7 +12,7 @@ class MyRequestTableViewCell: UITableViewCell {
 
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
-   
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

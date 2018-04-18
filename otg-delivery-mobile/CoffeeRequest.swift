@@ -177,4 +177,34 @@ extension CoffeeRequest {
         
         task.resume()
     }
+    
+    // Method that takes an ID and returns the request from the database
+    static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: "http://localhost:8080/requests/\(id)")
+        //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "GET"
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Get request \(id).")
+            
+            var coffeeRequest: CoffeeRequest?
+            let httpResponse = response as? HTTPURLResponse
+            print(httpResponse?.statusCode)
+            
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
+                } catch {
+                    print("COFFEE REQUEST: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+            completionHandler(coffeeRequest)
+        }
+        
+        task.resume()
+    }
 }

@@ -246,12 +246,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let descriptionUpdater = editController.textFields![0] as UITextField
             
             // Update database
-           // CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: "TEST", to_timeframe: currentRequest.timeFrame!)
-            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, to_timeframe: "10000000")
+            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!)
             
             // Update view
             let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
-                // TODO : Error handling
                 self.myRequests[indexPath.row] = coffeeRequest!
                 self.myRequestTableView.reloadData()
             })

@@ -140,17 +140,17 @@ extension CoffeeRequest {
     
     // Method that takes an ID and updates the request's
     // order description and timeframe in the database
-    static func updateRequest(with_id id: String, to_order order: String, to_timeframe timeframe: String) {
+    static func updateRequest(with_id id: String, to_order order: String) {
+        print("In update request ")
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/update/\(id)")
-        //let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName as! String)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/update/\(id)"))
         var requestURL = URLRequest(url: url!)
         
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
         var components = URLComponents(string: "")
-        components?.queryItems = [URLQueryItem(name: "order", value: order), URLQueryItem(name: "time", value: timeframe)]
+        components?.queryItems = [URLQueryItem(name: "order", value: order)]
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         

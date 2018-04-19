@@ -53,7 +53,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
         
-        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequest in
+        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.myRequests += coffeeRequests;
+                self.myRequestTableView.reloadData()
+            }
+           /*
             guard let existingRequest = coffeeRequest else {
                 print("Current user does not have any requests")
                 return
@@ -63,6 +68,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.myRequests += [existingRequest]
                 self.myRequestTableView.reloadData()
             }
+ */
         })
         
     }
@@ -241,7 +247,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             // Update database
            // CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: "TEST", to_timeframe: currentRequest.timeFrame!)
-            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, to_timeframe: "100")
+            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, to_timeframe: "10000000")
             
             // Update view
             let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in

@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    //private static let apiUrl: String = "http://localhost:8080/requests"
+    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    private static let apiUrl: String = "http://localhost:8080/requests"
     
     //all fields that go into a request
     let requester: String
@@ -107,32 +107,31 @@ extension CoffeeRequest {
     }
     
     // Grabs the current user's most recent request from the server, and parses into object
-    static func getMyRequest(completionHandler: @escaping (CoffeeRequest?) -> Void) {
+    static func getMyRequest(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
         let requesterName = (defaults.object(forKey: "username") as! String)
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/name/\(requesterName)")
-        //let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName as! String)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName as! String)"))
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Getting current user's requests")
             
-            var coffeeRequest: CoffeeRequest?
+            var coffeeRequests: [CoffeeRequest] = []
             let httpResponse = response as? HTTPURLResponse
             
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
-                    coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
+                    coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data!)
                 } catch {
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)
                 }
             }
-            completionHandler(coffeeRequest)
+            completionHandler(coffeeRequests)
         }
         
         task.resume()

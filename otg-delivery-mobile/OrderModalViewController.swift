@@ -35,17 +35,17 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         
         //Grab relevant form data
         let orderDescription = drinkOrderLabel.text
+        let requestEndTime = picker!.date
         
-        let requestEndTime = Int(picker!.date.timeIntervalSince1970)
-        let currentTime = Int(Date().timeIntervalSince1970)
-        let timeDifference = requestEndTime - currentTime;
+        let RFC3339DateFormatter = DateFormatter()
+        RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
-        //Should grab the Date for the request expiration and store in database instead
-        //It makes more sense to query over those values
-        let requestMinutes = String(timeDifference / 60)
-        
+        let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
+                
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, timeFrame: requestMinutes, requestId: nil)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil)
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         
         //Dismiss modal

@@ -18,7 +18,7 @@ struct CoffeeRequest : Codable{
     //all fields that go into a request
     let requester: String
     let orderDescription: String
-    let timeFrame: String?
+    let endTime: String?
     let requestId: String?
 }
 
@@ -65,7 +65,7 @@ extension CoffeeRequest {
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requester),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
-            URLQueryItem(name: "timeFrame", value: coffeeRequest.timeFrame!),
+            URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -139,7 +139,7 @@ extension CoffeeRequest {
     }
     
     // Method that takes an ID and updates the request's
-    // order description and timeframe in the database
+    // order description and endTime in the database
     static func updateRequest(with_id id: String, to_order order: String) {
         print("In update request ")
         let session: URLSession = URLSession.shared

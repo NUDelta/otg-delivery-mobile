@@ -15,6 +15,14 @@ struct CoffeeRequest : Codable{
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
     private static let apiUrl: String = "http://localhost:8080/requests"
     
+    // Used to map JSON responses and their properties to properties of our struct
+    enum CodingKeys : String, CodingKey {
+        case requester
+        case orderDescription
+        case endTime
+        case requestId = "_id"
+    }
+    
     //all fields that go into a request
     let requester: String
     let orderDescription: String
@@ -180,7 +188,7 @@ extension CoffeeRequest {
     // Method that takes an ID and returns the request from the database
     static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/\(id)")
+        let url = URL(string: "http://localhost:8080/requests/id/\(id)")
         //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"

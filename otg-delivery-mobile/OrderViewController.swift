@@ -53,23 +53,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
         
-        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
-            DispatchQueue.main.async {
-                self.myRequests += coffeeRequests;
-                self.myRequestTableView.reloadData()
-            }
-           /*
-            guard let existingRequest = coffeeRequest else {
-                print("Current user does not have any requests")
-                return
-            }
-            
-            DispatchQueue.main.async {
-                self.myRequests += [existingRequest]
-                self.myRequestTableView.reloadData()
-            }
- */
-        })
+        loadMyRequests()
+        
+        // Initialize listener for whenever app becoming active
+        // To reload request data and update table
+        NotificationCenter.default.addObserver(self, selector: #selector(loadMyRequests), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
     }
     
@@ -80,6 +68,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if UserDefaults.standard.object(forKey: "username") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
+        
+        loadMyRequests()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -177,6 +167,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         }
     
+    }
+    
+    @objc func loadMyRequests() {
+        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.myRequests = coffeeRequests;
+                self.myRequestTableView.reloadData()
+            }
+        })
     }
     
     // MARK: Table View Configuration

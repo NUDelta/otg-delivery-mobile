@@ -325,7 +325,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             CoffeeRequest.getRequest(with_id: latestNotificationId as! String, completionHandler: {coffeeRequest in
                 print(coffeeRequest)
-                self.acceptedRequests = [coffeeRequest!]
+                if let coffeeReq = coffeeRequest{
+                    self.acceptedRequests = [coffeeReq]
+                }
             })
 
             DispatchQueue.main.async {

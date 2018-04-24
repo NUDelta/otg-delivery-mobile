@@ -13,7 +13,10 @@ import CoreLocation
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var myRequests = [CoffeeRequest]()
+    var acceptedRequests = [CoffeeRequest]()
+    
     @IBOutlet weak var myRequestTableView: UITableView!
+    @IBOutlet weak var acceptedRequestTableView: UITableView!
     
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
@@ -27,6 +30,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(defaultsChanged),
+                                               name: UserDefaults.didChangeNotification,
+                                               object: nil)
         
         // initialize location manager
         locationManager = CLLocationManager()
@@ -48,6 +56,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
             locationManager?.startMonitoring(for: region)
         }
+        
+        
+        // Initialize Accepted Requests table
+        self.acceptedRequestTableView.delegate = self
+        self.acceptedRequestTableView.dataSource = self
         
         // Initialize My Requests table
         self.myRequestTableView.delegate = self
@@ -178,6 +191,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         })
     }
     
+    func loadAcceptedRequests() {
+        
+    }
+    
     // MARK: Table View Configuration
     
     //Return number of sections in table view
@@ -187,7 +204,18 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     // Return number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.myRequests.count
+        
+        var rowCount = 0
+        
+        if(tableView == myRequestTableView){
+            rowCount = self.myRequests.count
+        }
+        
+        else if(tableView == acceptedRequestTableView){
+            rowCount = self.acceptedRequests.count
+        }
+        
+        return rowCount
     }
     
     // Configure and display cells in table view
@@ -196,12 +224,29 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             fatalError("The dequeued cell is not an instance of MyRequestTableViewCell")
         }
         
-        // Grab request to render
-        let request = myRequests[indexPath.row]
         
-        // Configure display cell
-        cell.orderLabel.text = request.orderDescription
-        cell.statusLabel.text = "Open"
+        if tableView == myRequestTableView {
+            
+            // Grab request to render
+            let request = myRequests[indexPath.row]
+        
+            // Configure display cell
+            cell.orderLabel.text = request.orderDescription
+            cell.statusLabel.text = "Open"
+        
+        }
+        
+        
+        if tableView == acceptedRequestTableView {
+            
+            // Grab request to render
+            let request = acceptedRequests[indexPath.row]
+            
+            // Configure display cell
+            cell.orderLabel.text = request.orderDescription
+            cell.statusLabel.text = "Accepted"
+            
+        }
         
         return cell
     }
@@ -266,6 +311,31 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
 
+    // MARK Respond to notifications
+    
+    //Handle user response to notification
+    @objc func defaultsChanged() {
+        
+        print("View Controller Receiving Notification that NOTIFICATION WAS ACCEPTED")
+
+        let defaults = UserDefaults.standard
+        if let latestNotificationId = defaults.object(forKey: "acceptedNotifications") {
+            
+            print(latestNotificationId)
+            
+            CoffeeRequest.getRequest(with_id: latestNotificationId as! String, completionHandler: {coffeeRequest in
+                print(coffeeRequest)
+                self.acceptedRequests = [coffeeRequest!]
+            })
+
+            DispatchQueue.main.async {
+                self.acceptedRequestTableView.reloadData()
+            }
+        
+        }
+    }
+    
+    
 
 }
 

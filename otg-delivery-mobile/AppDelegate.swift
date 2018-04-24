@@ -85,6 +85,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("NOTIFICATION ACTION: request successfully accepted.")
         })
         
+        //Add this request to the list of the user's accepted requests
+        defaults.set(latestNotificationId, forKey: "acceptedNotifications")
+        
         //Create and show alert
         let acceptedAlert = UIAlertView()
         acceptedAlert.title = "Thanks!"

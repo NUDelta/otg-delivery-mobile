@@ -45,7 +45,8 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil, status: "Open")
+        
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         
         //Dismiss modal

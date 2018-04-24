@@ -20,6 +20,7 @@ struct CoffeeRequest : Codable{
     let orderDescription: String
     let endTime: String?
     let requestId: String?
+    let status: String
 }
 
 // Encode and decode CoffeeRequest cobjects
@@ -60,12 +61,12 @@ extension CoffeeRequest {
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
 
-
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requester),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
+            URLQueryItem(name: "status", value: "Open")
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -113,7 +114,7 @@ extension CoffeeRequest {
         let requesterName = (defaults.object(forKey: "username") as! String)
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName as! String)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName)"))
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
@@ -186,22 +187,24 @@ extension CoffeeRequest {
         requestURL.httpMethod = "GET"
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Get request \(id).")
-            
-            var coffeeRequest: CoffeeRequest?
-            let httpResponse = response as? HTTPURLResponse
-            print(httpResponse?.statusCode)
-            
-            if(httpResponse?.statusCode != 400){
-                do {
-                    let decoder = JSONDecoder()
-                    coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
-                } catch {
-                    print("COFFEE REQUEST: error trying to convert data to JSON...")
-                    print(error)
+            if let data = data {
+                print("COFFEE REQUEST: Get request \(id).")
+                
+                var coffeeRequest: CoffeeRequest?
+                let httpResponse = response as? HTTPURLResponse
+                print(httpResponse?.statusCode)
+                
+                if(httpResponse?.statusCode != 400){
+                    do {
+                        let decoder = JSONDecoder()
+                        coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
+                    } catch {
+                        print("COFFEE REQUEST: error trying to convert data to JSON...")
+                        print(error)
+                    }
                 }
+                completionHandler(coffeeRequest)
             }
-            completionHandler(coffeeRequest)
         }
         
         task.resume()

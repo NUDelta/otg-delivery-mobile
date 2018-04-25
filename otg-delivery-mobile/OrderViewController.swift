@@ -276,38 +276,55 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Launch request editor on click
-        let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
-        let currentRequest = self.myRequests[indexPath.row]
+        
+        if tableView == myRequestTableView {
+        
+            // Launch request editor on click
+            let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
+            let currentRequest = self.myRequests[indexPath.row]
 
-        // Update table view and database on 'Update'
-        editController.addTextField { (descriptionUpdater) in
-            descriptionUpdater.text = currentRequest.orderDescription
-            descriptionUpdater.placeholder = "Updated Order Description"
-            // have current text be the current name of the request
-        }
-        let updateAction = UIAlertAction(title: "Update", style: .default) { (alertAction) in
-            let descriptionUpdater = editController.textFields![0] as UITextField
+            // Update table view and database on 'Update'
+            editController.addTextField { (descriptionUpdater) in
+                descriptionUpdater.text = currentRequest.orderDescription
+                descriptionUpdater.placeholder = "Updated Order Description"
+                // have current text be the current name of the request
+            }
+        
+            let updateAction = UIAlertAction(title: "Update", style: .default) { (alertAction) in
+                let descriptionUpdater = editController.textFields![0] as UITextField
+                
+                // Update database
+                CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, completionHandler: {
+                
+                    // Update view
+                    let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
+                        self.myRequests[indexPath.row] = coffeeRequest!
+                        
+                        //Since this is UI related, must perform in main thread
+                        DispatchQueue.main.async {
+                            self.myRequestTableView.reloadData()
+                        }
+                        
+                    })
+                    
+                })
+                
+            }
+        
+            // Do nothing on 'Cancel'
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+            // Add actions to editor
+            editController.addAction(updateAction)
+            editController.addAction(cancelAction)
+        
+            present(editController, animated: true, completion: nil)
             
-            // Update database
-            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!)
-            
-            // Update view
-            let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
-                self.myRequests[indexPath.row] = coffeeRequest!
-                self.myRequestTableView.reloadData()
-            })
         }
         
-        // Do nothing on 'Cancel'
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        // Add actions to editor
-        editController.addAction(updateAction)
-        editController.addAction(cancelAction)
-        
-        present(editController, animated: true, completion: nil)
-        
+        if tableView == acceptedRequestTableView {
+            
+        }
     }
     
 

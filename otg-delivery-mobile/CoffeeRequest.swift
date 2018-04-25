@@ -83,7 +83,7 @@ extension CoffeeRequest {
             
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            
+        
         //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
@@ -149,7 +149,7 @@ extension CoffeeRequest {
     
     // Method that takes an ID and updates the request's
     // order description and endTime in the database
-    static func updateRequest(with_id id: String, to_order order: String) {
+    static func updateRequest(with_id id: String, to_order order: String, completionHandler: @escaping () -> Void) {
         print("In update request ")
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/update/\(id)"))
@@ -165,6 +165,7 @@ extension CoffeeRequest {
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Update request.")
+            completionHandler()
         }
         
         task.resume()
@@ -173,7 +174,7 @@ extension CoffeeRequest {
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/\(id)")
+        let url = URL(string: "http://localhost:8080/requests/id/\(id)")
         //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
         var requestURL = URLRequest(url: url!)
         

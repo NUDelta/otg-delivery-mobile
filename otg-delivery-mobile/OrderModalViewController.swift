@@ -11,10 +11,8 @@ import UIKit
 class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
-    @IBOutlet weak var pickDrinkButton: UIButton!
-    @IBOutlet weak var drinkOrderLabel: UILabel!
-    @IBOutlet weak var drinkPriceLabel: UILabel!
-    @IBOutlet weak var orderText: UITextField?
+    @IBOutlet weak var itemOrderLabel: UILabel!
+    @IBOutlet weak var itemPriceLabel: UILabel!
     
     var selectedPlace: String?
     var dueDate: Int?
@@ -34,7 +32,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let requesterName = defaults.object(forKey: "username")
         
         //Grab relevant form data
-        let orderDescription = drinkOrderLabel.text
+        let orderDescription = itemOrderLabel.text
         let requestEndTime = picker!.date
         
         let RFC3339DateFormatter = DateFormatter()
@@ -75,13 +73,11 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     }
     
     //-=-=-=-=-=-=-=-=-=-=-
-    //Handle drink choice
+    //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
-    func drinkPicked(drinkChoice: Drink, sizeIndex: Int) {
-        let priceString = String.init(format: "$%@", drinkChoice.prices)
-        
-        drinkOrderLabel.text = String.init(format: "[%@] %@", drinkChoice.prices[sizeIndex].0.asString(), drinkChoice.name)
-        drinkPriceLabel.text = String.init(format: "$%.2f", drinkChoice.prices[sizeIndex].1)
+    func itemPicked(itemChoice: Item) {
+        itemOrderLabel.text = String.init(format: "%@", itemChoice.price, itemChoice.name)
+        itemPriceLabel.text = itemChoice.getPriceString()
     }
     
     //-=-=-=-=-=-=-=-=-=-=-
@@ -99,7 +95,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         //Do any additional setup after loading the view.
-        self.orderText?.delegate = self
     }
 
 }

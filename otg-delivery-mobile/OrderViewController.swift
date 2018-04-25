@@ -245,6 +245,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Configure display cell
             cell.orderLabel.text = request.orderDescription
             cell.statusLabel.text = "Accepted"
+         
             
         }
         
@@ -276,37 +277,113 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Launch request editor on click
-        let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
-        let currentRequest = self.myRequests[indexPath.row]
+        
+        if tableView == myRequestTableView {
+        
+            // Launch request editor on click
+            let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
+            let currentRequest = self.myRequests[indexPath.row]
 
-        // Update table view and database on 'Update'
-        editController.addTextField { (descriptionUpdater) in
-            descriptionUpdater.text = currentRequest.orderDescription
-            descriptionUpdater.placeholder = "Updated Order Description"
-            // have current text be the current name of the request
+            // Update table view and database on 'Update'
+            editController.addTextField { (descriptionUpdater) in
+                descriptionUpdater.text = currentRequest.orderDescription
+                descriptionUpdater.placeholder = "Updated Order Description"
+                // have current text be the current name of the request
+            }
+        
+            let updateAction = UIAlertAction(title: "Update", style: .default) { (alertAction) in
+                let descriptionUpdater = editController.textFields![0] as UITextField
+                
+                // Update database
+                CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, completionHandler: {
+                
+                    // Update view
+                    let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
+                        self.myRequests[indexPath.row] = coffeeRequest!
+                        
+                        //Since this is UI related, must perform in main thread
+                        DispatchQueue.main.async {
+                            self.myRequestTableView.reloadData()
+                        }
+                        
+                    })
+                    
+                })
+                
+            }
+        
+            // Do nothing on 'Cancel'
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+            // Add actions to editor
+            editController.addAction(updateAction)
+            editController.addAction(cancelAction)
+        
+            present(editController, animated: true, completion: nil)
+            
         }
-        let updateAction = UIAlertAction(title: "Update", style: .default) { (alertAction) in
-            let descriptionUpdater = editController.textFields![0] as UITextField
+        
+        if tableView == acceptedRequestTableView {
+          
+            // Launch request editor on click
+            let completedAlert = UIAlertController(title: "Request Completed!", message: "Please leave a brief comment on the convenience of the interaction below!", preferredStyle: .alert)
+            let currentRequest = self.acceptedRequests[indexPath.row]
             
-            // Update database
-            CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!)
-            
-            // Update view
-            let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
-                self.myRequests[indexPath.row] = coffeeRequest!
-                self.myRequestTableView.reloadData()
+            completedAlert.addTextField(configurationHandler: { (textField) in
+                textField.text = ""
             })
+         
+            let action = UIAlertAction(title: "OK", style: .default, handler: { [weak completedAlert] (_) in
+                let textField = completedAlert!.textFields![0]
+                let responseText = textField.text
+
+                self.sendFeedback(feedbackText: responseText)
+           
+                // Delete the row from the data source
+                let deletedRequest = self.acceptedRequests.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                //TODO tell server to mark the given request as completed
+                
+                self.acceptedRequestTableView.reloadData()
+                
+            })
+           
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+
+            })
+            
+            completedAlert.addAction(action)
+            completedAlert.addAction(cancel)
+            present(completedAlert, animated: true, completion: nil)
+            
+        }
+    }
+    
+    func sendFeedback(feedbackText: String?){
+        
+        //In case the input doesn't exist
+        guard let feedbackText = feedbackText else {
+            print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
+            return
         }
         
-        // Do nothing on 'Cancel'
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/feedback"
+        let apiUrl: String = "http://localhost:8080/feedback"
         
-        // Add actions to editor
-        editController.addAction(updateAction)
-        editController.addAction(cancelAction)
+        let url = URL(string: apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
         
-        present(editController, animated: true, completion: nil)
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("Feedback post: Data post successful.")
+        }
+        
+        task.resume()
         
     }
     

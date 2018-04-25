@@ -57,13 +57,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switch response.actionIdentifier {
             
             case "acceptNotification":
+                print("In AcceptNotification")
                 acceptLatestRequest()
             case "rejectNotification":
                 //If rejected, log to console but do nothing
                 //Should log this to server for research purposes perhaps??
                 print("NOTIFICATION ACTION: request rejected.")
             default:
-                acceptLatestRequest()
+                return
             
         }
         

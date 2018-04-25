@@ -21,6 +21,7 @@ struct CoffeeRequest : Codable{
         case orderDescription
         case endTime
         case requestId = "_id"
+        case status
     }
     
     //all fields that go into a request
@@ -96,17 +97,24 @@ extension CoffeeRequest {
         
     }
     
-    //Method that takes an ID and accepts the request
+    //Method that takes an ID and changes the status of the request
     //Method that grabs a CoffeeRequest from server and parses into object
-    static func acceptCoffeeRequestForID(requestId: String, completionHandler: @escaping () -> Void) {
+    static func updateStatusCoffeeRequestForID(requestId: String, status: String, completionHandler: @escaping () -> Void) {
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: CoffeeRequest.apiUrl + "/accept/" + requestId)
-        let requestURL = URLRequest(url: url!)
+        let url = URL(string: CoffeeRequest.apiUrl + "/status/" + requestId)
+        var requestURL = URLRequest(url: url!)
         
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        var components = URLComponents(string: "")
+        components?.queryItems = [URLQueryItem(name: "status", value: status)]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
         let task = session.dataTask(with: requestURL){ data, response, error in
-            
-            print("COFFEE REQUEST: accepted request, handling server stuff.")
+            print("COFFEE REQUEST: Accepted request.")
             completionHandler()
             
         }
@@ -126,6 +134,9 @@ extension CoffeeRequest {
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
+            guard let data = data else {
+                return
+            }
             print("COFFEE REQUEST: Getting current user's requests")
             
             var coffeeRequests: [CoffeeRequest] = []
@@ -134,7 +145,7 @@ extension CoffeeRequest {
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
-                    coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data!)
+                    coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
                 } catch {
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)

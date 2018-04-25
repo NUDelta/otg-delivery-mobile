@@ -344,6 +344,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 tableView.deleteRows(at: [indexPath], with: .fade)
                 
                 //TODO tell server to mark the given request as completed
+                CoffeeRequest.updateStatusCoffeeRequestForID(requestId: currentRequest.requestId as! String, status: "Completed", completionHandler: {
+                    print("NOTIFICATION ACTION: request successfully accepted.")
+                })
                 
                 self.acceptedRequestTableView.reloadData()
                 

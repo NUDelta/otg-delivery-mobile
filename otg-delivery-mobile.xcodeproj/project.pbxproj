@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		220788D2204F194100DA1026 /* Delta_Enterprise_Export.sh in Resources */ = {isa = PBXBuildFile; fileRef = 220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */; };
+		2226FE042090FF4C002AA142 /* RequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2226FE032090FF4C002AA142 /* RequestsTableViewController.swift */; };
+		2226FE062090FF96002AA142 /* AcceptedRequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2226FE052090FF96002AA142 /* AcceptedRequestsTableViewController.swift */; };
 		2238817F203F55370012707C /* route1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2238817E203F55370012707C /* route1.gpx */; };
 		2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A2992049C8FA00CE518B /* OrderModalViewController.swift */; };
 		2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A29B2049CD7A00CE518B /* LoginViewController.swift */; };
@@ -26,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Delta_Enterprise_Export.sh; sourceTree = "<group>"; };
+		2226FE032090FF4C002AA142 /* RequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsTableViewController.swift; sourceTree = "<group>"; };
+		2226FE052090FF96002AA142 /* AcceptedRequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedRequestsTableViewController.swift; sourceTree = "<group>"; };
 		2238817E203F55370012707C /* route1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = route1.gpx; sourceTree = "<group>"; };
 		2246A2992049C8FA00CE518B /* OrderModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModalViewController.swift; sourceTree = "<group>"; };
 		2246A29B2049CD7A00CE518B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
 				2246A2992049C8FA00CE518B /* OrderModalViewController.swift */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
+				2226FE032090FF4C002AA142 /* RequestsTableViewController.swift */,
+				2226FE052090FF96002AA142 /* AcceptedRequestsTableViewController.swift */,
 			);
 			path = "otg-delivery-mobile";
 			sourceTree = "<group>";
@@ -182,10 +188,12 @@
 				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,
 				3941C5582082F28B00B70356 /* MyRequestTableViewCell.swift in Sources */,
 				228907D920756C6800072961 /* ItemData.swift in Sources */,
+				2226FE042090FF4C002AA142 /* RequestsTableViewController.swift in Sources */,
 				228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
+				2226FE062090FF96002AA142 /* AcceptedRequestsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

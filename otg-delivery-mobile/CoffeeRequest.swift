@@ -123,6 +123,36 @@ extension CoffeeRequest {
         
     }
     
+    // Method that takes an ID and updates the request's
+    // order description and endTime in the database
+    static func acceptRequest(requestId id: String, completionHandler: @escaping () -> Void) {
+
+        //Get username
+        let defaults = UserDefaults.standard
+        let requesterName = (defaults.object(forKey: "username") as! String)
+        
+        
+        //Define session
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/name/\(requesterName)"))
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        var components = URLComponents(string: "")
+        components?.queryItems = [URLQueryItem(name: "id", value: id)]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Update request.")
+            completionHandler()
+        }
+        
+        task.resume()
+    }
+    
     // Grabs the current user's most recent request from the server, and parses into object
     static func getMyRequest(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
@@ -157,6 +187,44 @@ extension CoffeeRequest {
         task.resume()
         
     }
+    
+
+    // Grabs the current user's most recent request from the server, and parses into object
+    static func getMyAcceptedRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
+        // Get current user's username for api route
+        let defaults = UserDefaults.standard
+        let requesterName = defaults.object(forKey: "username") as! String
+        
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/name/\(requesterName)"))
+        let requestURL = URLRequest(url: url!)
+        
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            guard let data = data else {
+                return
+            }
+            print("COFFEE REQUEST: Getting current user's requests")
+            
+            var itemRequests: [CoffeeRequest] = []
+            let httpResponse = response as? HTTPURLResponse
+            
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    itemRequests = try decoder.decode([CoffeeRequest].self, from: data)
+                } catch {
+                    print("COFFEE REQUEST: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+            completionHandler(itemRequests)
+        }
+        
+        task.resume()
+        
+    }
+    
     
     // Method that takes an ID and updates the request's
     // order description and endTime in the database

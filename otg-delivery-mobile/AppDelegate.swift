@@ -82,13 +82,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let defaults = UserDefaults.standard
         let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
         
-        CoffeeRequest.updateStatusCoffeeRequestForID(requestId: latestNotificationId as! String, status: "Accepted", completionHandler: {
-            print("NOTIFICATION ACTION: request successfully accepted.")
+        print("Should be accepting request...")
+        
+        CoffeeRequest.acceptRequest(requestId: latestNotificationId as! String, completionHandler: {
+            print("REQUEST ACCEPTED: request successfully accepted.")
         })
         
-        //Add this request to the list of the user's accepted requests
-        defaults.set(latestNotificationId, forKey: "acceptedNotifications")
-        
+
         //Create and show alert
         let acceptedAlert = UIAlertView()
         acceptedAlert.title = "Thanks for helping!"

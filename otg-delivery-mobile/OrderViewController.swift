@@ -245,6 +245,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Configure display cell
             cell.orderLabel.text = request.orderDescription
             cell.statusLabel.text = "Accepted"
+         
             
         }
         
@@ -323,8 +324,67 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
         
         if tableView == acceptedRequestTableView {
+          
+            // Launch request editor on click
+            let completedAlert = UIAlertController(title: "Request Completed!", message: "Please leave a brief comment on the convenience of the interaction below!", preferredStyle: .alert)
+            let currentRequest = self.acceptedRequests[indexPath.row]
+            
+            completedAlert.addTextField(configurationHandler: { (textField) in
+                textField.text = ""
+            })
+         
+            let action = UIAlertAction(title: "OK", style: .default, handler: { [weak completedAlert] (_) in
+                let textField = completedAlert!.textFields![0]
+                let responseText = textField.text
+
+                self.sendFeedback(feedbackText: responseText)
+           
+                // Delete the row from the data source
+                let deletedRequest = self.acceptedRequests.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                //TODO tell server to mark the given request as completed
+                
+                self.acceptedRequestTableView.reloadData()
+                
+            })
+           
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+
+            })
+            
+            completedAlert.addAction(action)
+            completedAlert.addAction(cancel)
+            present(completedAlert, animated: true, completion: nil)
             
         }
+    }
+    
+    func sendFeedback(feedbackText: String?){
+        
+        //In case the input doesn't exist
+        guard let feedbackText = feedbackText else {
+            print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
+            return
+        }
+        
+        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/feedback"
+        let apiUrl: String = "http://localhost:8080/feedback"
+        
+        let url = URL(string: apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("Feedback post: Data post successful.")
+        }
+        
+        task.resume()
+        
     }
     
 

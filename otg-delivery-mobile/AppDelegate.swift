@@ -90,8 +90,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //Create and show alert
         let acceptedAlert = UIAlertView()
-        acceptedAlert.title = "Thanks!"
-        acceptedAlert.message = "You're awesome for picking up coffee! Please let the requester know through Slack that you're on your way."
+        acceptedAlert.title = "Thanks for helping!"
+        acceptedAlert.message = "Please let the requester know over Slack that the item is en-route"
         acceptedAlert.addButton(withTitle: "Ok")
         acceptedAlert.show()
     }

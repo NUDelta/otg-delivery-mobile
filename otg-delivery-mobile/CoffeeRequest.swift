@@ -82,7 +82,7 @@ extension CoffeeRequest {
             
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            
+        
         //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)

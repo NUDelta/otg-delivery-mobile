@@ -22,6 +22,8 @@ struct CoffeeRequest : Codable{
         case endTime
         case requestId = "_id"
         case status
+        case deliveryLocation
+        case deliveryLocationDetails
     }
     
     //all fields that go into a request
@@ -30,6 +32,8 @@ struct CoffeeRequest : Codable{
     let endTime: String?
     let requestId: String?
     let status: String
+    let deliveryLocation: String
+    let deliveryLocationDetails: String
 }
 
 // Encode and decode CoffeeRequest cobjects
@@ -75,7 +79,9 @@ extension CoffeeRequest {
             URLQueryItem(name: "requester", value: coffeeRequest.requester),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
-            URLQueryItem(name: "status", value: "Open")
+            URLQueryItem(name: "status", value: coffeeRequest.status),
+            URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
+            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)

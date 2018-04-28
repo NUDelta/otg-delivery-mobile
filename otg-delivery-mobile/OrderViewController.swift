@@ -30,11 +30,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        /*
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(defaultsChanged),
                                                name: UserDefaults.didChangeNotification,
                                                object: nil)
+        */
         
         // initialize location manager
         locationManager = CLLocationManager()
@@ -185,8 +187,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     @objc func loadMyRequests() {
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
-                self.myRequests = coffeeRequests;
+                self.myRequests = coffeeRequests
                 self.myRequestTableView.reloadData()
+            }
+        })
+        
+        CoffeeRequest.getMyAcceptedRequests(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.acceptedRequests = coffeeRequests
+                self.acceptedRequestTableView.reloadData()
             }
         })
     }
@@ -232,7 +241,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
             // Configure display cell
             cell.orderLabel.text = request.orderDescription
-            cell.statusLabel.text = "Open"
+            cell.statusLabel.text = request.status
         
         }
         
@@ -256,8 +265,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be editable.
          return true
-     }
-    
+     }ßß
     
     
      // Override to support editing the table view.

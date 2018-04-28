@@ -97,6 +97,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         acceptedAlert.show()
     }
     
+    // For push notifications
+    // did receiveRemoteNotification
+    //func appplication (didReceiveRemoteNotification)
+    
+    
+    
+    // didRegister for device token
+    // - register for a device token - need to create a new device token string, then save to database
+    // - app register for a new device token everytime it launches (because this is in the app delegate) - always want to save the newest version to the database
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

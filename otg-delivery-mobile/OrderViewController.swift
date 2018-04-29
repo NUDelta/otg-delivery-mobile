@@ -67,6 +67,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         // Initialize My Requests table
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
+        self.myRequestTableView.estimatedRowHeight = 100
+        self.myRequestTableView.rowHeight = UITableViewAutomaticDimension
         
         loadMyRequests()
         

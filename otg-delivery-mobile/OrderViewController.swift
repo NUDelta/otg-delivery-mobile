@@ -243,6 +243,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.orderLabel.text = request.orderDescription
             cell.statusLabel.text = request.status
         
+
+           
+            print("MAKE IT HERE")
+            
+            // If we don't have an end time, something else is very wrong, but let's exit gracefully nonetheless
+            // (seems like an issue with optionals is that you have no idea which optional chain breaks the program,
+            // Pretty much turning compile time errors into runtime errors? Hm.
+            guard let date = request.endTime else {
+                return cell;
+            }
+            
+            cell.dateLabel.text = date;
+            
         }
         
         

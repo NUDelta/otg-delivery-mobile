@@ -10,6 +10,7 @@ import UIKit
 
 class MyRequestTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     

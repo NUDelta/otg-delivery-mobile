@@ -210,7 +210,7 @@ extension CoffeeRequest {
             guard let data = data else {
                 return
             }
-            print("COFFEE REQUEST: Getting current user's requests")
+            print("COFFEE REQUEST: Getting current user's tasks")
             
             var itemRequests: [CoffeeRequest] = []
             let httpResponse = response as? HTTPURLResponse

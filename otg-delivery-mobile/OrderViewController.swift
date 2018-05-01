@@ -61,19 +61,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         
         // Initialize Accepted Requests table
-        myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
+        acceptedRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
         self.acceptedRequestTableView.delegate = self
         self.acceptedRequestTableView.dataSource = self
         
         // Initialize My Requests table
+        myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
         
-        loadMyRequests()
+        loadData()
         
         // Initialize listener for whenever app becoming active
         // To reload request data and update table
-        NotificationCenter.default.addObserver(self, selector: #selector(loadMyRequests), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
     }
     
@@ -85,7 +86,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
         
-        loadMyRequests()
+        loadData()
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -185,7 +186,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     }
     
-    @objc func loadMyRequests() {
+    @objc func loadData() {
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
@@ -200,11 +201,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         })
     }
-    
-    func loadAcceptedRequests() {
-        
-    }
-    
+
     // MARK: Table View Configuration
     
     //Return number of sections in table view
@@ -231,11 +228,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
+            fatalError("Couldn't dequeue RequestStatusTableViewCell")
+        }
+        
         if tableView == myRequestTableView {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
-                fatalError("Couldn't dequeue RequestStatusTableViewCell")
-            }
-            
+            // Grab request to render
             let request = myRequests[indexPath.row]
             
             cell.orderLabel.text = request.orderDescription
@@ -250,38 +248,24 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
-            
-            return cell
-        }
-    
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRequestTableViewCell", for: indexPath) as? MyRequestTableViewCell else {
-            fatalError("The dequeued cell is not an instance of MyRequestTableViewCell")
-        }
-        
-        
- 
-        if tableView == myRequestTableView {
-            
-            // Grab request to render
-            let request = myRequests[indexPath.row]
-        
-            // Configure display cell
-            cell.orderLabel.text = request.orderDescription
-            cell.statusLabel.text = request.status
-        
-        }
-        
-        if tableView == acceptedRequestTableView {
-            
+        } else if tableView == acceptedRequestTableView {
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
             
-            // Configure display cell
             cell.orderLabel.text = request.orderDescription
-            cell.statusLabel.text = "Accepted"
-         
+            cell.statusDetailsLabel.text = request.status
+            cell.expirationDetailsLabel.text = request.endTime
+            cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
+            cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
             
+            // Text wraps
+            cell.orderLabel.numberOfLines = 0
+            cell.statusDetailsLabel.numberOfLines = 0
+            cell.expirationDetailsLabel.numberOfLines = 0
+            cell.deliveryLocationDetailsLabel.numberOfLines = 0
+            cell.deliveryDetailsDetailsLabel.numberOfLines = 0
         }
+        
         
         return cell
     }

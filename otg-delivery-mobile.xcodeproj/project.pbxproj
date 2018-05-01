@@ -22,6 +22,8 @@
 		22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD7F122043D308008A877B /* CoffeeRequest.swift */; };
 		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
 		3941C5582082F28B00B70356 /* MyRequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */; };
+		39FE213D2097BB900019AE3A /* RequestStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FE213C2097BB900019AE3A /* RequestStatusTableViewCell.swift */; };
+		39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
 		22BD7F142045E733008A877B /* coffee-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coffee-icon.png"; sourceTree = "<group>"; };
 		3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRequestTableViewCell.swift; sourceTree = "<group>"; };
+		39FE213C2097BB900019AE3A /* RequestStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewCell.swift; sourceTree = "<group>"; };
+		39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,8 @@
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
 				3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */,
+				39FE213C2097BB900019AE3A /* RequestStatusTableViewCell.swift */,
+				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
 				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
 				228907D820756C6800072961 /* ItemData.swift */,
@@ -177,6 +183,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */,
+				39FE213D2097BB900019AE3A /* RequestStatusTableViewCell.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
 				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
 				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,

@@ -61,6 +61,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         
         // Initialize Accepted Requests table
+        myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
         self.acceptedRequestTableView.delegate = self
         self.acceptedRequestTableView.dataSource = self
         
@@ -229,11 +230,36 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if tableView == myRequestTableView {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
+                fatalError("Couldn't dequeue RequestStatusTableViewCell")
+            }
+            
+            let request = myRequests[indexPath.row]
+            
+            cell.orderLabel.text = request.orderDescription
+            cell.statusDetailsLabel.text = request.status
+            cell.expirationDetailsLabel.text = request.endTime
+            cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
+            cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
+            
+            // Text wraps
+            cell.orderLabel.numberOfLines = 0
+            cell.statusDetailsLabel.numberOfLines = 0
+            cell.expirationDetailsLabel.numberOfLines = 0
+            cell.deliveryLocationDetailsLabel.numberOfLines = 0
+            cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+            
+            return cell
+        }
+    
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRequestTableViewCell", for: indexPath) as? MyRequestTableViewCell else {
             fatalError("The dequeued cell is not an instance of MyRequestTableViewCell")
         }
         
         
+ 
         if tableView == myRequestTableView {
             
             // Grab request to render
@@ -244,7 +270,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.statusLabel.text = request.status
         
         }
-        
         
         if tableView == acceptedRequestTableView {
             

@@ -26,6 +26,8 @@ class RequestStatusTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.contentView.isUserInteractionEnabled = false;
+        
         let subtitleTitleColor = UIColor.darkGray
         let subtitleTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
         
@@ -38,22 +40,28 @@ class RequestStatusTableViewCell: UITableViewCell {
         
         
         //Edit and delete buttons
-        let editButton = UIButton()
+        let editButton = UIButton.init(type: .system)
         editButton.backgroundColor = UIColor.clear
         editButton.layer.cornerRadius = 1.0;
         editButton.layer.borderWidth = 0.2;
         editButton.setTitleColor(self.tintColor, for: .normal)
         editButton.setTitle("Edit", for: .normal)
         editButton.translatesAutoresizingMaskIntoConstraints = false
+
+        editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
+        
         self.addSubview(editButton)
         
-        let deleteButton = UIButton()
+        let deleteButton = UIButton.init(type: .system)
         deleteButton.backgroundColor = UIColor.clear
         deleteButton.layer.cornerRadius = 1.0;
         deleteButton.layer.borderWidth = 0.2;
         deleteButton.setTitleColor(UIColor.red, for: .normal)
         deleteButton.setTitle("Delete", for: .normal)
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        deleteButton.addTarget(self, action: #selector(self.deleteActionTest), for: .touchUpInside)
+        
         self.addSubview(deleteButton)
         
         
@@ -187,6 +195,14 @@ class RequestStatusTableViewCell: UITableViewCell {
             deleteButton.topAnchor.constraint(equalTo: editButton.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    @objc
+    func deleteActionTest(){
+        print("Delete pressed")
+    }
+    @objc
+    func editActionTest(){
+        print("Edit pressed")
     }
     
     required init?(coder aDecoder: NSCoder) {

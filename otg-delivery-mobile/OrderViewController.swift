@@ -251,13 +251,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
             
+            cell.contentView.isUserInteractionEnabled = false;
+            
             return cell
         }
     
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyRequestTableViewCell", for: indexPath) as? MyRequestTableViewCell else {
             fatalError("The dequeued cell is not an instance of MyRequestTableViewCell")
         }
-        
         
  
         if tableView == myRequestTableView {
@@ -283,16 +284,18 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
         }
         
+        cell.contentView.isUserInteractionEnabled = false;
         return cell
     }
- 
+
+/*
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be editable.
          return true
      }
     
-    
+
      // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
          if editingStyle == .delete {
@@ -306,7 +309,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             self.myRequestTableView.reloadData()
          }
      }
-    
+*/
+/*
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -395,6 +399,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
         }
     }
+ */
     
     func sendFeedback(feedbackText: String?){
         

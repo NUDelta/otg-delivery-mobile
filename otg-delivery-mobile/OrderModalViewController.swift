@@ -14,12 +14,18 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet weak var itemOrderLabel: UILabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
     @IBOutlet weak var deliveryLocationForm: UITextField!
-    @IBOutlet weak var deliveryDetailsForm: UITextField!
+    @IBOutlet weak var deliveryDetailsForm: UITextView!
     
     var selectedPlace: String?
     var dueDate: Int?
     var coffeeOrder: String?
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.deliveryDetailsForm.layer.borderWidth = 0.5
+        self.deliveryDetailsForm.layer.cornerRadius = 8.0
+        self.deliveryDetailsForm.layer.borderColor = UIColor.lightGray.cgColor
+    }
     
     //When date picker value changes
     @IBAction func valueChanged(_ sender: UIDatePicker) {
@@ -97,9 +103,5 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         self.view.endEditing(true);
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //Do any additional setup after loading the view.
-    }
 
 }

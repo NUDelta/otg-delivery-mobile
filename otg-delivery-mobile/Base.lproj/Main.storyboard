@@ -203,7 +203,7 @@
                                                 <rect key="frame" x="0.0" y="333.5" width="343" height="155.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ltq-EJ-2Tv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="60"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="85"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJ5-1v-0Ht">
                                                                 <rect key="frame" x="0.0" y="0.0" width="131.5" height="21"/>
@@ -215,7 +215,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OFB-Ah-Mr3">
-                                                                <rect key="frame" x="0.0" y="26" width="343" height="34"/>
+                                                                <rect key="frame" x="0.0" y="26" width="343" height="59"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="qCF-8g-sEz"/>
                                                                 </constraints>
@@ -232,27 +232,25 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="mRL-4f-cJ4">
-                                                        <rect key="frame" x="0.0" y="60" width="343" height="95.5"/>
+                                                        <rect key="frame" x="0.0" y="85" width="343" height="70.5"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Delivery Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoW-tn-vhp">
-                                                                <rect key="frame" x="0.0" y="0.0" width="118.5" height="20.5"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Detailed Delivery Instructions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoW-tn-vhp">
+                                                                <rect key="frame" x="0.0" y="0.0" width="224" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TmD-Zk-YZB">
-                                                                <rect key="frame" x="0.0" y="20.5" width="343" height="75"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="75" id="NSL-2r-XTo"/>
-                                                                </constraints>
-                                                                <nil key="textColor"/>
+                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Ex. Include room number, location in building, a description of what you look like" translatesAutoresizingMaskIntoConstraints="NO" id="9eW-l1-BNG">
+                                                                <rect key="frame" x="0.0" y="20.5" width="343" height="50"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits"/>
-                                                            </textField>
+                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                            </textView>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="TmD-Zk-YZB" firstAttribute="leading" secondItem="mRL-4f-cJ4" secondAttribute="leading" id="BeP-l0-itB"/>
-                                                            <constraint firstAttribute="trailing" secondItem="TmD-Zk-YZB" secondAttribute="trailing" id="iny-8A-nGE"/>
+                                                            <constraint firstAttribute="trailing" secondItem="9eW-l1-BNG" secondAttribute="trailing" id="4Jx-xU-TVx"/>
+                                                            <constraint firstItem="9eW-l1-BNG" firstAttribute="leading" secondItem="mRL-4f-cJ4" secondAttribute="leading" id="7xK-Ij-fSO"/>
+                                                            <constraint firstItem="9eW-l1-BNG" firstAttribute="top" secondItem="AoW-tn-vhp" secondAttribute="bottom" id="BfG-Go-f6B"/>
+                                                            <constraint firstAttribute="bottom" secondItem="9eW-l1-BNG" secondAttribute="bottom" id="M6P-d9-Oce"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
@@ -302,7 +300,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="deliveryDetailsForm" destination="TmD-Zk-YZB" id="8h8-XH-IHn"/>
+                        <outlet property="deliveryDetailsForm" destination="9eW-l1-BNG" id="Brm-0q-dvS"/>
                         <outlet property="deliveryLocationForm" destination="OFB-Ah-Mr3" id="WrG-Xb-51j"/>
                         <outlet property="itemOrderLabel" destination="SoW-j7-6gg" id="qbx-OE-85q"/>
                         <outlet property="itemPriceLabel" destination="JfZ-8w-7mP" id="Ime-ck-7Pp"/>

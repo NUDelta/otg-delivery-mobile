@@ -48,7 +48,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         editButton.setTitle("Edit", for: .normal)
         editButton.translatesAutoresizingMaskIntoConstraints = false
 
-        editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
+        //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
         
         self.addSubview(editButton)
         
@@ -200,10 +200,10 @@ class RequestStatusTableViewCell: UITableViewCell {
     func deleteActionTest(){
         print("Delete pressed")
     }
-    @objc
-    func editActionTest(){
-        //print("Edit pressed")
-    }
+//    @objc
+//    func editActionTest(){
+//        //print("Edit pressed")
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

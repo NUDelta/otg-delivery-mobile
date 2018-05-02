@@ -165,7 +165,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let defaults = UserDefaults.standard
 
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        //        print(deviceTokenString)
         print(deviceTokenString)
         defaults.set(deviceTokenString, forKey: "tokenId")
         

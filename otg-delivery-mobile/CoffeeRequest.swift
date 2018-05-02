@@ -164,7 +164,10 @@ extension CoffeeRequest {
     static func getMyRequest(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
-        let requesterName = (defaults.object(forKey: "username") as! String)
+        
+        guard let requesterName = defaults.object(forKey: "username") as? String else {
+            return
+        }
         
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName)"))
@@ -200,7 +203,9 @@ extension CoffeeRequest {
     static func getMyAcceptedRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
-        let requesterName = defaults.object(forKey: "username") as! String
+        guard let requesterName = defaults.object(forKey: "username") as? String else {
+            return
+        }
         
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/accept/name/\(requesterName)"))

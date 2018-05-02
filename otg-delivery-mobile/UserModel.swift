@@ -1,0 +1,70 @@
+//
+//  UserModel.swift
+//  otg-delivery-mobile
+//
+//  Created by Sam Naser on 5/2/18.
+//  Copyright © 2018 Sam Naser. All rights reserved.
+//
+
+import Foundation
+
+//
+//  RequestManager.swift
+//  otg-delivery-mobile
+//
+//  Created by Sam Naser on 2/25/18.
+//  Copyright © 2018 Sam Naser. All rights reserved.
+//
+
+import Foundation
+
+struct UserModel : Codable{
+    //API Location
+    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    private static let apiUrl: String = "http://localhost:8080/users"
+    
+    // Used to map JSON responses and their properties to properties of our struct
+    enum CodingKeys : String, CodingKey {
+        case userId = "_id"
+        case deviceId
+        case username
+    }
+    
+    //all fields that go into a request
+    let userId: String?
+    let deviceId: String
+    let username: String
+}
+
+
+//Define HTTP requests
+extension UserModel {
+    
+    //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
+    static func createUser(user: UserModel) {
+        
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "deviceId", value: user.deviceId),
+            URLQueryItem(name: "username", value: user.username)
+        ]
+        
+        let url = URL(string: UserModel.apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("CREATE USER: User creation successful.")
+        }
+        
+        task.resume()
+    }
+    
+}

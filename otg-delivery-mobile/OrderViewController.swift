@@ -139,8 +139,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
         
-        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
-        let apiUrl: String = "http://localhost:8080/logging"
+        let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
+        //let apiUrl: String = "http://localhost:8080/logging"
         
         let defaults = UserDefaults.standard
         let requesterName = defaults.object(forKey: "username")
@@ -228,10 +228,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
             fatalError("Couldn't dequeue RequestStatusTableViewCell")
         }
         
+        // Render label data
         if tableView == myRequestTableView {
             // Grab request to render
             let request = myRequests[indexPath.row]
@@ -248,6 +250,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+            
+            // Buttons
+            cell.editButton.tag = indexPath.row
+            cell.editButton.addTarget(self, action: #selector(self.editActionTest(sender:)), for: .touchUpInside)
+
         } else if tableView == acceptedRequestTableView {
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
@@ -264,19 +271,33 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+            
         }
         
+        // Initialize buttons
+        //cell.contentView.isUserInteractionEnabled = true;
+//        cell.editButton.tag = indexPath.row
+//        cell.editButton.addTarget(self, action: #selector(editActionTest), for: .touchUpInside)
+        //addChildViewController(RequestStatusTableViewCell)
         
         return cell
     }
- 
+    
+    @objc func editActionTest(sender: UIButton) {
+        let row_number = sender.tag
+        print("HEREEEE \(row_number)")
+    }
+
+    
+
+/*
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be editable.
          return true
      }
     
-    
+
      // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
          if editingStyle == .delete {
@@ -290,7 +311,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             self.myRequestTableView.reloadData()
          }
      }
-    
+*/
+/*
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -379,6 +401,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
         }
     }
+ */
     
     func sendFeedback(feedbackText: String?){
         
@@ -388,8 +411,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
         
-        //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/feedback"
-        let apiUrl: String = "http://localhost:8080/feedback"
+         let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/feedback"
+        //let apiUrl: String = "http://localhost:8080/feedback"
         
         let url = URL(string: apiUrl)
         let session: URLSession = URLSession.shared

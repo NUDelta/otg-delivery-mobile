@@ -43,6 +43,7 @@
 		22AD279420129CCE005BA4B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
 		22BD7F142045E733008A877B /* coffee-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coffee-icon.png"; sourceTree = "<group>"; };
+		3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "otg-delivery-mobile.entitlements"; sourceTree = "<group>"; };
 		3941C5572082F28B00B70356 /* MyRequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRequestTableViewCell.swift; sourceTree = "<group>"; };
 		39FE213C2097BB900019AE3A /* RequestStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewCell.swift; sourceTree = "<group>"; };
 		39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		22AD278720129CCE005BA4B9 /* otg-delivery-mobile */ = {
 			isa = PBXGroup;
 			children = (
+				3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */,
 				22BD7F162045E741008A877B /* image-resources */,
 				2238817E203F55370012707C /* route1.gpx */,
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
@@ -141,6 +143,11 @@
 					22AD278420129CCE005BA4B9 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -270,7 +277,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.northwestern.delta.les-debug";
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -332,16 +339,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "otg-delivery-mobile/otg-delivery-mobile.entitlements";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = W4E2C6X642;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7eec7c7a-1e91-4342-baab-e5c0e7e75ac8";
-				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab";
+				PROVISIONING_PROFILE = "009b5511-11e1-4079-9cf4-3a03e6d058a2";
+				PROVISIONING_PROFILE_SPECIFIER = "OTG Dev";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -351,6 +359,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "otg-delivery-mobile/otg-delivery-mobile.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Northwestern University";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
 				CODE_SIGN_STYLE = Manual;
@@ -359,7 +368,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
 				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab J";

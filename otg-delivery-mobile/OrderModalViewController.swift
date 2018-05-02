@@ -87,7 +87,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
     func itemPicked(itemChoice: Item) {
-        itemOrderLabel.text = String.init(format: "%@", itemChoice.price, itemChoice.name)
+        itemOrderLabel.text = ("\(itemChoice.name)")
         itemPriceLabel.text = itemChoice.getPriceString()
     }
     

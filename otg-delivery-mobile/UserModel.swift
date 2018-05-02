@@ -41,7 +41,7 @@ struct UserModel : Codable{
 extension UserModel {
     
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
-    static func createUser(user: UserModel) {
+    static func createUser(user: UserModel, completionHandler: @escaping(UserModel?) -> Void) {
         
         var components = URLComponents(string: "")
         components?.queryItems = [
@@ -61,7 +61,27 @@ extension UserModel {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("CREATE USER: User creation successful.")
+
+            guard let data = data else {
+                return
+            }
+            print("USER DATA: user data returned.")
+            
+            var userData: UserModel?
+            let httpResponse = response as? HTTPURLResponse
+            
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    userData = try decoder.decode(UserModel.self, from: data)
+                } catch {
+                    print("USER MODEL: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+            
+            completionHandler(userData)
+        
         }
         
         task.resume()

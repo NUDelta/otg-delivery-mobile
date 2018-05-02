@@ -48,15 +48,26 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         var tokenValue: String = "Default token value"
         
         //If we're on a real device, this token id should be set
-        var defaults = UserDefaults.standard
+        let defaults = UserDefaults.standard
         if let tokenId = defaults.object(forKey: "tokenId") as? String {
             tokenValue = tokenId
         }
-        
-        defaults.set(usernameText, forKey: "username")
-        
+                
         let user = UserModel(userId: nil, deviceId: tokenValue, username: usernameText)
-        UserModel.createUser(user: user)
+        UserModel.createUser(user: user, completionHandler: { userModel in
+            print(userModel)
+            guard let createdUser = userModel else {
+                print("LOGIN: user was not fetchd from server.")
+                return
+            }
+            
+            guard let userId = createdUser.userId else {
+                print("LOGIN: could not retrieve userId from server response.")
+                return
+            }
+            
+            defaults.set(userId, forKey: "userId")
+        })
         
         print("LOGIN: transitioning to main view")
         didLogIn?()

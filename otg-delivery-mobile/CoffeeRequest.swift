@@ -165,12 +165,12 @@ extension CoffeeRequest {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
         
-        guard let requesterName = defaults.object(forKey: "username") as? String else {
+        guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/name/\(requesterName)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/userid/\(userId)"))
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
@@ -203,12 +203,12 @@ extension CoffeeRequest {
     static func getMyAcceptedRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
-        guard let requesterName = defaults.object(forKey: "username") as? String else {
+        guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/name/\(requesterName)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/\(userId)"))
         let requestURL = URLRequest(url: url!)
         
         

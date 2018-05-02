@@ -82,7 +82,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         super.viewDidAppear(animated)
         
         //If user logged in, peace
-        if UserDefaults.standard.object(forKey: "username") == nil {
+        if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
         

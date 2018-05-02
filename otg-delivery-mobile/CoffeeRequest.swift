@@ -24,16 +24,18 @@ struct CoffeeRequest : Codable{
         case status
         case deliveryLocation
         case deliveryLocationDetails
+        case helper
     }
     
     //all fields that go into a request
     let requester: String
     let orderDescription: String
-    let endTime: String?
-    let requestId: String?
     let status: String
     let deliveryLocation: String
     let deliveryLocationDetails: String
+    let helper: String?
+    let endTime: String?
+    let requestId: String?
 }
 
 // Encode and decode CoffeeRequest cobjects

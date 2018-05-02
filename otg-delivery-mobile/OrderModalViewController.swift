@@ -29,7 +29,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBAction func submitPressed(sender: UIButton){
     
         let defaults = UserDefaults.standard
-        let requesterName = defaults.object(forKey: "username")
+        let requesterId = defaults.object(forKey: "userId")
         
         //Grab relevant form data
         let orderDescription = itemOrderLabel.text
@@ -43,7 +43,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil, status: "Pending", deliveryLocation: "TODO From Form", deliveryLocationDetails: "TODO From Form")
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: "TODO From Form", deliveryLocationDetails: "TODO From Form", helper: nil, endTime: responseDate, requestId: nil)
         
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         

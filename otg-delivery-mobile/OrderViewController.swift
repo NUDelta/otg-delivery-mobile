@@ -81,6 +81,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        print("SHOULD BE PRINTING USER ID")
+        print(UserDefaults.standard.object(forKey: "userId"))
         //If user logged in, peace
         if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)

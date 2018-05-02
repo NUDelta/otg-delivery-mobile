@@ -13,6 +13,8 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var itemOrderLabel: UILabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
+    @IBOutlet weak var deliveryLocationForm: UITextField!
+    @IBOutlet weak var deliveryDetailsForm: UITextField!
     
     var selectedPlace: String?
     var dueDate: Int?
@@ -34,6 +36,9 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         //Grab relevant form data
         let orderDescription = itemOrderLabel.text
         let requestEndTime = picker!.date
+        let deliveryLocation = deliveryLocationForm.text!
+        let deliveryDetails = deliveryDetailsForm.text ?? ""
+        
         
         let RFC3339DateFormatter = DateFormatter()
         RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -43,7 +48,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil, status: "Pending", deliveryLocation: "TODO From Form", deliveryLocationDetails: "TODO From Form")
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterName as! String, orderDescription: orderDescription!, endTime: responseDate, requestId: nil, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails)
         
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         

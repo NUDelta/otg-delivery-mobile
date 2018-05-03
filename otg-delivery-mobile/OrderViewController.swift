@@ -20,12 +20,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
-        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
-        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
-        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
-        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
-        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
-        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088))
+//        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
+//        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
+//        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
+//        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
+//        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
+//        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088)),
+        ("Tomate", CLLocationCoordinate2D(latitude: 42.058509, longitude: -87.683757))
     ]
 
     override func viewDidLoad() {
@@ -253,9 +254,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
             
-            // Buttons
-            cell.editButton.tag = indexPath.row
-            cell.editButton.addTarget(self, action: #selector(self.editActionTest(sender:)), for: .touchUpInside)
+//            // Buttons
+//            cell.editButton.tag = indexPath.row
+//            cell.editButton.addTarget(self, action: #selector(self.editActionTest(sender:)), for: .touchUpInside)
 
         } else if tableView == acceptedRequestTableView {
             // Grab request to render
@@ -285,14 +286,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         return cell
     }
     
-    @objc func editActionTest(sender: UIButton) {
-        let row_number = sender.tag
-        print("HEREEEE \(row_number)")
-    }
+//    @objc func editActionTest(sender: UIButton) {
+//        let row_number = sender.tag
+//        print("HEREEEE \(row_number)")
+//    }
 
     
 
-/*
+
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be editable.
@@ -313,8 +314,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             self.myRequestTableView.reloadData()
          }
      }
-*/
-/*
+
+
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -403,7 +404,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
         }
     }
- */
+ 
     
     func sendFeedback(feedbackText: String?){
         

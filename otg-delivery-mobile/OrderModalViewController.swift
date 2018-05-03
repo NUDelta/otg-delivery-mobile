@@ -13,11 +13,19 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var itemOrderLabel: UILabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
+    @IBOutlet weak var deliveryLocationForm: UITextField!
+    @IBOutlet weak var deliveryDetailsForm: UITextView!
     
     var selectedPlace: String?
     var dueDate: Int?
     var coffeeOrder: String?
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.deliveryDetailsForm.layer.borderWidth = 0.5
+        self.deliveryDetailsForm.layer.cornerRadius = 8.0
+        self.deliveryDetailsForm.layer.borderColor = UIColor.lightGray.cgColor
+    }
     
     //When date picker value changes
     @IBAction func valueChanged(_ sender: UIDatePicker) {
@@ -34,6 +42,9 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         //Grab relevant form data
         let orderDescription = itemOrderLabel.text
         let requestEndTime = picker!.date
+        let deliveryLocation = deliveryLocationForm.text!
+        let deliveryDetails = deliveryDetailsForm.text ?? ""
+        
         
         let RFC3339DateFormatter = DateFormatter()
         RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -43,7 +54,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: "TODO From Form", deliveryLocationDetails: "TODO From Form", helper: nil, endTime: responseDate, requestId: nil)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
         
         CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
         
@@ -76,7 +87,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
     func itemPicked(itemChoice: Item) {
-        itemOrderLabel.text = String.init(format: "%@", itemChoice.price, itemChoice.name)
+        itemOrderLabel.text = ("\(itemChoice.name)")
         itemPriceLabel.text = itemChoice.getPriceString()
     }
     
@@ -92,9 +103,5 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
         self.view.endEditing(true);
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //Do any additional setup after loading the view.
-    }
 
 }

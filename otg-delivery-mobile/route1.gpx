@@ -1,12 +1,12 @@
 <gpx>
-    <name>route1</name>
+    <name>Tomate Route</name>
     <number>1</number>
     <wpt lat="42.053889" lon="-87.681334">
       <ele>0</ele>
       <time>2016-12-29T00:01:00Z</time>
       <name>pt0</name>
     </wpt>
-    <wpt lat="42.053312" lon="-87.672958">
+    <wpt lat="42.058509" lon="-87.683757">
       <ele>0</ele>
       <time>2016-12-29T00:01:15Z</time>
       <name>pt1</name>

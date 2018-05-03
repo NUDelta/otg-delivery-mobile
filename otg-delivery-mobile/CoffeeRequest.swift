@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    private static let apiUrl: String = "http://localhost:8080/requests"
+    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    //private static let apiUrl: String = "http://localhost:8080/requests"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -138,12 +138,15 @@ extension CoffeeRequest {
 
         //Get username
         let defaults = UserDefaults.standard
-        let requesterName = (defaults.object(forKey: "username") as! String)
+        guard let helperId = defaults.object(forKey: "userId") as? String else {
+            print("Helper ID not in defaults")
+            return
+        }
         
         
         //Define session
         let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/name/\(requesterName)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/\(helperId)"))
         var requestURL = URLRequest(url: url!)
         
         requestURL.httpMethod = "POST"

@@ -19,8 +19,8 @@ class RequestStatusTableViewCell: UITableViewCell {
     let deliveryLocationDetailsLabel = UILabel()
     let deliveryDetailsDetailsLabel = UILabel()
     
-    let editButton = UIButton()
-    let deleteButton = UIButton()
+//    let editButton = UIButton()
+//    let deleteButton = UIButton()
     
     // MARK: - Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -39,30 +39,30 @@ class RequestStatusTableViewCell: UITableViewCell {
         let labelBottomPadding: CGFloat = 10.0
         
         
-        //Edit and delete buttons
-        let editButton = UIButton.init(type: .system)
-        editButton.backgroundColor = UIColor.clear
-        editButton.layer.cornerRadius = 1.0;
-        editButton.layer.borderWidth = 0.2;
-        editButton.setTitleColor(self.tintColor, for: .normal)
-        editButton.setTitle("Edit", for: .normal)
-        editButton.translatesAutoresizingMaskIntoConstraints = false
-
-        editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
-        
-        self.addSubview(editButton)
-        
-        let deleteButton = UIButton.init(type: .system)
-        deleteButton.backgroundColor = UIColor.clear
-        deleteButton.layer.cornerRadius = 1.0;
-        deleteButton.layer.borderWidth = 0.2;
-        deleteButton.setTitleColor(UIColor.red, for: .normal)
-        deleteButton.setTitle("Delete", for: .normal)
-        deleteButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        deleteButton.addTarget(self, action: #selector(self.deleteActionTest), for: .touchUpInside)
-        
-        self.addSubview(deleteButton)
+//        //Edit and delete buttons
+//        let editButton = UIButton.init(type: .system)
+//        editButton.backgroundColor = UIColor.clear
+//        editButton.layer.cornerRadius = 1.0;
+//        editButton.layer.borderWidth = 0.2;
+//        editButton.setTitleColor(self.tintColor, for: .normal)
+//        editButton.setTitle("Edit", for: .normal)
+//        editButton.translatesAutoresizingMaskIntoConstraints = false
+//
+//        //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
+//
+//        self.addSubview(editButton)
+//
+//        let deleteButton = UIButton.init(type: .system)
+//        deleteButton.backgroundColor = UIColor.clear
+//        deleteButton.layer.cornerRadius = 1.0;
+//        deleteButton.layer.borderWidth = 0.2;
+//        deleteButton.setTitleColor(UIColor.red, for: .normal)
+//        deleteButton.setTitle("Delete", for: .normal)
+//        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+//
+//        deleteButton.addTarget(self, action: #selector(self.deleteActionTest), for: .touchUpInside)
+//
+//        self.addSubview(deleteButton)
         
         
         // Order Label
@@ -181,28 +181,20 @@ class RequestStatusTableViewCell: UITableViewCell {
             deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.rightAnchor),
             deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.topAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
+            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
-            // Button constraints
-            editButton.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -5),
-            editButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            editButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
-            editButton.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor, constant: 5),
-            
-            deleteButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            deleteButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            deleteButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
-            deleteButton.topAnchor.constraint(equalTo: editButton.bottomAnchor)
+//            // Button constraints
+//            editButton.bottomAnchor.constraint(equalTo: deleteButton.topAnchor, constant: -5),
+//            editButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+//            editButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+//            editButton.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor, constant: 5),
+//
+//            deleteButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+//            deleteButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+//            deleteButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+//            deleteButton.topAnchor.constraint(equalTo: editButton.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    @objc
-    func deleteActionTest(){
-        print("Delete pressed")
-    }
-    @objc
-    func editActionTest(){
-        //print("Edit pressed")
     }
     
     required init?(coder aDecoder: NSCoder) {

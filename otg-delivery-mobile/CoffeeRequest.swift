@@ -75,8 +75,6 @@ extension CoffeeRequest {
     
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
-        print("HERE")
-
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requester),

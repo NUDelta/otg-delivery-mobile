@@ -100,14 +100,24 @@ class RequestStatusTableViewCell: UITableViewCell {
         // Detail labels (right column - updated with data)
         let detailLabels = [
             statusDetailsLabel,
-            expirationDetailsLabel,
-            deliveryLocationDetailsLabel,
-            deliveryDetailsDetailsLabel
+            expirationDetailsLabel
         ]
         detailLabels.forEach { label in
             label.font = subtitleDetailFont
             label.textColor = subtitleDetailColor
             label.textAlignment = .right
+            label.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(label)
+        }
+        
+        let deliveryDetailLabels = [
+            deliveryLocationDetailsLabel,
+            deliveryDetailsDetailsLabel
+        ]
+        deliveryDetailLabels.forEach { label in
+            label.font = subtitleDetailFont
+            label.textColor = subtitleDetailColor
+            label.textAlignment = .left
             label.translatesAutoresizingMaskIntoConstraints = false
             addSubview(label)
         }
@@ -178,9 +188,9 @@ class RequestStatusTableViewCell: UITableViewCell {
             
             // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
             
-            deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.rightAnchor),
+            deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.topAnchor),
+            deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
             deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
 //            // Button constraints

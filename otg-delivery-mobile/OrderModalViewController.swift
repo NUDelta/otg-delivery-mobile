@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
+class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var itemOrderLabel: UILabel!
@@ -22,9 +22,34 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Setup keyboard view translations
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: Notification.Name.UIKeyboardWillHide, object: nil)
+        
         self.deliveryDetailsForm.layer.borderWidth = 0.5
         self.deliveryDetailsForm.layer.cornerRadius = 8.0
         self.deliveryDetailsForm.layer.borderColor = UIColor.lightGray.cgColor
+        
+        self.deliveryDetailsForm.delegate = self
+        self.deliveryLocationForm.delegate = self
+    }
+    
+    //Respond to keyboard stuff
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y = 0
+            }
+        }
     }
     
     //When date picker value changes
@@ -95,10 +120,17 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UIPickerV
     //Return on text field
     //-=-=-=-=-=-=-=-=-=-=-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        self.view.endEditing(true)
+//        return false
         textField.resignFirstResponder()
         return true
     }
     
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        textView.resignFirstResponder()
+        return true
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true);
     }

@@ -124,19 +124,28 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //Log to server that user is being notified
         sendLoggingEvent(forLocation: locationName, forRequest: coffeeRequest)
         
-        let content = UNMutableNotificationContent()
-        content.title = coffeeRequest.requester + " needs coffee!"
-        content.body = "Please pick up a " + coffeeRequest.orderDescription + " from " + locationName;
-        content.categoryIdentifier = "requestNotification"
-        content.sound = UNNotificationSound.default()
+        UserModel.getRequest(with_id: coffeeRequest.requester, completionHandler: { helperUserModel in
         
-        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
-        let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
-            if let error = error {
-                print("Error in notifying from Pre-Tracker: \(error)")
+            guard let helperUserModel = helperUserModel else {
+                print("NO HELPER RETURNED WHEN GETTING THEIR MODEL DURING NOTIFICATION!!!!!!!")
+                return
             }
+            
+            let content = UNMutableNotificationContent()
+            content.title = helperUserModel.username + " is hungry!"
+            content.body = "Please pick up a " + coffeeRequest.orderDescription + " from " + locationName;
+            content.categoryIdentifier = "requestNotification"
+            content.sound = UNNotificationSound.default()
+        
+            let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
+            let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
+        
+            UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
+                if let error = error {
+                    print("Error in notifying from Pre-Tracker: \(error)")
+                }
+            })
+            
         })
     }
     

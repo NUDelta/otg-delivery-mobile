@@ -175,7 +175,7 @@
                                                             <action selector="drinkSelectionButtonPressedWithSender:" destination="Xv5-sw-fZT" eventType="touchUpInside" id="Wl8-sk-Air"/>
                                                         </connections>
                                                     </button>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[ Order Name ]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SoW-j7-6gg" userLabel="Drink Order Label">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SoW-j7-6gg" userLabel="Drink Order Label">
                                                         <rect key="frame" x="0.0" y="50.5" width="343" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="rlo-Ag-vZP"/>
@@ -184,7 +184,7 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[ Order Price ]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JfZ-8w-7mP">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JfZ-8w-7mP">
                                                         <rect key="frame" x="0.0" y="75.5" width="343" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="LVM-h1-6D8"/>

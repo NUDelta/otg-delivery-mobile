@@ -313,14 +313,29 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
      // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
          if editingStyle == .delete {
-             // Delete the row from the data source
-            let deletedRequest = myRequests.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
             
-            // Delete request from database
-            let deleteID = deletedRequest.requestId
-            CoffeeRequest.deleteRequest(with_id: deleteID!)
-            self.myRequestTableView.reloadData()
+            if tableView == myRequestTableView {
+                 // Delete the row from the table view
+                let deletedRequest = myRequests.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                
+                // Delete request from database
+                let deleteID = deletedRequest.requestId
+                CoffeeRequest.deleteRequest(with_id: deleteID!)
+                self.myRequestTableView.reloadData()
+            }
+            
+            if tableView == acceptedRequestTableView {
+                print("HERE")
+                // Delete the row from the table view
+                let canceledRequest = acceptedRequests.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                print("AFTER")
+                
+                // Remove helper from request in the database
+                let requestID = canceledRequest.requestId
+                CoffeeRequest.removeHelper(with_id: requestID!)
+            }
          }
      }
 

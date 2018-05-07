@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    //private static let apiUrl: String = "http://localhost:8080/requests"
+    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    private static let apiUrl: String = "http://localhost:8080/requests"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -268,8 +268,8 @@ extension CoffeeRequest {
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/id/\(id)")
-        //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
+        //let url = URL(string: "http://localhost:8080/requests/id/\(id)")
+        let url = URL(string: CoffeeRequest.apiUrl + "/id/\(id)")
         var requestURL = URLRequest(url: url!)
         
         requestURL.httpMethod = "DELETE"
@@ -308,6 +308,21 @@ extension CoffeeRequest {
                 }
                 completionHandler(coffeeRequest)
             }
+        }
+        
+        task.resume()
+    }
+    
+    // Method that removes a helper from a task
+    static func removeHelper(with_id id: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: CoffeeRequest.apiUrl + "/helper/cancel/\(id)")
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "DELETE"
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Removed helper from request \(id).")
         }
         
         task.resume()

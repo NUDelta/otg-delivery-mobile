@@ -213,6 +213,23 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         })
     }
+    
+    func parseTime(dateAsString: String) -> String {
+        // Strip end of date string
+        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
+        
+        // Parse input to date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateAsDate = formatter.date(from: dateAsStringParsed)
+        
+        // Set desired date format
+        formatter.dateFormat = "h:mm a"
+        formatter.timeZone = NSTimeZone.local
+        let formattedDate = formatter.string(from: dateAsDate!)
+        return formattedDate
+    }
 
     // MARK: Table View Configuration
     
@@ -265,7 +282,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             } else {
                 cell.statusDetailsLabel.text = request.status
             }
-            cell.expirationDetailsLabel.text = request.endTime
+            
+            let endTime = parseTime(dateAsString: request.endTime!)
+            cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
             
@@ -286,7 +305,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             cell.orderLabel.text = request.orderDescription
             cell.statusDetailsLabel.text = request.status
-            cell.expirationDetailsLabel.text = request.endTime
+            let endTime = parseTime(dateAsString: request.endTime!)
+            cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
             

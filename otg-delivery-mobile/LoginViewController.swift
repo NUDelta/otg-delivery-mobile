@@ -53,14 +53,11 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             tokenValue = tokenId
         }
         
-        print("TOKEN VALUE")
-        print(tokenValue)
-        
         let user = UserModel(userId: nil, deviceId: tokenValue, username: usernameText)
         UserModel.createUser(user: user, completionHandler: { userModel in
                         
             guard let createdUser = userModel else {
-                print("LOGIN: user was not fetchd from server.")
+                print("LOGIN: user was not fetched from server.")
                 return
             }
             

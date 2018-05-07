@@ -29,7 +29,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         self.contentView.isUserInteractionEnabled = false;
         
         let subtitleTitleColor = UIColor.darkGray
-        let subtitleTitleFont = UIFont.systemFont(ofSize: 12, weight: .regular)
+        let subtitleTitleFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
         
         let subtitleDetailColor = UIColor.lightGray
         let subtitleDetailFont = UIFont.systemFont(ofSize: 12, weight: .regular)

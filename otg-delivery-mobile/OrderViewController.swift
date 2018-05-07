@@ -251,7 +251,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = myRequests[indexPath.row]
             
             cell.orderLabel.text = request.orderDescription
-            cell.statusDetailsLabel.text = request.status
+            if (request.status == "Accepted") {
+                var status = "Accepted"
+                UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
+                    guard let helperUserModel = helperUserModel else {
+                        print("No helper returned when trying to get helper name for a request.")
+                        return
+                    }
+                    let helperName = helperUserModel.username
+                    status = "Accepted by \(helperName)"
+                    cell.statusDetailsLabel.text = status
+                })
+            } else {
+                cell.statusDetailsLabel.text = request.status
+            }
             cell.expirationDetailsLabel.text = request.endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails

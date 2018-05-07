@@ -171,13 +171,12 @@ class RequestStatusTableViewCell: UITableViewCell {
             // Location title label and details label
             
             deliveryLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryLocationTitleLabel.rightAnchor.constraint(equalTo: deliveryLocationDetailsLabel.leftAnchor),
-            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,
-                                                            constant: labelVerticalSpacing),
+            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
+            deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.topAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
+            deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryDetailsTitleLabel.topAnchor),
             
             
             // Details title label and details label

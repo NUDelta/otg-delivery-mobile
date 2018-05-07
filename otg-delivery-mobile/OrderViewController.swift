@@ -328,26 +328,51 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
          if editingStyle == .delete {
             
             if tableView == myRequestTableView {
-                 // Delete the row from the table view
-                let deletedRequest = myRequests.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
+                // Launch request editor on click
+                let deleteConfirmation = UIAlertController(title: "Are you sure you would like to delete this request?", message: "", preferredStyle: .alert)
                 
-                // Delete request from database
-                let deleteID = deletedRequest.requestId
-                CoffeeRequest.deleteRequest(with_id: deleteID!)
-                self.myRequestTableView.reloadData()
+                let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: {(action: UIAlertAction!) in
+                    // Delete the row from the table view
+                    let deletedRequest = self.myRequests.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    
+                    // Delete request from database
+                    let deleteID = deletedRequest.requestId
+                    CoffeeRequest.deleteRequest(with_id: deleteID!)
+                    self.myRequestTableView.reloadData()
+                } )
+                
+                // Do nothing on 'Cancel'
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                // Add actions to editor
+                deleteConfirmation.addAction(cancelAction)
+                deleteConfirmation.addAction(confirmAction)
+                
+                present(deleteConfirmation, animated: true, completion: nil)
             }
             
             if tableView == acceptedRequestTableView {
-                print("HERE")
-                // Delete the row from the table view
-                let canceledRequest = acceptedRequests.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                print("AFTER")
+                let deleteConfirmation = UIAlertController(title: "Are you sure you would like to remove yourself as a helper for this request?", message: "", preferredStyle: .alert)
                 
-                // Remove helper from request in the database
-                let requestID = canceledRequest.requestId
-                CoffeeRequest.removeHelper(with_id: requestID!)
+                let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: {(action: UIAlertAction!) in
+                    // Delete the row from the table view
+                    let canceledRequest = self.acceptedRequests.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .fade)
+                    
+                    // Remove helper from request in the database
+                    let requestID = canceledRequest.requestId
+                    CoffeeRequest.removeHelper(with_id: requestID!)
+                } )
+                
+                // Do nothing on 'Cancel'
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                // Add actions to editor
+                deleteConfirmation.addAction(cancelAction)
+                deleteConfirmation.addAction(confirmAction)
+                
+                present(deleteConfirmation, animated: true, completion: nil)
             }
          }
      }

@@ -270,7 +270,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.orderLabel.text = request.orderDescription
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
+                UserModel.getRequest(with_id: request.helper!, completionHandler: { helperUserModel in
                     guard let helperUserModel = helperUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
                         return
@@ -304,7 +304,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = acceptedRequests[indexPath.row]
             
             cell.orderLabel.text = request.orderDescription
-            cell.statusDetailsLabel.text = request.status
+            if (request.status == "Accepted") {
+                var status = "Accepted"
+                UserModel.getRequest(with_id: request.requester, completionHandler: { requesterUserModel in
+                    guard let requesterUserModel = requesterUserModel else {
+                        print("No helper returned when trying to get helper name for a request.")
+                        return
+                    }
+                    let requesterName = requesterUserModel.username
+                    status = "Requested by \(requesterName)"
+                    cell.statusDetailsLabel.text = status
+                })
+            } else {
+                cell.statusDetailsLabel.text = request.status
+            }
             let endTime = parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
@@ -485,8 +498,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             present(completedAlert, animated: true, completion: nil)
             
         }
+        tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
- 
     
     func sendFeedback(feedbackText: String?){
         

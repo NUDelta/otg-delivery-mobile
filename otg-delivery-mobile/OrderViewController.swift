@@ -463,7 +463,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if tableView == acceptedRequestTableView {
           
             // Launch request editor on click
-            let completedAlert = UIAlertController(title: "Request Completed!", message: "Please leave a brief comment on the convenience of the interaction below!", preferredStyle: .alert)
+            let completedAlert = UIAlertController(title: "Would you like to confirm the completion of this request?", message: "If so, please leave a brief comment on what made this interaction convenient and/or inconvenient and confirm below!", preferredStyle: .alert)
             let currentRequest = self.acceptedRequests[indexPath.row]
             
             completedAlert.addTextField(configurationHandler: { (textField) in

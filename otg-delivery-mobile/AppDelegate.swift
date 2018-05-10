@@ -88,7 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 //Should log this to server for research purposes perhaps??
                 print("NOTIFICATION ACTION: request rejected.")
             default:
-                return
+                showPendingRequest()
             
         }
         
@@ -116,9 +116,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //Create and show alert
         let acceptedAlert = UIAlertView()
         acceptedAlert.title = "Thanks for helping!"
-        acceptedAlert.message = "Please let the requester know over Slack that the item is en-route"
+        acceptedAlert.message = "Please communicate with the requester over Slack with any questions."
         acceptedAlert.addButton(withTitle: "Ok")
         acceptedAlert.show()
+    }
+    
+    func showPendingRequest() {
+        //Create and show alert
+        let requestAlert = UIAlertView()
+        requestAlert.title = "Would you like to accept this request?"
+        requestAlert.message = ""
+        requestAlert.addButton(withTitle: "Ok")
+        requestAlert.show()
     }
     
     // For push notifications

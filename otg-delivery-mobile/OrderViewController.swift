@@ -109,7 +109,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 let defaults = UserDefaults.standard
                 defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
                 
-                self.sendNotification(locationName: region.identifier, coffeeRequest: coffeeReq)
+                self.sendNotification(locationName: region.identifier, request: coffeeReq)
             }
             
         })
@@ -117,14 +117,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     
-    func sendNotification(locationName: String, coffeeRequest: CoffeeRequest){
+    func sendNotification(locationName: String, request: CoffeeRequest){
 
         print("VIEW CONTROLLER: sending coffee pickup notification")
 
         //Log to server that user is being notified
-        sendLoggingEvent(forLocation: locationName, forRequest: coffeeRequest)
+        sendLoggingEvent(forLocation: locationName, forRequest: request)
         
-        UserModel.getRequest(with_id: coffeeRequest.requester, completionHandler: { helperUserModel in
+        UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
         
             guard let helperUserModel = helperUserModel else {
                 print("NO HELPER RETURNED WHEN GETTING THEIR MODEL DURING NOTIFICATION!!!!!!!")
@@ -133,7 +133,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             let content = UNMutableNotificationContent()
             content.title = helperUserModel.username + " is hungry!"
-            content.body = "Please pick up a " + coffeeRequest.orderDescription + " from " + locationName;
+            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to " + request.deliveryLocation + " by \(self.parseTime(dateAsString: request.endTime!)).";
+
+            
             content.categoryIdentifier = "requestNotification"
             content.sound = UNNotificationSound.default()
         

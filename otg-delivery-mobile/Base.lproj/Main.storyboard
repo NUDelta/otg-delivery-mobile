@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,6 +14,7 @@
         <!--Bytesize-->
         <scene sceneID="tne-QT-ifu">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="mainOrderViewController" id="BYZ-38-t0r" customClass="OrderViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -83,7 +85,9 @@
                                 <rect key="frame" x="329" y="52" width="30" height="58"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="38"/>
-                                <state key="normal" title="+"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <segue destination="kf8-FI-hR3" kind="presentation" id="Qq8-4B-o6N"/>
                                 </connections>
@@ -101,7 +105,6 @@
                         <segue destination="nOO-Ni-irR" kind="presentation" identifier="loginSegue" id="der-fs-K6I"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1778.4000000000001" y="772.26386806596713"/>
         </scene>
@@ -328,9 +331,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-2t-zKJ">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9GD-2t-zKJ">
                                             <rect key="frame" x="16" y="11" width="343" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <attributedString key="attributedText">
                                                 <fragment content="Drink">
                                                     <attributes>
@@ -340,21 +342,30 @@
                                             </attributedString>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ari-hu-Vq6">
-                                            <rect key="frame" x="16" y="34" width="343" height="31"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ari-hu-Vq6">
+                                            <rect key="frame" x="16" y="34" width="343" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3p-oO-RAt">
-                                            <rect key="frame" x="16" y="68" width="100" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3p-oO-RAt">
+                                            <rect key="frame" x="16" y="63" width="343" height="21"/>
                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="17"/>
                                             <color key="textColor" red="0.10353048782282219" green="0.67958835659898476" blue="0.182104572149341" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="B3p-oO-RAt" secondAttribute="trailing" id="I1O-b0-0Bb"/>
+                                        <constraint firstItem="9GD-2t-zKJ" firstAttribute="leading" secondItem="QSv-9z-Sx3" secondAttribute="leadingMargin" id="Ukn-70-HPA"/>
+                                        <constraint firstItem="ari-hu-Vq6" firstAttribute="trailing" secondItem="QSv-9z-Sx3" secondAttribute="trailingMargin" id="bmZ-7R-y8V"/>
+                                        <constraint firstItem="9GD-2t-zKJ" firstAttribute="trailing" secondItem="QSv-9z-Sx3" secondAttribute="trailingMargin" id="dLa-WV-GFi"/>
+                                        <constraint firstItem="ari-hu-Vq6" firstAttribute="top" secondItem="9GD-2t-zKJ" secondAttribute="bottom" constant="2" id="eSB-SQ-a1E"/>
+                                        <constraint firstItem="9GD-2t-zKJ" firstAttribute="top" secondItem="QSv-9z-Sx3" secondAttribute="top" constant="11" id="f6F-dv-0Kj"/>
+                                        <constraint firstItem="ari-hu-Vq6" firstAttribute="leading" secondItem="QSv-9z-Sx3" secondAttribute="leadingMargin" id="jA1-2X-W7C"/>
+                                        <constraint firstItem="B3p-oO-RAt" firstAttribute="leading" secondItem="QSv-9z-Sx3" secondAttribute="leadingMargin" id="us4-Cg-Toc"/>
+                                        <constraint firstAttribute="bottom" secondItem="B3p-oO-RAt" secondAttribute="bottom" constant="15.5" id="wp1-cC-PT3"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="descriptionLabel" destination="ari-hu-Vq6" id="kWS-UX-DGO"/>

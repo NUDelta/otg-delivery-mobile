@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol OrderPickerDelegate {
+    func orderSubmitted(order: CoffeeRequest)
+}
+
 class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
@@ -18,7 +22,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     var selectedPlace: String?
     var dueDate: Int?
-    var coffeeOrder: String?
+    var orderChoice: Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +37,14 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         self.deliveryDetailsForm.delegate = self
         self.deliveryLocationForm.delegate = self
+        
+        //If there is no order selected, just present the order picker modal
+        if orderChoice == nil {
+            //Create an instance of the drink picker
+            let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+            drinkPickerModal.delegate = self
+            self.present(drinkPickerModal, animated: true, completion: nil)
+        }
     }
     
     //Respond to keyboard stuff
@@ -112,6 +124,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
     func itemPicked(itemChoice: Item) {
+        orderChoice = itemChoice
         itemOrderLabel.text = ("\(itemChoice.name)")
         itemPriceLabel.text = itemChoice.getPriceString()
     }

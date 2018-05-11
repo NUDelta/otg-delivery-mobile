@@ -12,6 +12,11 @@ protocol OrderPickerDelegate {
     func orderSubmitted(order: CoffeeRequest)
 }
 
+enum OrderActionType {
+    case Order
+    case Edit
+}
+
 class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
@@ -20,12 +25,20 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet weak var deliveryLocationForm: UITextField!
     @IBOutlet weak var deliveryDetailsForm: UITextView!
     
+    //ACTION TYPE
+    var actionType: OrderActionType?
+    var activeEditingRequestId: String?
+    
     var selectedPlace: String?
     var dueDate: Int?
     var orderChoice: Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("BLYAT complexity up and for what")
+        print(self.actionType)
+        print(self.activeEditingRequestId)
         
         //Setup keyboard view translations
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
@@ -93,8 +106,18 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         //Create coffee request from data
         let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
         
-        CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
+        guard let actionType = self.actionType else { return }
         
+        switch(actionType){
+            case .Edit:
+                print("SUBMITTING EDITING REQUEST FOR \(self.activeEditingRequestId)")
+                CoffeeRequest.updateRequest(with_id: self.activeEditingRequestId!, withRequest: requestFromForm, completionHandler: {})
+                break
+            case .Order:
+                CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
+                break
+        }
+            
         //Dismiss modal
         dismiss(animated: true, completion: nil)
         

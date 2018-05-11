@@ -12,12 +12,24 @@ import CoreLocation
 
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    
     var myRequests = [CoffeeRequest]()
     var acceptedRequests = [CoffeeRequest]()
     
     @IBOutlet weak var myRequestTableView: UITableView!
     @IBOutlet weak var acceptedRequestTableView: UITableView!
     
+    //Current request type
+    var currentActionType: OrderActionType?
+    var activeEditingRequestId: String?
+    
+    //On plus sign pressed
+    @IBAction func createNewOrder() {
+        self.currentActionType = .Order
+        self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+    }
+    
+    //Location stuff
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
 //        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
@@ -31,7 +43,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         /*
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(defaultsChanged),
@@ -186,18 +197,25 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier == "loginSegue",
-            let navController = segue.destination as? UINavigationController,
-            let controller = navController.viewControllers.first as? LoginViewController else {
-                return
-        }
+        if segue.identifier == "loginSegue" {
+            let navController = segue.destination as? UINavigationController
+            let controller = navController?.viewControllers.first as? LoginViewController
         
-        controller.didLogIn = { [weak self] in
-            DispatchQueue.main.async {
-                self?.dismiss(animated: true, completion: nil)
+            controller?.didLogIn = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.dismiss(animated: true, completion: nil)
+                }
             }
         }
-    
+        
+        if segue.identifier == "orderFormSegue" {
+            let navController = segue.destination as? UINavigationController
+            let controller = navController?.viewControllers.first as? OrderModalViewController
+            controller?.activeEditingRequestId = self.activeEditingRequestId
+            controller?.actionType = self.currentActionType
+            
+            print("Sending action type \(currentActionType)")
+        }
     }
     
     @objc func loadData() {
@@ -418,7 +436,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if tableView == myRequestTableView {
-        
+            
+            self.currentActionType = .Edit
+            self.activeEditingRequestId = self.myRequests[indexPath.row].requestId
+            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+        /*
             // Launch request editor on click
             let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
             let currentRequest = self.myRequests[indexPath.row]
@@ -459,6 +481,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             editController.addAction(cancelAction)
         
             present(editController, animated: true, completion: nil)
+        */
             
         }
         
@@ -502,6 +525,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
+
     
     func sendFeedback(feedbackText: String?){
         

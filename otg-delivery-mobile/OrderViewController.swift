@@ -133,7 +133,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             let content = UNMutableNotificationContent()
             content.title = helperUserModel.username + " is hungry!"
-            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to " + request.deliveryLocation + " by \(self.parseTime(dateAsString: request.endTime!)).";
+            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to \(helperUserModel.username) at " + request.deliveryLocation + " by \(CoffeeRequest.parseTime(dateAsString: request.endTime!)).";
 
             
             content.categoryIdentifier = "requestNotification"
@@ -215,23 +215,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         })
     }
-    
-    func parseTime(dateAsString: String) -> String {
-        // Strip end of date string
-        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
-        
-        // Parse input to date
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        let dateAsDate = formatter.date(from: dateAsStringParsed)
-        
-        // Set desired date format
-        formatter.dateFormat = "h:mm a"
-        formatter.timeZone = NSTimeZone.local
-        let formattedDate = formatter.string(from: dateAsDate!)
-        return formattedDate
-    }
 
     // MARK: Table View Configuration
     
@@ -285,7 +268,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 cell.statusDetailsLabel.text = request.status
             }
             
-            let endTime = parseTime(dateAsString: request.endTime!)
+            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
@@ -320,7 +303,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             } else {
                 cell.statusDetailsLabel.text = request.status
             }
-            let endTime = parseTime(dateAsString: request.endTime!)
+            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails

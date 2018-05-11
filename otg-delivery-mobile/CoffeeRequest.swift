@@ -327,4 +327,21 @@ extension CoffeeRequest {
         
         task.resume()
     }
+    
+    static func parseTime(dateAsString: String) -> String {
+        // Strip end of date string
+        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
+        
+        // Parse input to date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateAsDate = formatter.date(from: dateAsStringParsed)
+        
+        // Set desired date format
+        formatter.dateFormat = "h:mm a"
+        formatter.timeZone = NSTimeZone.local
+        let formattedDate = formatter.string(from: dateAsDate!)
+        return formattedDate
+    }
 }

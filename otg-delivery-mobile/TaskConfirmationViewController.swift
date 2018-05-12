@@ -46,10 +46,13 @@ class TaskConfirmationViewController: UIViewController {
                 return
             }
             
-            self.expirationLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
-            self.orderLabel.text = request.orderDescription
-            self.locationLabel.text = request.deliveryLocation
-            self.locationDetailsLabel.text = request.deliveryLocationDetails
+            DispatchQueue.main.async {
+                self.expirationLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
+                self.orderLabel.text = request.orderDescription
+                self.locationLabel.text = request.deliveryLocation
+                self.locationDetailsLabel.text = request.deliveryLocationDetails
+            }
+            
             
             UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
 
@@ -57,7 +60,10 @@ class TaskConfirmationViewController: UIViewController {
                     print("No helper returned when getting user after helper clicked on notiication.")
                     return
                 }
-                self.requesterLabel.text = helperUserModel.username
+                
+                DispatchQueue.main.async {
+                    self.requesterLabel.text = helperUserModel.username
+                }
             })
 
         })

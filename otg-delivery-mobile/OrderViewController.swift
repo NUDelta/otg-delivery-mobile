@@ -18,6 +18,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     @IBOutlet weak var myRequestTableView: UITableView!
     @IBOutlet weak var acceptedRequestTableView: UITableView!
     
+    public static let sharedManager = OrderViewController()
+    
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
 //        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
@@ -201,6 +203,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @objc func loadData() {
+        print("In load data")
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
@@ -262,7 +265,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     }
                     let helperName = helperUserModel.username
                     status = "Accepted by \(helperName)"
-                    cell.statusDetailsLabel.text = status
+                    DispatchQueue.main.async {
+                        cell.statusDetailsLabel.text = status
+                    }
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status
@@ -298,7 +303,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     }
                     let requesterName = requesterUserModel.username
                     status = "Requested by \(requesterName)"
-                    cell.statusDetailsLabel.text = status
+                    DispatchQueue.main.async {
+                        cell.statusDetailsLabel.text = status
+                    }
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status

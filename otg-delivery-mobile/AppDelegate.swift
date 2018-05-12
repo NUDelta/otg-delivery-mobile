@@ -178,6 +178,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
+    // Handle silent push notifications
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // refresh data when notification is received
+        if (userInfo.index(forKey: "updateType") != nil) {
+            if let updateType = userInfo["updateType"] as? String {
+                if (updateType == "requests") {
+                    OrderViewController.sharedManager.loadData()
+                }
+                completionHandler(UIBackgroundFetchResult.newData)
+            }
+        } else {
+            completionHandler(UIBackgroundFetchResult.noData)
+        }
+    }
+    
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.

@@ -21,7 +21,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     //Current request type
     var currentActionType: OrderActionType?
-    var activeEditingRequestId: String?
+    var activeEditingRequest: CoffeeRequest?
     
     //On plus sign pressed
     @IBAction func createNewOrder() {
@@ -211,7 +211,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if segue.identifier == "orderFormSegue" {
             let navController = segue.destination as? UINavigationController
             let controller = navController?.viewControllers.first as? OrderModalViewController
-            controller?.activeEditingRequestId = self.activeEditingRequestId
+            controller?.activeEditingRequest = self.activeEditingRequest
             controller?.actionType = self.currentActionType
             
             print("Sending action type \(currentActionType)")
@@ -437,9 +437,24 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         if tableView == myRequestTableView {
             
-            self.currentActionType = .Edit
-            self.activeEditingRequestId = self.myRequests[indexPath.row].requestId
-            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+            // Launch request editor on click
+            let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
+
+            
+            let action = UIAlertAction(title: "OK", style: .default, handler: { [weak editAlert] (_) in
+                self.currentActionType = .Edit
+                self.activeEditingRequest = self.myRequests[indexPath.row]
+                self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+            })
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+                
+            })
+            
+            editAlert.addAction(action)
+            editAlert.addAction(cancel)
+            present(editAlert, animated: true, completion: nil)
+            
         /*
             // Launch request editor on click
             let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)

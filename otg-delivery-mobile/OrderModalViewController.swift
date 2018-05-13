@@ -27,7 +27,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     
     //ACTION TYPE
     var actionType: OrderActionType?
-    var activeEditingRequestId: String?
+    var activeEditingRequest: CoffeeRequest?
     
     var selectedPlace: String?
     var dueDate: Int?
@@ -38,7 +38,8 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         print("BLYAT complexity up and for what")
         print(self.actionType)
-        print(self.activeEditingRequestId)
+        print(self.activeEditingRequest)
+
         
         //Setup keyboard view translations
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
@@ -51,12 +52,28 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         self.deliveryDetailsForm.delegate = self
         self.deliveryLocationForm.delegate = self
         
-        //If there is no order selected, just present the order picker modal
-        if orderChoice == nil {
-            //Create an instance of the drink picker
-            let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-            drinkPickerModal.delegate = self
-            self.present(drinkPickerModal, animated: true, completion: nil)
+        
+        guard let actionType = self.actionType else { return }
+        
+        switch(actionType) {
+            case .Edit:
+                self.navigationItem.title = "Edit order"
+                itemOrderLabel.text = activeEditingRequest?.orderDescription
+                deliveryLocationForm.text = activeEditingRequest?.deliveryLocation
+                deliveryDetailsForm.text = activeEditingRequest?.deliveryLocationDetails
+                
+                let drinkMatch = drinkData.filter { $0.name == activeEditingRequest?.orderDescription }
+                itemPriceLabel.text = String.init(format: "$%.2f", drinkMatch[0].price)
+                
+                break
+            
+            case .Order:
+                self.navigationItem.title = "Place order"
+                //Create an instance of the drink picker
+                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+                drinkPickerModal.delegate = self
+                self.present(drinkPickerModal, animated: true, completion: nil)
+                break
         }
     }
     
@@ -110,8 +127,8 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         switch(actionType){
             case .Edit:
-                print("SUBMITTING EDITING REQUEST FOR \(self.activeEditingRequestId)")
-                CoffeeRequest.updateRequest(with_id: self.activeEditingRequestId!, withRequest: requestFromForm, completionHandler: {})
+                print("SUBMITTING EDITING REQUEST FOR \(self.activeEditingRequest)")
+                CoffeeRequest.updateRequest(with_id: self.activeEditingRequest!.requestId!, withRequest: requestFromForm, completionHandler: {})
                 break
             case .Order:
                 CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)

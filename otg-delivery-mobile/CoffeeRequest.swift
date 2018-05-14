@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    private static let apiUrl: String = "http://localhost:8080/requests"
+    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    //private static let apiUrl: String = "http://localhost:8080/requests"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -50,6 +50,9 @@ extension CoffeeRequest {
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
+            guard let data = data else {
+                return
+            }
             
             print("COFFEE REQUEST: request data received!")
     
@@ -60,7 +63,7 @@ extension CoffeeRequest {
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
-                    coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data!)
+                    coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
                 } catch {
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)
@@ -293,8 +296,8 @@ extension CoffeeRequest {
     // Method that takes an ID and returns the request from the database
     static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
         let session: URLSession = URLSession.shared
-        let url = URL(string: "http://localhost:8080/requests/id/\(id)")
-        //let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
+        //let url = URL(string: "http://localhost:8080/requests/id/\(id)")
+        let url = URL(string: CoffeeRequest.apiUrl + "/id/\(id)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
         
@@ -335,5 +338,22 @@ extension CoffeeRequest {
         }
         
         task.resume()
+    }
+    
+    static func parseTime(dateAsString: String) -> String {
+        // Strip end of date string
+        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
+        
+        // Parse input to date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateAsDate = formatter.date(from: dateAsStringParsed)
+        
+        // Set desired date format
+        formatter.dateFormat = "h:mm a"
+        formatter.timeZone = NSTimeZone.local
+        let formattedDate = formatter.string(from: dateAsDate!)
+        return formattedDate
     }
 }

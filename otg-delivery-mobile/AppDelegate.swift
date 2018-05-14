@@ -122,23 +122,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func showPendingRequest() {
-        //Create and show alert
-        let requestAlert = UIAlertView()
-        requestAlert.title = "Would you like to accept this request?"
-        requestAlert.message = ""
-        requestAlert.addButton(withTitle: "Ok")
-        requestAlert.show()
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let taskConfirmationVC = sb.instantiateViewController(withIdentifier: "TaskConfirmationViewController") as! TaskConfirmationViewController
+        window?.rootViewController = taskConfirmationVC
     }
     
-    // For push notifications
-    // did receiveRemoteNotification
-    //func appplication (didReceiveRemoteNotification)
-    
-    
-    
-    // didRegister for device token
-    // - register for a device token - need to create a new device token string, then save to database
-    // - app register for a new device token everytime it launches (because this is in the app delegate) - always want to save the newest version to the database
+
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -150,8 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+        // Set requests screen as default view controller
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let mainVC = sb.instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
+        window?.rootViewController = mainVC
+        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -180,6 +176,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // also set lastNotified to 0
         defaults.set(0, forKey: "lastNotified")
         
+    }
+    
+    // Handle silent push notifications
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // refresh data when notification is received
+        if (userInfo.index(forKey: "updateType") != nil) {
+            if let updateType = userInfo["updateType"] as? String {
+                if (updateType == "requests") {
+                    OrderViewController.sharedManager.loadData()
+                }
+                completionHandler(UIBackgroundFetchResult.newData)
+            }
+        } else {
+            completionHandler(UIBackgroundFetchResult.noData)
+        }
     }
     
     func application(_ application: UIApplication,

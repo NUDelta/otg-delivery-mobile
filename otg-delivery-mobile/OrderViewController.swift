@@ -29,7 +29,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.performSegue(withIdentifier: "orderFormSegue", sender: self)
     }
     
-    //Location stuff
+    public static let sharedManager = OrderViewController()
+
     var locationManager: CLLocationManager?
     let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
 //        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
@@ -144,7 +145,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             let content = UNMutableNotificationContent()
             content.title = helperUserModel.username + " is hungry!"
-            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to " + request.deliveryLocation + " by \(self.parseTime(dateAsString: request.endTime!)).";
+            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to \(helperUserModel.username) at " + request.deliveryLocation + " by \(CoffeeRequest.parseTime(dateAsString: request.endTime!)).";
 
             
             content.categoryIdentifier = "requestNotification"
@@ -219,6 +220,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @objc func loadData() {
+        print("In load data")
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
@@ -232,23 +234,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.acceptedRequestTableView.reloadData()
             }
         })
-    }
-    
-    func parseTime(dateAsString: String) -> String {
-        // Strip end of date string
-        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
-        
-        // Parse input to date
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        let dateAsDate = formatter.date(from: dateAsStringParsed)
-        
-        // Set desired date format
-        formatter.dateFormat = "h:mm a"
-        formatter.timeZone = NSTimeZone.local
-        let formattedDate = formatter.string(from: dateAsDate!)
-        return formattedDate
     }
 
     // MARK: Table View Configuration
@@ -297,13 +282,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     }
                     let helperName = helperUserModel.username
                     status = "Accepted by \(helperName)"
-                    cell.statusDetailsLabel.text = status
+                    DispatchQueue.main.async {
+                        cell.statusDetailsLabel.text = status
+                    }
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status
             }
             
-            let endTime = parseTime(dateAsString: request.endTime!)
+            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
@@ -333,12 +320,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     }
                     let requesterName = requesterUserModel.username
                     status = "Requested by \(requesterName)"
-                    cell.statusDetailsLabel.text = status
+                    DispatchQueue.main.async {
+                        cell.statusDetailsLabel.text = status
+                    }
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status
             }
-            let endTime = parseTime(dateAsString: request.endTime!)
+            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails

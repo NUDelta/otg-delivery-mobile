@@ -67,10 +67,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
             
             defaults.set(userId, forKey: "userId")
+            
+            print("LOGIN: transitioning to main view")
+            self.didLogIn?()
         })
-        
-        print("LOGIN: transitioning to main view")
-        didLogIn?()
     }
 
 }

@@ -54,6 +54,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         // initialize location manager
         locationManager = CLLocationManager()
         
+        locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         

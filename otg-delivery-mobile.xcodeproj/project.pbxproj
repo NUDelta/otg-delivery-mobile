@@ -355,7 +355,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "009b5511-11e1-4079-9cf4-3a03e6d058a2";
 				PROVISIONING_PROFILE_SPECIFIER = "OTG Dev";
@@ -377,7 +377,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
 				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab J";

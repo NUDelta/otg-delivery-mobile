@@ -69,7 +69,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             defaults.set(userId, forKey: "userId")
             
             print("LOGIN: transitioning to main view")
-            self.didLogIn?()
+            //Async so should wrap in this block
+            DispatchQueue.main.async {
+                self.didLogIn?()
+            }
         })
     }
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZB6-Cs-t8r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZB6-Cs-t8r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -208,7 +208,7 @@
                                                 <rect key="frame" x="0.0" y="317.5" width="343" height="171.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ltq-EJ-2Tv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="101"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="69.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJ5-1v-0Ht">
                                                                 <rect key="frame" x="0.0" y="0.0" width="131.5" height="21"/>
@@ -220,7 +220,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OFB-Ah-Mr3">
-                                                                <rect key="frame" x="0.0" y="26" width="343" height="75"/>
+                                                                <rect key="frame" x="0.0" y="26" width="343" height="43.5"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="20" id="qCF-8g-sEz"/>
                                                                 </constraints>
@@ -237,25 +237,34 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="mRL-4f-cJ4">
-                                                        <rect key="frame" x="0.0" y="101" width="343" height="70.5"/>
+                                                        <rect key="frame" x="0.0" y="69.5" width="343" height="102"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Detailed Delivery Instructions" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AoW-tn-vhp">
-                                                                <rect key="frame" x="0.0" y="0.0" width="343" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="224" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Ex. Include room number, location in building, a description of what you look like, tip amount." translatesAutoresizingMaskIntoConstraints="NO" id="9eW-l1-BNG">
-                                                                <rect key="frame" x="0.0" y="20.5" width="343" height="50"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ex. Include room number, location in building, phone number, special order details, tip amount." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AW5-91-HTW">
+                                                                <rect key="frame" x="0.0" y="20.5" width="343" height="31.5"/>
+                                                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                                                                <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9eW-l1-BNG">
+                                                                <rect key="frame" x="0.0" y="52" width="343" height="50"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                             </textView>
                                                         </subviews>
                                                         <constraints>
+                                                            <constraint firstItem="AW5-91-HTW" firstAttribute="top" secondItem="AoW-tn-vhp" secondAttribute="bottom" id="1mZ-Bb-zLm"/>
                                                             <constraint firstAttribute="trailing" secondItem="9eW-l1-BNG" secondAttribute="trailing" id="4Jx-xU-TVx"/>
+                                                            <constraint firstItem="9eW-l1-BNG" firstAttribute="top" secondItem="AW5-91-HTW" secondAttribute="bottom" id="7nN-0C-hGa"/>
                                                             <constraint firstItem="9eW-l1-BNG" firstAttribute="leading" secondItem="mRL-4f-cJ4" secondAttribute="leading" id="7xK-Ij-fSO"/>
-                                                            <constraint firstItem="9eW-l1-BNG" firstAttribute="top" secondItem="AoW-tn-vhp" secondAttribute="bottom" id="BfG-Go-f6B"/>
                                                             <constraint firstAttribute="bottom" secondItem="9eW-l1-BNG" secondAttribute="bottom" id="M6P-d9-Oce"/>
+                                                            <constraint firstItem="AW5-91-HTW" firstAttribute="leading" secondItem="mRL-4f-cJ4" secondAttribute="leading" id="itV-Nv-65C"/>
+                                                            <constraint firstAttribute="trailing" secondItem="AW5-91-HTW" secondAttribute="trailing" id="o3K-8g-dWY"/>
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>

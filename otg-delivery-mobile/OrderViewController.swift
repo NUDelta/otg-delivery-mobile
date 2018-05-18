@@ -28,7 +28,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 //        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
 //        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
 //        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088)),
-        ("Tomate", CLLocationCoordinate2D(latitude: 42.058509, longitude: -87.683757))
+        ("Tomate", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724))
     ]
 
     override func viewDidLoad() {
@@ -44,6 +44,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         // initialize location manager
         locationManager = CLLocationManager()
         
+        locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         
@@ -61,7 +62,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
             locationManager?.startMonitoring(for: region)
         }
-        
         
         // Initialize Accepted Requests table
         acceptedRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
@@ -203,7 +203,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @objc func loadData() {
-        print("In load data")
         CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests

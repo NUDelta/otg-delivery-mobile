@@ -13,6 +13,9 @@ protocol DrinkPickerModalDelegate {
 }
 
 class DrinkPickerTableViewController: UITableViewController {
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     //Returned to parent
     var delegate: DrinkPickerModalDelegate?

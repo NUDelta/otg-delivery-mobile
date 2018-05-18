@@ -8,6 +8,15 @@
 
 import UIKit
 
+protocol OrderPickerDelegate {
+    func orderSubmitted(order: CoffeeRequest)
+}
+
+enum OrderActionType {
+    case Order
+    case Edit
+}
+
 class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIPickerViewDelegate, DrinkPickerModalDelegate {
     
     @IBOutlet weak var picker: UIDatePicker!
@@ -16,12 +25,21 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet weak var deliveryLocationForm: UITextField!
     @IBOutlet weak var deliveryDetailsForm: UITextView!
     
+    //ACTION TYPE
+    var actionType: OrderActionType?
+    var activeEditingRequest: CoffeeRequest?
+    
     var selectedPlace: String?
     var dueDate: Int?
-    var coffeeOrder: String?
+    var orderChoice: Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("BLYAT complexity up and for what")
+        print(self.actionType)
+        print(self.activeEditingRequest)
+
         
         //Setup keyboard view translations
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
@@ -33,6 +51,40 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         self.deliveryDetailsForm.delegate = self
         self.deliveryLocationForm.delegate = self
+        
+        
+        guard let actionType = self.actionType else { return }
+        
+        switch(actionType) {
+            case .Edit:
+                
+                guard let editingRequest = activeEditingRequest else { return }
+                
+                self.navigationItem.title = "Edit order"
+                itemOrderLabel.text = editingRequest.orderDescription
+                deliveryLocationForm.text = editingRequest.deliveryLocation
+                deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
+                
+                let drinkMatch = drinkData.filter { $0.name == editingRequest.orderDescription }
+                itemPriceLabel.text = String.init(format: "$%.2f", drinkMatch[0].price)
+                
+                let RFC3339DateFormatter = DateFormatter()
+                RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
+                RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                let date = RFC3339DateFormatter.date(from: editingRequest.endTime!)
+                picker.setDate(date!, animated: true)
+                
+                break
+            
+            case .Order:
+                self.navigationItem.title = "Place order"
+                //Create an instance of the drink picker
+                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+                drinkPickerModal.delegate = self
+                self.present(drinkPickerModal, animated: true, completion: nil)
+                break
+        }
     }
     
     //Respond to keyboard stuff
@@ -81,8 +133,18 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         //Create coffee request from data
         let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
         
-        CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
+        guard let actionType = self.actionType else { return }
         
+        switch(actionType){
+            case .Edit:
+                print("SUBMITTING EDITING REQUEST FOR \(self.activeEditingRequest)")
+                CoffeeRequest.updateRequest(with_id: self.activeEditingRequest!.requestId!, withRequest: requestFromForm, completionHandler: {})
+                break
+            case .Order:
+                CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
+                break
+        }
+            
         //Dismiss modal
         dismiss(animated: true, completion: nil)
         
@@ -112,6 +174,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
     func itemPicked(itemChoice: Item) {
+        orderChoice = itemChoice
         itemOrderLabel.text = ("\(itemChoice.name)")
         itemPriceLabel.text = itemChoice.getPriceString()
     }

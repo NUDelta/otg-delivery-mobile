@@ -246,7 +246,7 @@ extension CoffeeRequest {
     
     // Method that takes an ID and updates the request's
     // order description and endTime in the database
-    static func updateRequest(with_id id: String, to_order order: String, completionHandler: @escaping () -> Void) {
+    static func updateRequest(with_id id: String, withRequest coffeeRequest: CoffeeRequest, completionHandler: @escaping () -> Void) {
         print("In update request ")
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/update/\(id)"))
@@ -256,18 +256,27 @@ extension CoffeeRequest {
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
         var components = URLComponents(string: "")
-        components?.queryItems = [URLQueryItem(name: "order", value: order)]
+        components?.queryItems = [
+            URLQueryItem(name: "requester", value: coffeeRequest.requester),
+            URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
+            URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
+            URLQueryItem(name: "status", value: coffeeRequest.status),
+            URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
+            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
+        ]
+        
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Update request.")
-            completionHandler()
+            print("COFFEE REQUEST: Data post successful.")
         }
         
         task.resume()
     }
-  
+
+    
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {
         let session: URLSession = URLSession.shared

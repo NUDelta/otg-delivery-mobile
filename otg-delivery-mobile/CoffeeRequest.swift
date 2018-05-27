@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    //private static let apiUrl: String = "http://localhost:8080/requests"
+    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    private static let apiUrl: String = "http://localhost:8080/requests"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -45,8 +45,15 @@ extension CoffeeRequest {
     //Method that grabs an unfilled CoffeeRequest from server and parses into object
     static func getUnfilledCoffeeRequest(completionHandler: @escaping (CoffeeRequest?) -> Void) {
         
+        //Get username
+        let defaults = UserDefaults.standard
+        guard let requesterId = defaults.object(forKey: "userId") as? String else {
+            print("Helper ID not in defaults")
+            return
+        }
+        
         let session: URLSession = URLSession.shared
-        let url = URL(string: CoffeeRequest.apiUrl)
+        let url = URL(string: CoffeeRequest.apiUrl + "/\(requesterId)")
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in

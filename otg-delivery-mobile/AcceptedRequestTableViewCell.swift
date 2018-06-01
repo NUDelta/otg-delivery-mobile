@@ -8,16 +8,18 @@
 
 import UIKit
 
-class RequestStatusTableViewCell: UITableViewCell {
+class AcceptedRequestTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    static let reuseIdentifier = "requestStatusReuseIdentifier"
+    static let reuseIdentifier = "acceptedRequestReuseIdentifier"
     
     let orderLabel = UILabel()
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
     let deliveryDetailsDetailsLabel = UILabel()
+    
+    let completeOrderButton = UIButton.init(type: .system)
     
     // MARK: - Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -34,6 +36,18 @@ class RequestStatusTableViewCell: UITableViewCell {
         let labelVerticalSpacing: CGFloat = 5.0
         let labelTopPadding: CGFloat = 10.0
         let labelBottomPadding: CGFloat = 10.0
+        
+        
+        //Edit button
+        completeOrderButton.backgroundColor = UIColor.clear
+        completeOrderButton.layer.cornerRadius = 1.0;
+        completeOrderButton.layer.borderWidth = 0.2;
+        completeOrderButton.setTitleColor(self.tintColor, for: .normal)
+        completeOrderButton.setTitle("Mark Order as Completed", for: .normal)
+        completeOrderButton.translatesAutoresizingMaskIntoConstraints = false
+        //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
+        self.addSubview(completeOrderButton)
+
         
         
         // Order Label
@@ -109,7 +123,7 @@ class RequestStatusTableViewCell: UITableViewCell {
                                                        attribute: .rightMargin,
                                                        multiplier: 1.0,
                                                        constant: 0.0)
-        
+
         
         let constraints = [
             // Order title label
@@ -161,26 +175,31 @@ class RequestStatusTableViewCell: UITableViewCell {
             deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -10),
             
-            ]
+//            // Button constraints
+            completeOrderButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            completeOrderButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+            completeOrderButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+            completeOrderButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: 5),
+
+        ]
         NSLayoutConstraint.activate(constraints)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
-    
-}
 
+}

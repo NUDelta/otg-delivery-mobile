@@ -55,4 +55,8 @@ class RequestStatusTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.myRequests.count
     }
+    
+    func completeOrderPressed(sender: UIButton!){
+        print("Complete order pressed.")
+    }
 }

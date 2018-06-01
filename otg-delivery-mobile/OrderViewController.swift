@@ -261,13 +261,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
-            fatalError("Couldn't dequeue RequestStatusTableViewCell")
-        }
         
         // Render label data
         if tableView == myRequestTableView {
+            
+            /*guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
+                fatalError("Couldn't dequeue RequestStatusTableViewCell")
+            }*/
+            let cell = RequestStatusTableViewCell()
+            
             // Grab request to render
             let request = myRequests[indexPath.row]
             
@@ -301,11 +303,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
             
-//            // Buttons
-//            cell.editButton.tag = indexPath.row
-//            cell.editButton.addTarget(self, action: #selector(self.editActionTest(sender:)), for: .touchUpInside)
+            return cell
 
         } else if tableView == acceptedRequestTableView {
+            
+            /*guard let cell = tableView.dequeueReusableCell(withIdentifier: AcceptedRequestTableViewCell.reuseIdentifier, for: indexPath) as? AcceptedRequestTableViewCell else {
+                fatalError("Couldn't dequeue AcceptedRequestTableViewCell")
+            }*/
+            let cell = AcceptedRequestTableViewCell()
+ 
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
             
@@ -337,22 +343,57 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+         
+            // Initialize buttons
+            cell.contentView.isUserInteractionEnabled = true;
+            cell.completeOrderButton.tag = indexPath.row
+            cell.completeOrderButton.addTarget(self, action: #selector(completeOrder), for: .touchUpInside)
             
+            return cell
         }
         
-        // Initialize buttons
-        //cell.contentView.isUserInteractionEnabled = true;
-//        cell.editButton.tag = indexPath.row
-//        cell.editButton.addTarget(self, action: #selector(editActionTest), for: .touchUpInside)
-        //addChildViewController(RequestStatusTableViewCell)
-        
-        return cell
+        return UITableViewCell()
     }
     
-//    @objc func editActionTest(sender: UIButton) {
-//        let row_number = sender.tag
-//        print("HEREEEE \(row_number)")
-//    }
+    @objc func completeOrder(sender: UIButton) {
+        
+        let row_number = sender.tag
+        
+        // Launch request editor on click
+        let completedAlert = UIAlertController(title: "Would you like to confirm the completion of this request?", message: "If so, please leave a brief comment on what made this interaction convenient and/or inconvenient and confirm below!", preferredStyle: .alert)
+        let currentRequest = self.acceptedRequests[row_number]
+        
+        completedAlert.addTextField(configurationHandler: { (textField) in
+            textField.text = ""
+        })
+        
+        let action = UIAlertAction(title: "OK", style: .default, handler: { [weak completedAlert] (_) in
+            let textField = completedAlert!.textFields![0]
+            let responseText = textField.text
+            
+            self.sendFeedback(feedbackText: responseText)
+            
+            // Delete the row from the data source
+            let deletedRequest = self.acceptedRequests.remove(at: row_number)
+            let indexPath = IndexPath(row: row_number, section: 0)
+            self.acceptedRequestTableView.deleteRows(at: [indexPath], with: .fade)
+            //TODO tell server to mark the given request as completed
+            CoffeeRequest.updateStatusCoffeeRequestForID(requestId: currentRequest.requestId as! String, status: "Completed", completionHandler: {
+                print("NOTIFICATION ACTION: request successfully accepted.")
+            })
+            
+            self.acceptedRequestTableView.reloadData()
+            
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            
+        })
+        
+        completedAlert.addAction(action)
+        completedAlert.addAction(cancel)
+        present(completedAlert, animated: true, completion: nil)
+    }
 
     
 
@@ -443,53 +484,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             editAlert.addAction(cancel)
             present(editAlert, animated: true, completion: nil)
             
-        /*
-            // Launch request editor on click
-            let editController = UIAlertController(title: "Edit Request Description", message: "", preferredStyle: .alert)
-            let currentRequest = self.myRequests[indexPath.row]
-
-            // Update table view and database on 'Update'
-            editController.addTextField { (descriptionUpdater) in
-                descriptionUpdater.text = currentRequest.orderDescription
-                descriptionUpdater.placeholder = "Updated Order Description"
-                // have current text be the current name of the request
-            }
-        
-            let updateAction = UIAlertAction(title: "Update", style: .default) { (alertAction) in
-                let descriptionUpdater = editController.textFields![0] as UITextField
-                
-                // Update database
-                CoffeeRequest.updateRequest(with_id: currentRequest.requestId!, to_order: descriptionUpdater.text!, completionHandler: {
-                
-                    // Update view
-                    let updatedRequest = CoffeeRequest.getRequest(with_id: currentRequest.requestId!, completionHandler: { (coffeeRequest) in
-                        self.myRequests[indexPath.row] = coffeeRequest!
-                        
-                        //Since this is UI related, must perform in main thread
-                        DispatchQueue.main.async {
-                            self.myRequestTableView.reloadData()
-                        }
-                        
-                    })
-                    
-                })
-                
-            }
-        
-            // Do nothing on 'Cancel'
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-            // Add actions to editor
-            editController.addAction(updateAction)
-            editController.addAction(cancelAction)
-        
-            present(editController, animated: true, completion: nil)
-        */
-            
         }
         
         if tableView == acceptedRequestTableView {
-          
+          /*
             // Launch request editor on click
             let completedAlert = UIAlertController(title: "Would you like to confirm the completion of this request?", message: "If so, please leave a brief comment on what made this interaction convenient and/or inconvenient and confirm below!", preferredStyle: .alert)
             let currentRequest = self.acceptedRequests[indexPath.row]
@@ -524,7 +522,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             completedAlert.addAction(action)
             completedAlert.addAction(cancel)
             present(completedAlert, animated: true, completion: nil)
-            
+          */
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }

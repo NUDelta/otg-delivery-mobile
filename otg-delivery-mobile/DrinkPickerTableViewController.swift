@@ -9,14 +9,17 @@
 import UIKit
 
 protocol DrinkPickerModalDelegate {
-    func drinkPicked(drinkChoice: Drink, sizeIndex: Int)
+    func itemPicked(itemChoice: Item)
 }
 
 class DrinkPickerTableViewController: UITableViewController {
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
     //Returned to parent
     var delegate: DrinkPickerModalDelegate?
-    var selectedDrink: Drink?
+    var selectedDrink: Item?
     
     //Overrides
     override func viewDidLoad() {
@@ -32,34 +35,31 @@ class DrinkPickerTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkPickerTableViewCell
         
         //Configure cell
-        cell.drinkLabel?.text = drinkData[indexPath.row].name
-        cell.priceLabel?.text = drinkData[indexPath.row].priceRangeString()
+        cell.itemNameLabel?.text = drinkData[indexPath.row].name
+        cell.descriptionLabel?.text = drinkData[indexPath.row].description
+        cell.priceLabel?.text = drinkData[indexPath.row].getPriceString()
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedDrink = drinkData[indexPath.row]
-        drinkOrderNotification(forDrink: selectedDrink!)
+        itemOrderNotification(forItem: selectedDrink!)
     }
     
     
     //Create and show custom notification given chosen drink
-    func drinkOrderNotification(forDrink drink: Drink) {
-        let alert = UIAlertController(title: "Choose Size", message: "Pick from these sizes", preferredStyle: .alert)
+    func itemOrderNotification(forItem item: Item) {
+        let alert = UIAlertController(title: "Confirm order", message: String.init(format: "Order for %@", item.name), preferredStyle: .alert)
         
-        for (index, price) in drink.prices.enumerated() {
-            let currentTitle = String.init(format: "%@: $%.2f", price.0.asString(), price.1)
-            
-            alert.addAction(UIAlertAction(title: currentTitle, style: .default, handler: { _ in
-                let chosenDrinkSizeAndPrice = currentTitle
-                let finalOrderString = String.init(format: "<%@> %@", self.selectedDrink!.name, chosenDrinkSizeAndPrice)
-                
-                self.delegate?.drinkPicked(drinkChoice: drink, sizeIndex: index)
-                self.dismiss(animated: true, completion: nil)
-            }))
-            
-        }
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
+            self.delegate?.itemPicked(itemChoice: item)
+            self.dismiss(animated: true, completion: nil)
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            //do nothing
+        }))
         
         self.present(alert, animated: true, completion: nil)
     }

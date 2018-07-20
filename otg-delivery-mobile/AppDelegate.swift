@@ -47,6 +47,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
         
+        if #available(iOS 11, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            application.registerForRemoteNotifications()
+        }
+        
+        if #available(iOS 10, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
+            application.registerForRemoteNotifications()
+        }
+            // iOS 9 support
+        else if #available(iOS 9, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 8 support
+        else if #available(iOS 8, *) {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+            // iOS 7 support
+        else {
+            application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
+        }
+        
         return true
     }
 	
@@ -57,13 +81,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switch response.actionIdentifier {
             
             case "acceptNotification":
+                print("In AcceptNotification")
                 acceptLatestRequest()
             case "rejectNotification":
                 //If rejected, log to console but do nothing
                 //Should log this to server for research purposes perhaps??
                 print("NOTIFICATION ACTION: request rejected.")
             default:
-                acceptLatestRequest()
+                showPendingRequest()
             
         }
         
@@ -81,17 +106,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let defaults = UserDefaults.standard
         let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
         
-        CoffeeRequest.acceptCoffeeRequestForID(requestId: latestNotificationId as! String, completionHandler: {
-            print("NOTIFICATION ACTION: request successfully accepted.")
+        print("Should be accepting request...")
+        
+        CoffeeRequest.acceptRequest(requestId: latestNotificationId as! String, completionHandler: {
+            print("REQUEST ACCEPTED: request successfully accepted.")
         })
         
+
         //Create and show alert
         let acceptedAlert = UIAlertView()
-        acceptedAlert.title = "Thanks!"
-        acceptedAlert.message = "You're awesome for picking up coffee! Please let the requester know through Slack that you're on your way."
+        acceptedAlert.title = "Thanks for helping!"
+        acceptedAlert.message = "Please communicate with the requester over Slack with any questions."
         acceptedAlert.addButton(withTitle: "Ok")
         acceptedAlert.show()
     }
+    
+    func showPendingRequest() {
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let taskConfirmationVC = sb.instantiateViewController(withIdentifier: "TaskConfirmationViewController") as! TaskConfirmationViewController
+        window?.rootViewController = taskConfirmationVC
+    }
+    
+
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -103,8 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+        // Set requests screen as default view controller
+        let sb = UIStoryboard(name: "Main", bundle: nil)
+        let mainVC = sb.instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
+        window?.rootViewController = mainVC
+        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -114,7 +157,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    // MARK - Push Notification Setup
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if notificationSettings.types != .none {
+            application.registerForRemoteNotifications()
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let defaults = UserDefaults.standard
 
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        print(deviceTokenString)
+        defaults.set(deviceTokenString, forKey: "tokenId")
+        
+        // also set lastNotified to 0
+        defaults.set(0, forKey: "lastNotified")
+        
+    }
+    
+    // Handle silent push notifications
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
+                     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        // refresh data when notification is received
+        if (userInfo.index(forKey: "updateType") != nil) {
+            if let updateType = userInfo["updateType"] as? String {
+                if (updateType == "requests") {
+                    OrderViewController.sharedManager.loadData()
+                }
+                completionHandler(UIBackgroundFetchResult.newData)
+            }
+        } else {
+            completionHandler(UIBackgroundFetchResult.noData)
+        }
+    }
+    
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // The token is not currently available.
+        print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
+    }
+
+    
 
 }
 

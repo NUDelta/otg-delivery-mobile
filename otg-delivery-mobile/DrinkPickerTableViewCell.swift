@@ -10,8 +10,9 @@ import UIKit
 
 class DrinkPickerTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var drinkLabel: UILabel!
+    @IBOutlet weak var itemNameLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

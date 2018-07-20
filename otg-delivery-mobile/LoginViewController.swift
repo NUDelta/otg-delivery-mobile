@@ -37,15 +37,43 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createLogIn() {
-        //save session username as user default
+        //Save session username as user default
         //TODO in future check for this default before loading view
         //and if found, navigate straight to main view
-        let defaults = UserDefaults.standard
-        let usernameText: String? = usernameField?.text
-        defaults.set(usernameText!, forKey: "username")
+        guard let usernameText: String = usernameField?.text else {
+            print("LOGIN VIEW: username text could not be retrieved.")
+            return
+        }
         
-        print("LOGIN: transitioning to main view")
-        didLogIn?()
+        var tokenValue: String = "Default token value"
+        
+        //If we're on a real device, this token id should be set
+        let defaults = UserDefaults.standard
+        if let tokenId = defaults.object(forKey: "tokenId") as? String {
+            tokenValue = tokenId
+        }
+        
+        let user = UserModel(userId: nil, deviceId: tokenValue, username: usernameText)
+        UserModel.createUser(user: user, completionHandler: { userModel in
+                        
+            guard let createdUser = userModel else {
+                print("LOGIN: user was not fetched from server.")
+                return
+            }
+            
+            guard let userId = createdUser.userId else {
+                print("LOGIN: could not retrieve userId from server response.")
+                return
+            }
+            
+            defaults.set(userId, forKey: "userId")
+            
+            print("LOGIN: transitioning to main view")
+            //Async so should wrap in this block
+            DispatchQueue.main.async {
+                self.didLogIn?()
+            }
+        })
     }
 
 }

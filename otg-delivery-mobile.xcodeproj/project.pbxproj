@@ -12,7 +12,7 @@
 		2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A2992049C8FA00CE518B /* OrderModalViewController.swift */; };
 		2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A29B2049CD7A00CE518B /* LoginViewController.swift */; };
 		226180DD20997DE2007D92A0 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226180DC20997DE2007D92A0 /* UserModel.swift */; };
-		228907D920756C6800072961 /* ItemData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907D820756C6800072961 /* ItemData.swift */; };
+		228907D920756C6800072961 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907D820756C6800072961 /* ItemModel.swift */; };
 		228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */; };
 		228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */; };
 		22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278820129CCE005BA4B9 /* AppDelegate.swift */; };
@@ -35,7 +35,7 @@
 		2246A2992049C8FA00CE518B /* OrderModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModalViewController.swift; sourceTree = "<group>"; };
 		2246A29B2049CD7A00CE518B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		226180DC20997DE2007D92A0 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		228907D820756C6800072961 /* ItemData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemData.swift; sourceTree = "<group>"; };
+		228907D820756C6800072961 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
 		228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkPickerTableViewController.swift; sourceTree = "<group>"; };
 		228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkPickerTableViewCell.swift; sourceTree = "<group>"; };
 		22AD278520129CCE005BA4B9 /* otg-delivery-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "otg-delivery-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -97,7 +97,7 @@
 				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
 				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
-				228907D820756C6800072961 /* ItemData.swift */,
+				228907D820756C6800072961 /* ItemModel.swift */,
 				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
@@ -206,7 +206,7 @@
 				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
 				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,
 				3941C5582082F28B00B70356 /* MyRequestTableViewCell.swift in Sources */,
-				228907D920756C6800072961 /* ItemData.swift in Sources */,
+				228907D920756C6800072961 /* ItemModel.swift in Sources */,
 				39D2343720A523D10020460A /* TaskConfirmationViewController.swift in Sources */,
 				228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
@@ -359,7 +359,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "009b5511-11e1-4079-9cf4-3a03e6d058a2";
 				PROVISIONING_PROFILE_SPECIFIER = "OTG Dev";
@@ -381,7 +381,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.J;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
 				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab J";

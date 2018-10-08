@@ -13,6 +13,11 @@ protocol DrinkPickerModalDelegate {
 }
 
 class DrinkPickerTableViewController: UITableViewController {
+    
+    @IBOutlet var menuItemTable: UITableView!
+    
+    var items = [Item]()
+    
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -23,27 +28,31 @@ class DrinkPickerTableViewController: UITableViewController {
     
     //Overrides
     override func viewDidLoad() {
+        loadData()
         super.viewDidLoad()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return drinkData.count
+        return items.count
     }
     
+    // Configure cells in table view
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkPickerTableViewCell
         
         //Configure cell
-        cell.itemNameLabel?.text = drinkData[indexPath.row].name
-        cell.descriptionLabel?.text = drinkData[indexPath.row].description
-        cell.priceLabel?.text = drinkData[indexPath.row].getPriceString()
+        let item = items[indexPath.row]
+        print(item)
+        cell.itemNameLabel?.text = item.name
+        cell.descriptionLabel?.text = item.description
+        cell.priceLabel?.text = item.getPriceString()
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedDrink = drinkData[indexPath.row]
+        selectedDrink = items[indexPath.row]
         itemOrderNotification(forItem: selectedDrink!)
     }
     
@@ -64,4 +73,12 @@ class DrinkPickerTableViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    @objc func loadData() {
+        print("Load item data")
+        Item.getAll(forLocation: "Tomate", completionHandler: { items in
+            print(items)
+            self.items = items
+            self.menuItemTable.reloadData()
+        })
+    }
 }

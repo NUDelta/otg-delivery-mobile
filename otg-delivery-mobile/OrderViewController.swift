@@ -147,8 +147,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             let content = UNMutableNotificationContent()
             content.title = helperUserModel.username + " is hungry!"
-            content.body = "Please pick up a " + request.orderDescription + " from " + locationName + ", and deliver to \(helperUserModel.username) at " + request.deliveryLocation + " by \(CoffeeRequest.parseTime(dateAsString: request.endTime!)).";
-
+            request.getItemName(completionHandler: { (itemName) in
+                DispatchQueue.main.async {
+                    content.body = "Please pick up a " + itemName + " from " + locationName + ", and deliver to \(helperUserModel.username) at " + request.deliveryLocation + " by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))."
+                }
+            })
             
             content.categoryIdentifier = "requestNotification"
             content.sound = UNNotificationSound.default()
@@ -275,7 +278,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Grab request to render
             let request = myRequests[indexPath.row]
             
-            cell.orderLabel.text = request.orderDescription
+            request.getItemName(completionHandler: { (itemName) in
+                DispatchQueue.main.async {
+                    cell.orderLabel.text = itemName
+                }
+            })
+            
+            
+
             if (request.status == "Accepted") {
                 var status = "Accepted"
                 UserModel.get(with_id: request.helper!, completionHandler: { helperUserModel in
@@ -317,7 +327,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
             
-            cell.orderLabel.text = request.orderDescription
+            request.getItemName(completionHandler: { (itemName) in
+                DispatchQueue.main.async {
+                    cell.orderLabel.text = itemName
+                }
+            })
+            
             if (request.status == "Accepted") {
                 var status = "Accepted"
                 UserModel.get(with_id: request.requester, completionHandler: { requesterUserModel in

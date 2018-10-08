@@ -229,4 +229,17 @@ extension CoffeeRequest {
         let formattedDate = formatter.string(from: dateAsDate!)
         return formattedDate
     }
+    
+    func getItemName(completionHandler: @escaping (String) -> Void)  {
+        print("Get item name")
+        Item.get(withId: self.orderDescription) { (item) in
+            guard let item = item else {
+                print("Cannot find the item that is linked to a given request")
+                return
+            }
+            
+            print("Get item name \(item.name)")
+            completionHandler(item.name)
+        }
+    }
 }

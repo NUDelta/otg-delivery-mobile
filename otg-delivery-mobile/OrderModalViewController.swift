@@ -60,29 +60,33 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 guard let editingRequest = activeEditingRequest else { return }
                 
                 self.navigationItem.title = "Edit order"
-                itemOrderLabel.text = editingRequest.orderDescription
+                editingRequest.getItemName { (itemName) in
+                    self.itemOrderLabel.text = itemName
+                }
                 deliveryLocationForm.text = editingRequest.deliveryLocation
                 deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
                 
-                let drinkMatch = drinkData.filter { $0.name == editingRequest.orderDescription }
-                itemPriceLabel.text = String.init(format: "$%.2f", drinkMatch[0].price)
+                Item.get(withId: editingRequest.orderDescription, completionHandler: {item in
+                    if let item = item {
+                        self.itemPriceLabel.text = String.init(format: "$%.2f", item.price)
+                        
+                        let RFC3339DateFormatter = DateFormatter()
+                        RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
+                        RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                        let date = RFC3339DateFormatter.date(from: editingRequest.endTime!)
+                        self.picker.setDate(date!, animated: true)
+                    }
+                })
+                    break
                 
-                let RFC3339DateFormatter = DateFormatter()
-                RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
-                RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                let date = RFC3339DateFormatter.date(from: editingRequest.endTime!)
-                picker.setDate(date!, animated: true)
-                
-                break
-            
-            case .Order:
-                self.navigationItem.title = "Place order"
-                //Create an instance of the drink picker
-                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-                drinkPickerModal.delegate = self
-                self.present(drinkPickerModal, animated: true, completion: nil)
-                break
+                case .Order:
+                    self.navigationItem.title = "Place order"
+                    //Create an instance of the drink picker
+                    let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+                    drinkPickerModal.delegate = self
+                    self.present(drinkPickerModal, animated: true, completion: nil)
+                    break
         }
     }
     
@@ -130,7 +134,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderDescription!, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderChoice!.id, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
         
         guard let actionType = self.actionType else { return }
         

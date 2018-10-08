@@ -22,7 +22,7 @@ class TaskConfirmationViewController: UIViewController {
         let latestRequestId = defaults.object(forKey: "latestRequestNotification")!
         
         // Accept order and return to requests page
-        CoffeeRequest.acceptRequest(requestId: latestRequestId as! String, completionHandler: {
+        UserModel.acceptRequest(requestId: latestRequestId as! String, completionHandler: {
             print("REQUEST ACCEPTED: request successfully accepted.")
         })
         let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
@@ -54,7 +54,7 @@ class TaskConfirmationViewController: UIViewController {
             }
             
             
-            UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
+            UserModel.get(with_id: request.requester, completionHandler: { helperUserModel in
 
                 guard let helperUserModel = helperUserModel else {
                     print("No helper returned when getting user after helper clicked on notiication.")

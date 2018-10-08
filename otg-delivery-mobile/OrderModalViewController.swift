@@ -36,7 +36,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("BLYAT complexity up and for what")
         print(self.actionType)
         print(self.activeEditingRequest)
 

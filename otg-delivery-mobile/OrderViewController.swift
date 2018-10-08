@@ -111,7 +111,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
-        CoffeeRequest.getUnfilledCoffeeRequest(completionHandler: { coffeeRequest in
+        CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
             print("Printing request...")
             print(coffeeRequest ?? "Request not set...")
             
@@ -121,6 +121,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 let defaults = UserDefaults.standard
                 defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
                 
+                // instead of sending the name of the region, grab the name of the location from the coffee request
+                // because tomate and coffee lab are in the same region - don't know which request
                 self.sendNotification(locationName: region.identifier, request: coffeeReq)
             }
             
@@ -136,7 +138,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //Log to server that user is being notified
         sendLoggingEvent(forLocation: locationName, forRequest: request)
         
-        UserModel.getRequest(with_id: request.requester, completionHandler: { helperUserModel in
+        UserModel.get(with_id: request.requester, completionHandler: { helperUserModel in
         
             guard let helperUserModel = helperUserModel else {
                 print("NO HELPER RETURNED WHEN GETTING THEIR MODEL DURING NOTIFICATION!!!!!!!")
@@ -220,14 +222,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @objc func loadData() {
-        CoffeeRequest.getMyRequest(completionHandler: { coffeeRequests in
+        UserModel.getMyRequests(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
                 self.myRequestTableView.reloadData()
             }
         })
         
-        CoffeeRequest.getMyAcceptedRequests(completionHandler: { coffeeRequests in
+        UserModel.getMyTasks(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.acceptedRequests = coffeeRequests
                 self.acceptedRequestTableView.reloadData()
@@ -276,7 +278,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.orderLabel.text = request.orderDescription
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.getRequest(with_id: request.helper!, completionHandler: { helperUserModel in
+                UserModel.get(with_id: request.helper!, completionHandler: { helperUserModel in
                     guard let helperUserModel = helperUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
                         return
@@ -318,7 +320,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.orderLabel.text = request.orderDescription
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.getRequest(with_id: request.requester, completionHandler: { requesterUserModel in
+                UserModel.get(with_id: request.requester, completionHandler: { requesterUserModel in
                     guard let requesterUserModel = requesterUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
                         return
@@ -378,8 +380,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let indexPath = IndexPath(row: row_number, section: 0)
             self.acceptedRequestTableView.deleteRows(at: [indexPath], with: .fade)
             //TODO tell server to mark the given request as completed
-            CoffeeRequest.updateStatusCoffeeRequestForID(requestId: currentRequest.requestId as! String, status: "Completed", completionHandler: {
-                print("NOTIFICATION ACTION: request successfully accepted.")
+            CoffeeRequest.updateStatus(requestId: currentRequest.requestId as! String, status: "Completed", completionHandler: {
+                print("NOTIFICATION ACTION: request successfully completed.")
             })
             
             self.acceptedRequestTableView.reloadData()
@@ -444,7 +446,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     
                     // Remove helper from request in the database
                     let requestID = canceledRequest.requestId
-                    CoffeeRequest.removeHelper(with_id: requestID!)
+                    UserModel.removeHelperFromTask(withId: requestID!)
                 } )
                 
                 // Do nothing on 'Cancel'

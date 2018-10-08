@@ -12,8 +12,8 @@ import Foundation
 //Codable allows for simple JSON serialization/ deserialization
 struct CoffeeRequest : Codable{
     //API Location
-    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    //private static let apiUrl: String = "http://localhost:8080/requests"
+    //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
+    private static let apiUrl: String = "http://localhost:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
 
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -37,13 +37,9 @@ struct CoffeeRequest : Codable{
     let endTime: String?
     let requestId: String?
 }
-
-// Encode and decode CoffeeRequest cobjects
-
 extension CoffeeRequest {
 
-    //Method that grabs an unfilled CoffeeRequest from server and parses into object
-    static func getUnfilledCoffeeRequest(completionHandler: @escaping (CoffeeRequest?) -> Void) {
+    static func getOpenTask(completionHandler: @escaping (CoffeeRequest?) -> Void) {
 
         //Get username
         let defaults = UserDefaults.standard
@@ -53,7 +49,7 @@ extension CoffeeRequest {
         }
 
         let session: URLSession = URLSession.shared
-        let url = URL(string: CoffeeRequest.apiUrl + "/\(requesterId)")
+        let url = URL(string: CoffeeRequest.apiUrl + "/task/\(requesterId)")
         let requestURL = URLRequest(url: url!)
 
         let task = session.dataTask(with: requestURL){ data, response, error in
@@ -72,7 +68,7 @@ extension CoffeeRequest {
                     let decoder = JSONDecoder()
                     coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
                 } catch {
-                    print("COFFEE REQUEST: error trying to convert data to JSON...")
+                    print("COFFEE REQUEST.getOpenTask: error trying to convert data to JSON...")
                     print(error)
                 }
             }
@@ -116,13 +112,13 @@ extension CoffeeRequest {
 
     //Method that takes an ID and changes the status of the request
     //Method that grabs a CoffeeRequest from server and parses into object
-    static func updateStatusCoffeeRequestForID(requestId: String, status: String, completionHandler: @escaping () -> Void) {
+    static func updateStatus(requestId: String, status: String, completionHandler: @escaping () -> Void) {
 
         let session: URLSession = URLSession.shared
-        let url = URL(string: CoffeeRequest.apiUrl + "/status/" + requestId)
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/status"))
         var requestURL = URLRequest(url: url!)
 
-        requestURL.httpMethod = "POST"
+        requestURL.httpMethod = "PATCH"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         var components = URLComponents(string: "")
@@ -131,7 +127,7 @@ extension CoffeeRequest {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
 
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Accepted request.")
+            print("COFFEE REQUEST: Update")
             completionHandler()
 
         }
@@ -140,127 +136,13 @@ extension CoffeeRequest {
 
     }
 
-    // Method that takes an ID and updates the request's
-    // order description and endTime in the database
-    static func acceptRequest(requestId id: String, completionHandler: @escaping () -> Void) {
-
-        //Get username
-        let defaults = UserDefaults.standard
-        guard let helperId = defaults.object(forKey: "userId") as? String else {
-            print("Helper ID not in defaults")
-            return
-        }
-
-
-        //Define session
-        let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/\(helperId)"))
-        var requestURL = URLRequest(url: url!)
-
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        var components = URLComponents(string: "")
-        components?.queryItems = [URLQueryItem(name: "id", value: id)]
-        let httpBodyString: String? = components?.url?.absoluteString
-        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Update request.")
-            completionHandler()
-        }
-
-        task.resume()
-    }
-
-    // Grabs the current user's most recent request from the server, and parses into object
-    static func getMyRequest(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
-        // Get current user's username for api route
-        let defaults = UserDefaults.standard
-        let requesterName = "Sam"//defaults.object(forKey: "username") as! String
-        guard let userId = defaults.object(forKey: "userId") as? String else {
-            print("Connecting to back-end server failed")
-            return
-        }
-
-        let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/userid/\(userId)"))
-        let requestURL = URLRequest(url: url!)
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            guard let data = data else {
-                return
-            }
-            print("COFFEE REQUEST: Getting current user's requests")
-
-            var coffeeRequests: [CoffeeRequest] = []
-            let httpResponse = response as? HTTPURLResponse
-
-            if(httpResponse?.statusCode != 400){
-                do {
-                    let decoder = JSONDecoder()
-                    coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
-                } catch {
-                    print("COFFEE REQUEST: error trying to convert data to JSON...")
-                    print(error)
-                }
-            }
-            completionHandler(coffeeRequests)
-        }
-
-        task.resume()
-
-    }
-
-
-    // Grabs the current user's most recent request from the server, and parses into object
-    static func getMyAcceptedRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
-        // Get current user's username for api route
-        let defaults = UserDefaults.standard
-        guard let userId = defaults.object(forKey: "userId") as? String else {
-            return
-        }
-
-        let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/accept/\(userId)"))
-        let requestURL = URLRequest(url: url!)
-
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            guard let data = data else {
-                return
-            }
-            print("COFFEE REQUEST: Getting current user's tasks")
-
-            var itemRequests: [CoffeeRequest] = []
-            let httpResponse = response as? HTTPURLResponse
-
-            if(httpResponse?.statusCode != 400){
-                do {
-                    let decoder = JSONDecoder()
-                    itemRequests = try decoder.decode([CoffeeRequest].self, from: data)
-                } catch {
-                    print("COFFEE REQUEST: error trying to convert data to JSON...")
-                    print(error)
-                }
-            }
-            completionHandler(itemRequests)
-        }
-
-        task.resume()
-
-    }
-
-
-    // Method that takes an ID and updates the request's
-    // order description and endTime in the database
     static func updateRequest(with_id id: String, withRequest coffeeRequest: CoffeeRequest, completionHandler: @escaping () -> Void) {
         print("In update request ")
         let session: URLSession = URLSession.shared
-        let url = URL(string: (CoffeeRequest.apiUrl + "/update/\(id)"))
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(id)"))
         var requestURL = URLRequest(url: url!)
 
-        requestURL.httpMethod = "POST"
+        requestURL.httpMethod = "PATCH"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
         var components = URLComponents(string: "")
@@ -287,9 +169,9 @@ extension CoffeeRequest {
 
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {
+        print("Deleting request")
         let session: URLSession = URLSession.shared
-        //let url = URL(string: "http://localhost:8080/requests/id/\(id)")
-        let url = URL(string: CoffeeRequest.apiUrl + "/id/\(id)")
+        let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
         var requestURL = URLRequest(url: url!)
 
         requestURL.httpMethod = "DELETE"
@@ -301,11 +183,9 @@ extension CoffeeRequest {
         task.resume()
     }
 
-    // Method that takes an ID and returns the request from the database
     static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
         let session: URLSession = URLSession.shared
-        //let url = URL(string: "http://localhost:8080/requests/id/\(id)")
-        let url = URL(string: CoffeeRequest.apiUrl + "/id/\(id)")
+        let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
 
@@ -322,27 +202,12 @@ extension CoffeeRequest {
                         let decoder = JSONDecoder()
                         coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
                     } catch {
-                        print("COFFEE REQUEST: error trying to convert data to JSON...")
+                        print("COFFEE REQUEST.get: error trying to convert data to JSON...")
                         print(error)
                     }
                 }
                 completionHandler(coffeeRequest)
             }
-        }
-
-        task.resume()
-    }
-
-    // Method that removes a helper from a task
-    static func removeHelper(with_id id: String) {
-        let session: URLSession = URLSession.shared
-        let url = URL(string: CoffeeRequest.apiUrl + "/helper/cancel/\(id)")
-        var requestURL = URLRequest(url: url!)
-
-        requestURL.httpMethod = "DELETE"
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Removed helper from request \(id).")
         }
 
         task.resume()

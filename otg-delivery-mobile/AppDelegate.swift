@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         print("Should be accepting request...")
         
-        CoffeeRequest.acceptRequest(requestId: latestNotificationId as! String, completionHandler: {
+        UserModel.acceptRequest(requestId: latestNotificationId as! String, completionHandler: {
             print("REQUEST ACCEPTED: request successfully accepted.")
         })
         

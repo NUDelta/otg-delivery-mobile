@@ -624,6 +624,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Pick drink" id="9Hs-TT-JAl"/>
+                    <connections>
+                        <outlet property="menuItemTable" destination="cvg-Lr-Idz" id="tA0-Tx-Rfr"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wYr-LU-ghV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

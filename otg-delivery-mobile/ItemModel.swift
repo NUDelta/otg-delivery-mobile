@@ -10,7 +10,7 @@ import Foundation
 
 struct Item : Codable {
 //    private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/items"
-    private static let apiUrl: String = "http://localhost:8080/items"
+    private static let apiUrl: String = "http://10.0.0.157:8080/items"
 
     
     enum CodingKeys : String, CodingKey {

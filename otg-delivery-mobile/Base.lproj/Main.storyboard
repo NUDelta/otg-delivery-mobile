@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZB6-Cs-t8r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XDF-dH-yJy">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -339,6 +339,62 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8BE-Jr-FoF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-18.399999999999999" y="774.06296851574223"/>
+        </scene>
+        <!--All Requests Table View Controller-->
+        <scene sceneID="fee-wQ-XnB">
+            <objects>
+                <viewController id="XDF-dH-yJy" customClass="AllRequestsTableViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zxf-f4-GKf" customClass="UITableView">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="HTh-sU-ZQe">
+                                <rect key="frame" x="16" y="124" width="343" height="523"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="allRequestsReuseIdentifier" id="0dS-Wi-HzR" customClass="AllRequestsTableViewCell" customModule="otg_delivery_mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0dS-Wi-HzR" id="2Yq-gB-fDZ" customClass="AllRequestsTableViewCell" customModule="otg_delivery_mobile" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Help make someone's day!" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3M0-kO-wtT">
+                                <rect key="frame" x="43.5" y="20" width="288" height="32"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="All Open Tasks" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lm8-tV-JwY">
+                                <rect key="frame" x="123.5" y="69" width="128" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="lm8-tV-JwY" firstAttribute="top" secondItem="3M0-kO-wtT" secondAttribute="bottom" constant="17" id="1d8-nw-YYB"/>
+                            <constraint firstItem="HTh-sU-ZQe" firstAttribute="top" secondItem="lm8-tV-JwY" secondAttribute="bottom" constant="25" id="913-oi-Q95"/>
+                            <constraint firstItem="3M0-kO-wtT" firstAttribute="top" secondItem="66s-8V-2N7" secondAttribute="top" id="Gsz-Me-5JK"/>
+                            <constraint firstItem="66s-8V-2N7" firstAttribute="trailing" secondItem="HTh-sU-ZQe" secondAttribute="trailing" constant="16" id="IYu-En-1Bc"/>
+                            <constraint firstItem="HTh-sU-ZQe" firstAttribute="leading" secondItem="66s-8V-2N7" secondAttribute="leading" constant="16" id="NSU-Aq-gwR"/>
+                            <constraint firstItem="66s-8V-2N7" firstAttribute="bottom" secondItem="HTh-sU-ZQe" secondAttribute="bottom" constant="20" id="dlI-Wm-HB1"/>
+                            <constraint firstItem="3M0-kO-wtT" firstAttribute="centerX" secondItem="66s-8V-2N7" secondAttribute="centerX" id="g3u-AA-s8H"/>
+                            <constraint firstItem="lm8-tV-JwY" firstAttribute="centerX" secondItem="66s-8V-2N7" secondAttribute="centerX" id="kYr-Cq-lhV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="66s-8V-2N7"/>
+                    </view>
+                    <connections>
+                        <outlet property="allRequestsTableView" destination="HTh-sU-ZQe" id="2Xc-cD-nwQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1Kq-tP-t9l" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2061.5999999999999" y="1594.4527736131936"/>
         </scene>
         <!--Task Confirmation View Controller-->
         <scene sceneID="UCR-jZ-rF4">

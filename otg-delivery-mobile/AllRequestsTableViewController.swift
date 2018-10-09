@@ -1,0 +1,98 @@
+//
+//  AllRequestsTableViewController.swift
+//  otg-delivery-mobile
+//
+//  Created by Maggie Lou on 10/8/18.
+//  Copyright © 2018 Sam Naser. All rights reserved.
+//
+
+import UIKit
+
+class AllRequestsTableViewController: UITableViewController {
+
+    @IBOutlet weak var allRequestsTableView: UITableView!
+    
+    var requests = [CoffeeRequest]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Initialize table
+        self.tableView.register(AllRequestsTableViewCell.self, forCellReuseIdentifier: AllRequestsTableViewCell.reuseIdentifier)
+        self.allRequestsTableView.delegate = self
+        self.allRequestsTableView.dataSource = self
+    
+        loadData()
+        
+        // Initialize listener for whenever app becoming active
+        // To reload request data and update table
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+    }
+    
+    // Initializes view for the very first time
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        loadData()
+    }
+
+    
+    
+    // MARK: - Table view data source
+
+    // Configure cells
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = AllRequestsTableViewCell()
+        let request = requests[indexPath.row]
+        
+        // Set labels with request data
+        cell.pickupDetailsLabel.text = "Tomate"
+        cell.dropoffDetailsLabel.text = request.deliveryLocation
+        cell.expirationDetailsLabel.text = request.endTime
+        cell.requesterDetailsLabel.text = "Mock requester"//request.requester
+        cell.priceDetailsLabel.text = "100,00"//request.
+        cell.itemDetailsLabel.text = "Mock burrito" //
+
+
+        // Text wrapping
+        cell.pickupDetailsLabel.numberOfLines = 0
+        cell.dropoffDetailsLabel.numberOfLines = 0
+        cell.dropoffDetailsLabel.numberOfLines = 0
+
+        return cell
+    }
+    
+    //Return number of sections in table view
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    
+    // Return number of rows in table view
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("Number rows \(self.requests.count)")
+        return self.requests.count
+    }
+
+ 
+    @objc func loadData() {
+        CoffeeRequest.getAllOpen(completionHandler:  { requests in
+            DispatchQueue.main.async {
+                self.requests = requests
+                self.allRequestsTableView.reloadData()
+            }
+        })
+    }
+
+    
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

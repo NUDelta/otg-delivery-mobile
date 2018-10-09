@@ -13,7 +13,7 @@ import Foundation
 struct CoffeeRequest : Codable{
     //API Location
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    private static let apiUrl: String = "http://localhost:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
+    private static let apiUrl: String = "http://10.0.0.157:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
 
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -210,6 +210,36 @@ extension CoffeeRequest {
             }
         }
 
+        task.resume()
+    }
+    
+    static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending")
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "GET"
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            if let data = data {
+                print("COFFEE REQUEST: Get all open requests.")
+                
+                var coffeeRequests: [CoffeeRequest] = []
+                let httpResponse = response as? HTTPURLResponse
+                
+                if(httpResponse?.statusCode != 400){
+                    do {
+                        let decoder = JSONDecoder()
+                        coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
+                    } catch {
+                        print("COFFEE REQUEST.getAllOpen: error trying to convert data to JSON...")
+                        print(error)
+                    }
+                }
+                
+                completionHandler(coffeeRequests)
+            }
+        }
+        
         task.resume()
     }
 

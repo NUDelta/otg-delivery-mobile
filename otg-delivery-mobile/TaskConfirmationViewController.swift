@@ -30,8 +30,9 @@ class TaskConfirmationViewController: UIViewController {
     }
     @IBAction func declineButton(_ sender: UIButton) {
         // Return to requests page
-        let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
-        self.present(mainView, animated: true, completion: nil)
+        let allRequestsView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "allRequestsTableViewControllerID") as! AllRequestsTableViewController// storyboard.instantiateInitialViewControllerwithIdentifier("allRequestsTableViewControllerID") as! AllRequestsTableViewController
+            //
+        self.present(allRequestsView, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {

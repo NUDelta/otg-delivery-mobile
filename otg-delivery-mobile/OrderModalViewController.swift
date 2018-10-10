@@ -134,7 +134,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderChoice!.id, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, helper: nil, endTime: responseDate, requestId: nil)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderChoice!.id, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, endTime: responseDate)
         
         guard let actionType = self.actionType else { return }
         

@@ -16,6 +16,8 @@ class AllRequestsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.tableFooterView = UIView()
+
         
         // Initialize table
         self.tableView.register(AllRequestsTableViewCell.self, forCellReuseIdentifier: AllRequestsTableViewCell.reuseIdentifier)
@@ -49,15 +51,18 @@ class AllRequestsTableViewController: UITableViewController {
         cell.pickupDetailsLabel.text = "Tomate"
         cell.dropoffDetailsLabel.text = request.deliveryLocation
         cell.expirationDetailsLabel.text = request.endTime
-        cell.requesterDetailsLabel.text = "Mock requester"//request.requester
-        cell.priceDetailsLabel.text = "100,00"//request.
-        cell.itemDetailsLabel.text = "Mock burrito" //
+        cell.requesterDetailsLabel.text = request.requester
+        cell.priceDetailsLabel.text = String(request.item?.price ?? 0)
+        cell.itemDetailsLabel.text = request.item?.description
 
 
         // Text wrapping
         cell.pickupDetailsLabel.numberOfLines = 0
         cell.dropoffDetailsLabel.numberOfLines = 0
-        cell.dropoffDetailsLabel.numberOfLines = 0
+        cell.expirationDetailsLabel.numberOfLines = 0
+        cell.requesterDetailsLabel.numberOfLines = 0
+        cell.priceDetailsLabel.numberOfLines = 0
+        cell.itemDetailsLabel.numberOfLines = 0
 
         return cell
     }

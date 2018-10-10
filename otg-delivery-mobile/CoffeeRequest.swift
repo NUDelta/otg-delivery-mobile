@@ -10,10 +10,10 @@ import Foundation
 
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
-struct CoffeeRequest : Codable{
+class CoffeeRequest : Codable{
     //API Location
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
-    private static let apiUrl: String = "http://10.0.0.157:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
+    private static let apiUrl: String = "http://172.20.10.4:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
 
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -28,14 +28,69 @@ struct CoffeeRequest : Codable{
     }
 
     //all fields that go into a request
-    let requester: String
-    let orderDescription: String
-    let status: String
-    let deliveryLocation: String
-    let deliveryLocationDetails: String
-    let helper: String?
-    let endTime: String?
-    let requestId: String?
+    var requester: String
+    var orderDescription: String
+    var status: String
+    var deliveryLocation: String
+    var deliveryLocationDetails: String
+    var helper: String?
+    var endTime: String?
+    var requestId: String?
+    var item: Item? = nil
+    var requesterName: String = ""
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // Decode data from JSON
+        requester = try container.decode(String.self, forKey: .requester)
+
+        orderDescription = try container.decode(String.self, forKey: .orderDescription)
+        status = try container.decode(String.self, forKey: .status)
+        deliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
+        deliveryLocationDetails = try container.decodeIfPresent(String.self, forKey: .deliveryLocationDetails) ?? ""
+        helper = try container.decodeIfPresent(String.self, forKey: .helper) ?? ""
+        endTime = try container.decode(String.self, forKey: .endTime)
+        requestId = try container.decode(String.self, forKey: .requestId)
+        
+        
+        // Parse requester name
+        UserModel.get(with_id: requester) { (user) in
+            DispatchQueue.global().async {
+                self.requesterName = user?.username ?? "Loading, please wait..."
+            }
+        }
+        
+        // Parse item data
+        let itemId = try container.decode(String.self, forKey: .orderDescription)
+        Item.get(withId: itemId) { (item) in
+            self.item = item
+        }
+    }
+    
+    init(requester: String, orderDescription: String, status: String, deliveryLocation: String, deliveryLocationDetails: String, endTime: String) {
+        self.requester = requester
+        self.orderDescription = orderDescription
+        self.status = status
+        self.deliveryLocation = deliveryLocation
+        self.deliveryLocationDetails = deliveryLocationDetails
+        self.endTime = endTime
+        self.requestId = ""
+        self.helper = ""
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(requester, forKey: .requester)
+        try container.encode(orderDescription, forKey: .orderDescription)
+        try container.encode(status, forKey: .status)
+        try container.encode(deliveryLocation, forKey: .deliveryLocation)
+        try container.encode(deliveryLocationDetails, forKey: .deliveryLocationDetails)
+        try container.encode(helper, forKey: .helper)
+        try container.encode(endTime, forKey: .endTime)
+        try container.encode(requestId, forKey: .requestId)
+        //item = nil
+    }
 }
 extension CoffeeRequest {
 

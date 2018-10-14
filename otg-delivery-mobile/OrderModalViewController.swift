@@ -60,9 +60,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 guard let editingRequest = activeEditingRequest else { return }
                 
                 self.navigationItem.title = "Edit order"
-                editingRequest.getItemName { (itemName) in
-                    self.itemOrderLabel.text = itemName
-                }
+                self.itemOrderLabel.text = editingRequest.item?.name ?? "Item not loading"
                 deliveryLocationForm.text = editingRequest.deliveryLocation
                 deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
                 

@@ -147,12 +147,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             let content = UNMutableNotificationContent()
             content.title = helperUserModel.username + " is hungry!"
-            request.getItemName(completionHandler: { (itemName) in
-                DispatchQueue.main.async {
-                    content.body = "Please pick up a " + itemName + " from " + locationName + ", and deliver to \(helperUserModel.username) at " + request.deliveryLocation + " by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))."
-                }
-            })
-            
+            content.body = "Please pick up a \(request.item?.name ?? "Item not loading") from \(locationName) and deliver to \(request.requester?.username ?? "Requester name not loading") at \(request.deliveryLocation) by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))"
+
             content.categoryIdentifier = "requestNotification"
             content.sound = UNNotificationSound.default()
         
@@ -277,14 +273,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             // Grab request to render
             let request = myRequests[indexPath.row]
-            
-            request.getItemName(completionHandler: { (itemName) in
-                DispatchQueue.main.async {
-                    cell.orderLabel.text = itemName
-                }
-            })
-            
-            
+            cell.orderLabel.text = request.item?.name ?? "Item not loading"
 
             if (request.status == "Accepted") {
                 var status = "Accepted"
@@ -326,12 +315,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
  
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
-            
-            request.getItemName(completionHandler: { (itemName) in
-                DispatchQueue.main.async {
-                    cell.orderLabel.text = itemName
-                }
-            })
+            cell.orderLabel.text = request.item?.name ?? "Item not loading"
             
             if (request.status == "Accepted") {
                 var status = "Accepted"

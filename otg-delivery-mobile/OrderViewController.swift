@@ -138,7 +138,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //Log to server that user is being notified
         sendLoggingEvent(forLocation: locationName, forRequest: request)
         
-        UserModel.get(with_id: request.requester, completionHandler: { helperUserModel in
+        UserModel.get(with_id: request.requesterId, completionHandler: { helperUserModel in
         
             guard let helperUserModel = helperUserModel else {
                 print("NO HELPER RETURNED WHEN GETTING THEIR MODEL DURING NOTIFICATION!!!!!!!")
@@ -335,7 +335,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.get(with_id: request.requester, completionHandler: { requesterUserModel in
+                UserModel.get(with_id: request.requesterId, completionHandler: { requesterUserModel in
                     guard let requesterUserModel = requesterUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
                         return

@@ -51,7 +51,7 @@ class AllRequestsTableViewController: UITableViewController {
         cell.pickupDetailsLabel.text = "Tomate"
         cell.dropoffDetailsLabel.text = request.deliveryLocation
         cell.expirationDetailsLabel.text = request.endTime
-        cell.requesterDetailsLabel.text = request.requester
+        cell.requesterDetailsLabel.text = request.requester?.username ?? "Requester name cannot load"
         cell.priceDetailsLabel.text = String(request.item?.price ?? 0)
         cell.itemDetailsLabel.text = request.item?.description
 
@@ -82,11 +82,12 @@ class AllRequestsTableViewController: UITableViewController {
  
     @objc func loadData() {
         CoffeeRequest.getAllOpen(completionHandler:  { requests in
-            DispatchQueue.main.async {
                 self.requests = requests
-                self.allRequestsTableView.reloadData()
+                DispatchQueue.main.async {
+                    self.allRequestsTableView.reloadData()
+                }
             }
-        })
+        )
     }
 
     

@@ -49,13 +49,13 @@ class TaskConfirmationViewController: UIViewController {
             
             DispatchQueue.main.async {
                 self.expirationLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
-                self.orderLabel.text = request.orderDescription
+                self.orderLabel.text = request.item?.name ?? "Item name not loading"
                 self.locationLabel.text = request.deliveryLocation
                 self.locationDetailsLabel.text = request.deliveryLocationDetails
             }
             
             
-            UserModel.get(with_id: request.requester, completionHandler: { helperUserModel in
+            UserModel.get(with_id: request.requesterId, completionHandler: { helperUserModel in
 
                 guard let helperUserModel = helperUserModel else {
                     print("No helper returned when getting user after helper clicked on notiication.")

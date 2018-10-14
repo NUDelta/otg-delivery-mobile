@@ -21,7 +21,7 @@ import Foundation
 struct UserModel : Codable{
     //API Location
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/users"
-    private static let apiUrl: String = "http://10.0.0.157:8080/users"
+    private static let apiUrl: String = "http://localhost:8080/users"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {

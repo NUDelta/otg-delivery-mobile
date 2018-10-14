@@ -66,7 +66,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 deliveryLocationForm.text = editingRequest.deliveryLocation
                 deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
                 
-                Item.get(withId: editingRequest.orderDescription, completionHandler: {item in
+                Item.get(withId: editingRequest.itemId, completionHandler: {item in
                     if let item = item {
                         self.itemPriceLabel.text = String.init(format: "$%.2f", item.price)
                         

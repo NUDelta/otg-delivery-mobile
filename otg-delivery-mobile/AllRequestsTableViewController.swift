@@ -14,6 +14,10 @@ class AllRequestsTableViewController: UITableViewController {
     
     var requests = [CoffeeRequest]()
     
+    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()

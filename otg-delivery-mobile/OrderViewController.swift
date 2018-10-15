@@ -29,6 +29,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.performSegue(withIdentifier: "orderFormSegue", sender: self)
     }
     
+    @IBAction func seeAllTasks(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "allTasksSegue", sender: self)
+    }
+    
     public static let sharedManager = OrderViewController()
 
     var locationManager: CLLocationManager?
@@ -217,6 +221,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             controller?.actionType = self.currentActionType
             
             print("Sending action type \(currentActionType)")
+        }
+        
+        if segue.identifier == "allTasksSegue" {
+            let navController = segue.destination as? UINavigationController
+            let controller = navController?.viewControllers.first as? AllRequestsTableViewController
         }
     }
     

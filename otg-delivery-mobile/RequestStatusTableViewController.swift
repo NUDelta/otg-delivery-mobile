@@ -17,7 +17,7 @@ class RequestStatusTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
 
-        UserModel.getMyRequests(completionHandler: { coffeeRequests in
+        User.getMyRequests(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
                 self.MyRequestsTableView.reloadData()

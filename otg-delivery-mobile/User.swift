@@ -18,7 +18,7 @@ import Foundation
 
 import Foundation
 
-struct UserModel : Codable{
+struct User : Codable{
     //API Location
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/users"
     private static let apiUrl: String = "http://localhost:8080/users"
@@ -38,10 +38,10 @@ struct UserModel : Codable{
 
 
 //Define HTTP requests
-extension UserModel {
+extension User {
     
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
-    static func create(user: UserModel, completionHandler: @escaping(UserModel?) -> Void) {
+    static func create(user: User, completionHandler: @escaping(User?) -> Void) {
         print("Creating User")
         
         var components = URLComponents(string: "")
@@ -50,7 +50,7 @@ extension UserModel {
             URLQueryItem(name: "username", value: user.username)
         ]
         
-        let url = URL(string: UserModel.apiUrl)
+        let url = URL(string: User.apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
         
@@ -68,14 +68,14 @@ extension UserModel {
             }
             print("USER DATA: user data returned.")
             
-            var userData: UserModel?
+            var userData: User?
             let httpResponse = response as? HTTPURLResponse
             
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
-                    print(String(data: data, encoding: String.Encoding.utf8) as! String)
-                    userData = try decoder.decode(UserModel.self, from: data)
+                    //print(String(data: data, encoding: String.Encoding.utf8) as! String)
+                    userData = try decoder.decode(User.self, from: data)
                 } catch {
                     print("USER MODEL: error trying to convert data to JSON...")
                     print(error)
@@ -91,9 +91,9 @@ extension UserModel {
     
     
     // Method that takes a user ID and grabs the user model
-    static func get(with_id id: String, completionHandler: @escaping (UserModel?) -> Void) {
+    static func get(with_id id: String, completionHandler: @escaping (User?) -> Void) {
         let session: URLSession = URLSession.shared
-        let url = URL(string: "\(UserModel.apiUrl)/\(id)")
+        let url = URL(string: "\(User.apiUrl)/\(id)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
         
@@ -101,14 +101,13 @@ extension UserModel {
             if let data = data {
                 print("COFFEE REQUEST: Get request \(id).")
                 
-                var userModel: UserModel?
+                var userModel: User?
                 let httpResponse = response as? HTTPURLResponse
-                print(httpResponse?.statusCode)
                 
                 if(httpResponse?.statusCode != 400){
                     do {
                         let decoder = JSONDecoder()
-                        userModel = try decoder.decode(UserModel.self, from: data)
+                        userModel = try decoder.decode(User.self, from: data)
                     } catch {
                         print("COFFEE REQUEST: error trying to convert data to JSON...")
                         print(error)
@@ -132,7 +131,7 @@ extension UserModel {
         
         //Define session
         let session: URLSession = URLSession.shared
-        let url = URL(string: ("\(UserModel.apiUrl)/\(helperId)/accept/\(id)"))
+        let url = URL(string: ("\(User.apiUrl)/\(helperId)/accept/\(id)"))
         var requestURL = URLRequest(url: url!)
         
         requestURL.httpMethod = "PATCH"
@@ -159,7 +158,7 @@ extension UserModel {
         }
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: ("\(UserModel.apiUrl)/\(userId)/requests"))
+        let url = URL(string: ("\(User.apiUrl)/\(userId)/requests"))
         let requestURL = URLRequest(url: url!)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
@@ -196,7 +195,7 @@ extension UserModel {
         }
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: ("\(UserModel.apiUrl)/\(userId)/tasks"))
+        let url = URL(string: ("\(User.apiUrl)/\(userId)/tasks"))
         let requestURL = URLRequest(url: url!)
         
         
@@ -232,15 +231,14 @@ extension UserModel {
         }
         
         let session: URLSession = URLSession.shared
-        let url = URL(string: UserModel.apiUrl + "/\(userId)/removeHelper/\(taskId)")
-        print(url)
+        let url = URL(string: User.apiUrl + "/\(userId)/removeHelper/\(taskId)")
         var requestURL = URLRequest(url: url!)
         
         requestURL.httpMethod = "PATCH"
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             if((error) != nil) {
-                print(error)
+                print("USER MODEL: Error removing helper from request \(taskId)")
                 return
             }
             print("USER MODEL: Removed helper from request \(taskId).")

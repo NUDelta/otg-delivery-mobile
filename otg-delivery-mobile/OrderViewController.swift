@@ -48,13 +48,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(defaultsChanged),
-                                               name: UserDefaults.didChangeNotification,
-                                               object: nil)
-        */
-        
         // initialize location manager
         locationManager = CLLocationManager()
         
@@ -100,7 +93,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         print("SHOULD BE PRINTING USER ID")
         print(UserDefaults.standard.object(forKey: "userId"))
-        //If user logged in, peace
+        //If user not logged in, transition to login page
         if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
@@ -109,18 +102,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(locations.last!)
+        //print(locations.last!)
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
 
         CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
-            print("Printing request...")
-            print(coffeeRequest ?? "Request not set...")
+            print("Printing task:")
+            print(coffeeRequest ?? "Task incorrectly returned")
             
             if let coffeeReq = coffeeRequest {
-                
                 //Set most recent request in user defaults
                 let defaults = UserDefaults.standard
                 defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
@@ -129,47 +121,35 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 // because tomate and coffee lab are in the same region - don't know which request
                 self.sendNotification(locationName: region.identifier, request: coffeeReq)
             }
-            
         })
         
     }
     
     
     func sendNotification(locationName: String, request: CoffeeRequest){
-
         print("VIEW CONTROLLER: sending coffee pickup notification")
 
         //Log to server that user is being notified
         sendLoggingEvent(forLocation: locationName, forRequest: request)
         
-        UserModel.get(with_id: request.requesterId, completionHandler: { helperUserModel in
+        let content = UNMutableNotificationContent()
+        content.title = "\(request.requester?.username ?? "A friend") is hungry!"
+        content.body = "Please pick up a \(request.item?.name ?? "[Item not loading - please contact requester]") from \(locationName) and deliver to \(request.requester?.username ?? "the requester") at \(request.deliveryLocation) by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))"
         
-            guard let helperUserModel = helperUserModel else {
-                print("NO HELPER RETURNED WHEN GETTING THEIR MODEL DURING NOTIFICATION!!!!!!!")
-                return
+        content.categoryIdentifier = "requestNotification"
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
+        let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
+            if let error = error {
+                print("Error in notifying from Pre-Tracker: \(error)")
             }
-            
-            let content = UNMutableNotificationContent()
-            content.title = helperUserModel.username + " is hungry!"
-            content.body = "Please pick up a \(request.item?.name ?? "Item not loading") from \(locationName) and deliver to \(request.requester?.username ?? "Requester name not loading") at \(request.deliveryLocation) by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))"
-
-            content.categoryIdentifier = "requestNotification"
-            content.sound = UNNotificationSound.default()
-        
-            let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
-            let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
-        
-            UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
-                if let error = error {
-                    print("Error in notifying from Pre-Tracker: \(error)")
-                }
-            })
-            
         })
     }
     
     func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
-        
         let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
         //let apiUrl: String = "http://localhost:8080/logging"
         
@@ -230,14 +210,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @objc func loadData() {
-        UserModel.getMyRequests(completionHandler: { coffeeRequests in
+        User.getMyRequests(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
                 self.myRequestTableView.reloadData()
             }
         })
         
-        UserModel.getMyTasks(completionHandler: { coffeeRequests in
+        User.getMyTasks(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.acceptedRequests = coffeeRequests
                 self.acceptedRequestTableView.reloadData()
@@ -274,10 +254,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         // Render label data
         if tableView == myRequestTableView {
-            
-            /*guard let cell = tableView.dequeueReusableCell(withIdentifier: RequestStatusTableViewCell.reuseIdentifier, for: indexPath) as? RequestStatusTableViewCell else {
-                fatalError("Couldn't dequeue RequestStatusTableViewCell")
-            }*/
             let cell = RequestStatusTableViewCell()
             
             // Grab request to render
@@ -286,7 +262,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.get(with_id: request.helper!, completionHandler: { helperUserModel in
+                User.get(with_id: request.helper!, completionHandler: { helperUserModel in
                     guard let helperUserModel = helperUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
                         return
@@ -328,17 +304,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             if (request.status == "Accepted") {
                 var status = "Accepted"
-                UserModel.get(with_id: request.requesterId, completionHandler: { requesterUserModel in
-                    guard let requesterUserModel = requesterUserModel else {
-                        print("No helper returned when trying to get helper name for a request.")
-                        return
-                    }
-                    let requesterName = requesterUserModel.username
-                    status = "Requested by \(requesterName)"
-                    DispatchQueue.main.async {
-                        cell.statusDetailsLabel.text = status
-                    }
-                })
+                let requesterName = request.requester?.username ?? "Requester not loading"
+                status = "Requested by \(requesterName)"
+                DispatchQueue.main.async {
+                    cell.statusDetailsLabel.text = status
+                }
             } else {
                 cell.statusDetailsLabel.text = request.status
             }
@@ -454,7 +424,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     
                     // Remove helper from request in the database
                     let requestID = canceledRequest.requestId
-                    UserModel.removeHelperFromTask(withId: requestID!)
+                    User.removeHelperFromTask(withId: requestID!)
                 } )
                 
                 // Do nothing on 'Cancel'
@@ -496,44 +466,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
         }
         
-        if tableView == acceptedRequestTableView {
-          /*
-            // Launch request editor on click
-            let completedAlert = UIAlertController(title: "Would you like to confirm the completion of this request?", message: "If so, please leave a brief comment on what made this interaction convenient and/or inconvenient and confirm below!", preferredStyle: .alert)
-            let currentRequest = self.acceptedRequests[indexPath.row]
-            
-            completedAlert.addTextField(configurationHandler: { (textField) in
-                textField.text = ""
-            })
-         
-            let action = UIAlertAction(title: "OK", style: .default, handler: { [weak completedAlert] (_) in
-                let textField = completedAlert!.textFields![0]
-                let responseText = textField.text
-
-                self.sendFeedback(feedbackText: responseText)
-           
-                // Delete the row from the data source
-                let deletedRequest = self.acceptedRequests.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                
-                //TODO tell server to mark the given request as completed
-                CoffeeRequest.updateStatusCoffeeRequestForID(requestId: currentRequest.requestId as! String, status: "Completed", completionHandler: {
-                    print("NOTIFICATION ACTION: request successfully accepted.")
-                })
-                
-                self.acceptedRequestTableView.reloadData()
-                
-            })
-           
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
-
-            })
-            
-            completedAlert.addAction(action)
-            completedAlert.addAction(cancel)
-            present(completedAlert, animated: true, completion: nil)
-          */
-        }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 
@@ -588,11 +520,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             DispatchQueue.main.async {
                 self.acceptedRequestTableView.reloadData()
             }
-        
         }
     }
-    
-    
-
 }
 

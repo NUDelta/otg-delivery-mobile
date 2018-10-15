@@ -28,7 +28,7 @@ class CoffeeRequest : Codable{
     }
 
     // Instance variables of the object in Swift
-    var requester: UserModel? = nil
+    var requester: User? = nil
     var item: Item? = nil
     var status: String
     var deliveryLocation: String
@@ -45,7 +45,7 @@ class CoffeeRequest : Codable{
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         // Decode data from JSON
-        requester = try container.decode(UserModel.self, forKey: .requester)
+        requester = try container.decode(User.self, forKey: .requester)
         item = try container.decode(Item.self, forKey: .orderDescription)
         status = try container.decode(String.self, forKey: .status)
         deliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""

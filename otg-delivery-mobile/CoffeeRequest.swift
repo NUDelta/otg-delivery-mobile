@@ -60,9 +60,9 @@ class CoffeeRequest : Codable{
         
     }
     
-    init(requester: String, orderDescription: String, status: String, deliveryLocation: String, deliveryLocationDetails: String, endTime: String) {
+    init(requester: String, itemId: String, status: String, deliveryLocation: String, deliveryLocationDetails: String, endTime: String) {
         self.requesterId = requester
-        self.itemId = orderDescription
+        self.itemId = itemId
         self.status = status
         self.deliveryLocation = deliveryLocation
         self.deliveryLocationDetails = deliveryLocationDetails

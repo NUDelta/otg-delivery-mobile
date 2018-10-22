@@ -19,8 +19,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     @IBOutlet weak var myRequestTableView: UITableView!
     @IBOutlet weak var acceptedRequestTableView: UITableView!
     
-    //Current request type
+    // Current request type
     var currentActionType: OrderActionType?
+    // Set as request object for current row, when you confirm you want to edit a request
     var activeEditingRequest: CoffeeRequest?
     
     //On plus sign pressed

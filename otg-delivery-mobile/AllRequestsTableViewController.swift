@@ -54,7 +54,7 @@ class AllRequestsTableViewController: UITableViewController {
         // Set labels with request data
         cell.pickupDetailsLabel.text = "Tomate"
         cell.dropoffDetailsLabel.text = request.deliveryLocation
-        cell.expirationDetailsLabel.text = request.endTime
+        cell.expirationDetailsLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
         cell.requesterDetailsLabel.text = request.requester?.username ?? "Requester name cannot load"
         cell.priceDetailsLabel.text = String(request.item?.price ?? 0)
         cell.itemDetailsLabel.text = request.item?.description
@@ -81,6 +81,15 @@ class AllRequestsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("Number rows \(self.requests.count)")
         return self.requests.count
+    }
+    
+    // Height dynamically responds to size of content
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50 // also UITableViewAutomaticDimension can be used
     }
 
  

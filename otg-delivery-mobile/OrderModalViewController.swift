@@ -36,10 +36,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(self.actionType)
-        print(self.activeEditingRequest)
-
-        
         //Setup keyboard view translations
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: Notification.Name.UIKeyboardWillHide, object: nil)
@@ -58,33 +54,28 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
             case .Edit:
                 
                 guard let editingRequest = activeEditingRequest else { return }
+                orderChoice = editingRequest.item
                 
                 self.navigationItem.title = "Edit order"
-                self.itemOrderLabel.text = editingRequest.item?.name ?? "Item not loading"
+                self.itemOrderLabel.text = orderChoice?.name ?? "Item not loading"
                 deliveryLocationForm.text = editingRequest.deliveryLocation
                 deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
+                itemPriceLabel.text = String.init(format: "$%.2f", orderChoice?.price ?? 0)
                 
-                Item.get(withId: editingRequest.itemId, completionHandler: {item in
-                    if let item = item {
-                        self.itemPriceLabel.text = String.init(format: "$%.2f", item.price)
-                        
-                        let RFC3339DateFormatter = DateFormatter()
-                        RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
-                        RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-                        let date = RFC3339DateFormatter.date(from: editingRequest.endTime!)
-                        self.picker.setDate(date!, animated: true)
-                    }
-                })
-                    break
+                let RFC3339DateFormatter = DateFormatter()
+                RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.sssZ"
+                RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+                let date = RFC3339DateFormatter.date(from: editingRequest.endTime!)
+                self.picker.setDate(date!, animated: true)
+            case .Order:
+                self.navigationItem.title = "Place order"
                 
-                case .Order:
-                    self.navigationItem.title = "Place order"
-                    //Create an instance of the drink picker
-                    let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-                    drinkPickerModal.delegate = self
-                    self.present(drinkPickerModal, animated: true, completion: nil)
-                    break
+                //Create an instance of the drink picker
+                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
+                drinkPickerModal.delegate = self
+                self.present(drinkPickerModal, animated: true, completion: nil)
+                break
         }
     }
     
@@ -117,8 +108,12 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         let defaults = UserDefaults.standard
         let requesterId = defaults.object(forKey: "userId")
         
-        //Grab relevant form data
-        let orderDescription = itemOrderLabel.text
+        //Grab relevant data about the request
+        guard let currentRequestItem = orderChoice else {
+            print("No item currently selected from drink picker modal")
+            return
+        }
+        let itemId = currentRequestItem.id
         let requestEndTime = picker!.date
         let deliveryLocation = deliveryLocationForm.text!
         let deliveryDetails = deliveryDetailsForm.text ?? ""
@@ -132,7 +127,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
                 
         //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, orderDescription: orderChoice!.id, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, endTime: responseDate)
+        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, endTime: responseDate)
         
         guard let actionType = self.actionType else { return }
         
@@ -174,6 +169,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     //-=-=-=-=-=-=-=-=-=-=-
     //Handle item choice
     //-=-=-=-=-=-=-=-=-=-=-
+    // Returned from Drink Picker Controller, when user selects an item to order
     func itemPicked(itemChoice: Item) {
         orderChoice = itemChoice
         itemOrderLabel.text = ("\(itemChoice.name)")
@@ -184,8 +180,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     //Return on text field
     //-=-=-=-=-=-=-=-=-=-=-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        self.view.endEditing(true)
-//        return false
         textField.resignFirstResponder()
         return true
     }

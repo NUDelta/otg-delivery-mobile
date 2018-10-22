@@ -197,6 +197,7 @@ class AllRequestsTableViewCell: UITableViewCell {
             requesterTitleLabel.bottomAnchor.constraint(equalTo: summaryTitleLabel.bottomAnchor),
             
             requesterDetailsLabel.rightAnchor.constraint(equalTo: pickupDetailsLabel.rightAnchor),
+            requesterDetailsLabel.leftAnchor.constraint(equalTo: requesterTitleLabel.rightAnchor, constant: 10),
             requesterDetailsLabel.topAnchor.constraint(equalTo: requesterTitleLabel.topAnchor),
             requesterDetailsLabel.bottomAnchor.constraint(equalTo: requesterTitleLabel.bottomAnchor),
             
@@ -213,8 +214,9 @@ class AllRequestsTableViewCell: UITableViewCell {
             itemTitleLabel.topAnchor.constraint(equalTo: priceTitleLabel.bottomAnchor),
             
             itemDetailsLabel.rightAnchor.constraint(equalTo: pickupDetailsLabel.rightAnchor),
+            itemDetailsLabel.leftAnchor.constraint(equalTo: itemTitleLabel.rightAnchor, constant: 10),
             itemDetailsLabel.topAnchor.constraint(equalTo: itemTitleLabel.topAnchor),
-            itemDetailsLabel.bottomAnchor.constraint(equalTo: itemTitleLabel.bottomAnchor),
+            itemDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
         ]
         
         NSLayoutConstraint.activate(constraints)

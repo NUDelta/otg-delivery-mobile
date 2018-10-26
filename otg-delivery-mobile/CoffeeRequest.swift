@@ -260,8 +260,14 @@ extension CoffeeRequest {
     }
     
     static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
+        let defaults = UserDefaults.standard
+        guard let userId = defaults.object(forKey: "userId") as? String else {
+            print("User ID not in defaults")
+            return
+        }
+        
         let session: URLSession = URLSession.shared
-        let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending")
+        let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending?&excluding=\(userId)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
         

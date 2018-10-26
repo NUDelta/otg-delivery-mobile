@@ -71,6 +71,38 @@ class AllRequestsTableViewController: UITableViewController {
         return cell
     }
     
+    // MARK: - Editing, Selecting Cells
+    
+    // Allow editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    // Support clicking on a row to trigger functionality (accepting a request)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let acceptAlert = UIAlertController(title: "Would you like to accept this task?", message: "", preferredStyle: .alert)
+        
+        let accept = UIAlertAction(title: "OK", style: .default, handler: { [weak acceptAlert] (_) in
+            // Accept order and return to requests page
+            let currentRequest = self.requests[indexPath.row]
+            User.acceptRequest(requestId: currentRequest.requestId as! String, completionHandler: {
+                print("REQUEST ACCEPTED: request successfully accepted.")
+            })
+            let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
+            self.present(mainView, animated: true, completion: nil)
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
+            
+        })
+        
+        acceptAlert.addAction(accept)
+        acceptAlert.addAction(cancel)
+        present(acceptAlert, animated: true, completion: nil)
+        
+        allRequestsTableView.deselectRow(at: indexPath as IndexPath, animated: true)
+    }
+    
     //Return number of sections in table view
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

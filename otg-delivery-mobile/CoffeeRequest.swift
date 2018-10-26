@@ -10,7 +10,7 @@ import Foundation
 
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
-struct CoffeeRequest : Codable{
+class CoffeeRequest : Codable{
     //API Location
     //private static let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/requests"
     private static let apiUrl: String = "http://localhost:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
@@ -27,15 +27,61 @@ struct CoffeeRequest : Codable{
         case helper
     }
 
-    //all fields that go into a request
-    let requester: String
-    let orderDescription: String
-    let status: String
-    let deliveryLocation: String
-    let deliveryLocationDetails: String
-    let helper: String?
-    let endTime: String?
-    let requestId: String?
+    // Instance variables of the object in Swift
+    var requester: User? = nil
+    var item: Item? = nil
+    var status: String
+    var deliveryLocation: String
+    var deliveryLocationDetails: String
+    var helper: String?
+    var endTime: String?
+    var requestId: String?
+    
+    // For creating new objects
+    var requesterId: String = ""
+    var itemId: String = ""
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        // Decode data from JSON
+        requester = try container.decode(User.self, forKey: .requester)
+        item = try container.decode(Item.self, forKey: .orderDescription)
+        status = try container.decode(String.self, forKey: .status)
+        deliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
+        deliveryLocationDetails = try container.decodeIfPresent(String.self, forKey: .deliveryLocationDetails) ?? ""
+        helper = try container.decodeIfPresent(String.self, forKey: .helper) ?? ""
+        endTime = try container.decode(String.self, forKey: .endTime)
+        requestId = try container.decode(String.self, forKey: .requestId)
+        
+        // Populate id fields
+        requesterId = requester?.userId ?? "No requester ID"
+        itemId = item?.id ?? "No item ID"
+        
+    }
+    
+    init(requester: String, itemId: String, status: String, deliveryLocation: String, deliveryLocationDetails: String, endTime: String) {
+        self.requesterId = requester
+        self.itemId = itemId
+        self.status = status
+        self.deliveryLocation = deliveryLocation
+        self.deliveryLocationDetails = deliveryLocationDetails
+        self.endTime = endTime
+        self.requestId = ""
+        self.helper = ""
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(requesterId, forKey: .requester)
+        try container.encode(itemId, forKey: .orderDescription)
+        try container.encode(status, forKey: .status)
+        try container.encode(deliveryLocation, forKey: .deliveryLocation)
+        try container.encode(deliveryLocationDetails, forKey: .deliveryLocationDetails)
+        try container.encode(helper, forKey: .helper)
+        try container.encode(endTime, forKey: .endTime)
+        try container.encode(requestId, forKey: .requestId)
+    }
 }
 extension CoffeeRequest {
 
@@ -83,8 +129,8 @@ extension CoffeeRequest {
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
         var components = URLComponents(string: "")
         components?.queryItems = [
-            URLQueryItem(name: "requester", value: coffeeRequest.requester),
-            URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
+            URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
+            URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
@@ -147,8 +193,8 @@ extension CoffeeRequest {
 
         var components = URLComponents(string: "")
         components?.queryItems = [
-            URLQueryItem(name: "requester", value: coffeeRequest.requester),
-            URLQueryItem(name: "orderDescription", value: coffeeRequest.orderDescription),
+            URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
+            URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
@@ -210,6 +256,42 @@ extension CoffeeRequest {
             }
         }
 
+        task.resume()
+    }
+    
+    static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
+        let defaults = UserDefaults.standard
+        guard let userId = defaults.object(forKey: "userId") as? String else {
+            print("User ID not in defaults")
+            return
+        }
+        
+        let session: URLSession = URLSession.shared
+        let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending?&excluding=\(userId)")
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "GET"
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            if let data = data {
+                print("COFFEE REQUEST: Get all open requests.")
+                
+                var coffeeRequests: [CoffeeRequest] = []
+                let httpResponse = response as? HTTPURLResponse
+                
+                if(httpResponse?.statusCode != 400){
+                    do {
+                        let decoder = JSONDecoder()
+                        coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
+                    } catch {
+                        print("COFFEE REQUEST.getAllOpen: error trying to convert data to JSON...")
+                        print(error)
+                    }
+                }
+                
+                completionHandler(coffeeRequests)
+            }
+        }
+        
         task.resume()
     }
 

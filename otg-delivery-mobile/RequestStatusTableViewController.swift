@@ -17,7 +17,7 @@ class RequestStatusTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
 
-            UserModel.getMyRequests(completionHandler: { coffeeRequests in
+        User.getMyRequests(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.myRequests = coffeeRequests
                 self.MyRequestsTableView.reloadData()
@@ -33,8 +33,13 @@ class RequestStatusTableViewController: UITableViewController {
         }
         
         let request = myRequests[indexPath.row]
-        
-        cell.orderLabel.text = request.orderDescription
+        cell.orderLabel.text = "HI"
+//        request.getItemName(completionHandler: { (itemName) in
+//            cell.orderLabel.text = itemName
+//            print(itemName + "HERE")
+//        })
+//        print("puppy")
+//        print(request.status)
         cell.statusDetailsLabel.text = request.status
         cell.expirationDetailsLabel.text = request.endTime
         cell.deliveryLocationDetailsLabel.text = request.deliveryLocation

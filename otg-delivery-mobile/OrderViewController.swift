@@ -9,9 +9,9 @@
 import UIKit
 import UserNotifications
 import CoreLocation
+import MessageUI
 
-class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
-    
+class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
     
     var myRequests = [CoffeeRequest]()
     var acceptedRequests = [CoffeeRequest]()
@@ -93,7 +93,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         super.viewDidAppear(animated)
         
         print("SHOULD BE PRINTING USER ID")
-        print(UserDefaults.standard.object(forKey: "userId"))
+        print(UserDefaults.standard.object(forKey: "userId") as Any)
         //If user not logged in, transition to login page
         if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
@@ -108,10 +108,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
+        Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
 
         CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
             print("Printing task:")
-            print(coffeeRequest ?? "Task incorrectly returned")
+            print(coffeeRequest ?? "No available tasks")
             
             if let coffeeReq = coffeeRequest {
                 //Set most recent request in user defaults
@@ -130,8 +131,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func sendNotification(locationName: String, request: CoffeeRequest){
         print("VIEW CONTROLLER: sending coffee pickup notification")
 
-        //Log to server that user is being notified
-        sendLoggingEvent(forLocation: locationName, forRequest: request)
+        Logging.sendEvent(location: locationName, eventType: Logging.eventTypes.taskNotification.rawValue, details: "")
         
         let content = UNMutableNotificationContent()
         content.title = "\(request.requester?.username ?? "A friend") is hungry!"
@@ -148,39 +148,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 print("Error in notifying from Pre-Tracker: \(error)")
             }
         })
-    }
-    
-    func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
-        let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
-        //let apiUrl: String = "http://localhost:8080/logging"
-        
-        let defaults = UserDefaults.standard
-        let requesterName = defaults.object(forKey: "username")
-        
-        var components = URLComponents(string: "")
-        components?.queryItems = [
-            URLQueryItem(name: "username", value: requesterName as? String),
-            URLQueryItem(name: "locationEntered", value: locationName),
-            URLQueryItem(name: "eventType", value: "NOTIFIED"),
-            URLQueryItem(name: "requestId", value: request.requestId),
-        ]
-        
-        let url = URL(string: apiUrl)
-        let session: URLSession = URLSession.shared
-        var requestURL = URLRequest(url: url!)
-        
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
-        let httpBodyString: String? = components?.url?.absoluteString
-        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-        
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("LOGGING: Logged notification to server.")
-        }
-        
-        task.resume()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -201,12 +168,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             controller?.activeEditingRequest = self.activeEditingRequest
             controller?.actionType = self.currentActionType
             
-            print("Sending action type \(currentActionType)")
+            print("Sending action type \(String(describing: currentActionType))")
         }
         
         if segue.identifier == "allTasksSegue" {
             let navController = segue.destination as? UINavigationController
-            let controller = navController?.viewControllers.first as? AllRequestsTableViewController
         }
     }
     
@@ -269,10 +235,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         return
                     }
                     let helperName = helperUserModel.username
-                    status = "Accepted by \(helperName)"
+                    let phoneNumber = helperUserModel.phoneNumber
+                    status = "Accepted by \(helperName) - contact at \(phoneNumber)"
                     DispatchQueue.main.async {
                         cell.statusDetailsLabel.text = status
                     }
+                    
+                    // So phone number can be accessed when pressing button
+                    cell.contactHelperButton.tag = Int(phoneNumber) ?? 0
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status
@@ -290,29 +260,23 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
             cell.deliveryDetailsDetailsLabel.numberOfLines = 0
             
+            // Contact helper button
+            cell.contentView.isUserInteractionEnabled = true;
+            cell.contactHelperButton.tag = indexPath.row
+            cell.contactHelperButton.addTarget(self, action: #selector(contactUser),
+                                                  for: .touchUpInside)
             return cell
 
         } else if tableView == acceptedRequestTableView {
-            
-            /*guard let cell = tableView.dequeueReusableCell(withIdentifier: AcceptedRequestTableViewCell.reuseIdentifier, for: indexPath) as? AcceptedRequestTableViewCell else {
-                fatalError("Couldn't dequeue AcceptedRequestTableViewCell")
-            }*/
             let cell = AcceptedRequestTableViewCell()
  
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
             cell.orderLabel.text = request.item?.name ?? "Item not loading"
             
-            if (request.status == "Accepted") {
-                var status = "Accepted"
-                let requesterName = request.requester?.username ?? "Requester not loading"
-                status = "Requested by \(requesterName)"
-                DispatchQueue.main.async {
-                    cell.statusDetailsLabel.text = status
-                }
-            } else {
-                cell.statusDetailsLabel.text = request.status
-            }
+            let requesterName = request.requester?.username ?? "Requester not loading"
+            let status = "Requested by \(requesterName)"
+            cell.statusDetailsLabel.text = status
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
@@ -330,10 +294,36 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.completeOrderButton.tag = indexPath.row
             cell.completeOrderButton.addTarget(self, action: #selector(completeOrder), for: .touchUpInside)
             
+            let phoneNumber = request.requester?.phoneNumber ?? "0"
+            cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
+            cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
+            
             return cell
         }
         
         return UITableViewCell()
+    }
+    
+    @objc func contactUser(sender: UIButton) {
+        print("In contact requester")
+        let phoneNumber = String(sender.tag)
+        let messageVC = MFMessageComposeViewController()
+
+        // Request has not been accepted
+        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
+            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+            })
+            
+            alert.addAction(cancel)
+            present(alert, animated: true, completion: nil)
+        } else { // Request has been accepted, message helper
+            messageVC.body = "";
+            messageVC.recipients = [phoneNumber]
+            messageVC.messageComposeDelegate = self
+            
+            self.present(messageVC, animated: false, completion: nil)
+        }
     }
     
     @objc func completeOrder(sender: UIButton) {
@@ -496,6 +486,23 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         task.resume()
         
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        print("in message compose view controller")
+        switch (result.rawValue) {
+        case MessageComposeResult.cancelled.rawValue:
+            //            print("Message was cancelled")
+            self.dismiss(animated: true, completion: nil)
+        case MessageComposeResult.failed.rawValue:
+            //            print("Message failed")
+            self.dismiss(animated: true, completion: nil)
+        case MessageComposeResult.sent.rawValue:
+            //            print("Message was sent")
+            self.dismiss(animated: true, completion: nil)
+        default:
+            break;
+        }
     }
     
 

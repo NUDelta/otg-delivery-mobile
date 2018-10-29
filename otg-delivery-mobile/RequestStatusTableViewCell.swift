@@ -19,6 +19,8 @@ class RequestStatusTableViewCell: UITableViewCell {
     let deliveryLocationDetailsLabel = UILabel()
     let deliveryDetailsDetailsLabel = UILabel()
     
+    let contactHelperButton = UIButton.init(type: .system)
+    
     // MARK: - Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,6 +36,14 @@ class RequestStatusTableViewCell: UITableViewCell {
         let labelVerticalSpacing: CGFloat = 5.0
         let labelTopPadding: CGFloat = 10.0
         let labelBottomPadding: CGFloat = 10.0
+        
+        contactHelperButton.backgroundColor = UIColor.clear
+        contactHelperButton.layer.cornerRadius = 1.0;
+        contactHelperButton.layer.borderWidth = 0.2;
+        contactHelperButton.setTitleColor(self.tintColor, for: .normal)
+        contactHelperButton.setTitle("Contact Requester", for: .normal)
+        contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactHelperButton)
         
         
         // Order Label
@@ -161,7 +171,13 @@ class RequestStatusTableViewCell: UITableViewCell {
             deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: contactHelperButton.topAnchor),
+            //deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            
+            contactHelperButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+            contactHelperButton.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            contactHelperButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: -10),
+            contactHelperButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
             ]
         NSLayoutConstraint.activate(constraints)

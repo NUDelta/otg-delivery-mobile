@@ -89,7 +89,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     }
     
     @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
             if self.view.frame.origin.y != 0{
                 self.view.frame.origin.y = 0
             }
@@ -133,7 +133,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         
         switch(actionType){
             case .Edit:
-                print("SUBMITTING EDITING REQUEST FOR \(self.activeEditingRequest)")
+                print("SUBMITTING EDITING REQUEST FOR \(String(describing: self.activeEditingRequest))")
                 CoffeeRequest.updateRequest(with_id: self.activeEditingRequest!.requestId!, withRequest: requestFromForm, completionHandler: {})
                 break
             case .Order:

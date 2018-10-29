@@ -28,12 +28,14 @@ struct User : Codable{
         case userId = "_id"
         case deviceId
         case username
+        case phoneNumber
     }
     
     //all fields that go into a request
     let userId: String?
     let deviceId: String
     let username: String
+    let phoneNumber: String
 }
 
 
@@ -47,7 +49,8 @@ extension User {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "deviceId", value: user.deviceId),
-            URLQueryItem(name: "username", value: user.username)
+            URLQueryItem(name: "username", value: user.username),
+            URLQueryItem(name: "phoneNumber", value: user.phoneNumber),
         ]
         
         let url = URL(string: User.apiUrl)

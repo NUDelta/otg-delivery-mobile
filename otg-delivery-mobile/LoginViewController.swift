@@ -13,7 +13,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     var didLogIn: (() -> Void)?
     
     @IBOutlet weak var usernameField: UITextField?
-
+    @IBOutlet weak var phoneNumberField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,10 +39,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createLogIn() {
         //Save session username as user default
-        //TODO in future check for this default before loading view
-        //and if found, navigate straight to main view
         guard let usernameText: String = usernameField?.text else {
             print("LOGIN VIEW: username text could not be retrieved.")
+            return
+        }
+        
+        guard let phoneNumber: String = phoneNumberField?.text else {
+            print("LOGIN: phone number text could not be retrieved.")
             return
         }
         
@@ -53,7 +57,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             tokenValue = tokenId
         }
         
-        let user = User(userId: nil, deviceId: tokenValue, username: usernameText)
+        let user = User(userId: nil, deviceId: tokenValue, username: usernameText, phoneNumber: phoneNumber)
         User.create(user: user, completionHandler: { userModel in
                         
             guard let createdUser = userModel else {

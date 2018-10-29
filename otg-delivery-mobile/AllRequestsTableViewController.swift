@@ -82,7 +82,7 @@ class AllRequestsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let acceptAlert = UIAlertController(title: "Would you like to accept this task?", message: "", preferredStyle: .alert)
         
-        let accept = UIAlertAction(title: "OK", style: .default, handler: { [weak acceptAlert] (_) in
+        let accept = UIAlertAction(title: "OK", style: .default, handler: { (_) in
             // Accept order and return to requests page
             let currentRequest = self.requests[indexPath.row]
             User.acceptRequest(requestId: currentRequest.requestId as! String, completionHandler: {

@@ -20,6 +20,7 @@ class AcceptedRequestTableViewCell: UITableViewCell {
     let deliveryDetailsDetailsLabel = UILabel()
     
     let completeOrderButton = UIButton.init(type: .system)
+    let contactRequesterButton = UIButton.init(type: .system)
     
     // MARK: - Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -34,9 +35,7 @@ class AcceptedRequestTableViewCell: UITableViewCell {
         let subtitleDetailFont = UIFont.systemFont(ofSize: 12, weight: .regular)
         
         let labelVerticalSpacing: CGFloat = 5.0
-        let labelTopPadding: CGFloat = 10.0
-        let labelBottomPadding: CGFloat = 10.0
-        
+        let labelTopPadding: CGFloat = 10.0        
         
         //Edit button
         completeOrderButton.backgroundColor = UIColor.clear
@@ -47,6 +46,14 @@ class AcceptedRequestTableViewCell: UITableViewCell {
         completeOrderButton.translatesAutoresizingMaskIntoConstraints = false
         //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
         self.addSubview(completeOrderButton)
+        
+        contactRequesterButton.backgroundColor = UIColor.clear
+        contactRequesterButton.layer.cornerRadius = 1.0;
+        contactRequesterButton.layer.borderWidth = 0.2;
+        contactRequesterButton.setTitleColor(self.tintColor, for: .normal)
+        contactRequesterButton.setTitle("Contact Requester", for: .normal)
+        contactRequesterButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactRequesterButton)
 
         
         
@@ -178,10 +185,15 @@ class AcceptedRequestTableViewCell: UITableViewCell {
             deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -10),
             
 //            // Button constraints
-            completeOrderButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            completeOrderButton.bottomAnchor.constraint(equalTo: contactRequesterButton.topAnchor, constant: -5),
             completeOrderButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             completeOrderButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
             completeOrderButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: 5),
+            
+            contactRequesterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            contactRequesterButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+            contactRequesterButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+            contactRequesterButton.topAnchor.constraint(equalTo: completeOrderButton.bottomAnchor, constant: 5),
 
         ]
         NSLayoutConstraint.activate(constraints)

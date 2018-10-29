@@ -99,7 +99,7 @@ extension User {
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             if let data = data {
-                print("COFFEE REQUEST: Get request \(id).")
+                print("USER: Get user \(id).")
                 
                 var userModel: User?
                 let httpResponse = response as? HTTPURLResponse
@@ -128,6 +128,15 @@ extension User {
             print("Helper ID not in defaults")
             return
         }
+        
+        CoffeeRequest.getRequest(with_id: id, completionHandler: { (request) in
+            guard let request = request else {
+                print("USER MODEL.acceptRequest: No request returned.")
+                
+                return
+            }
+            Logging.sendEvent(location: request.deliveryLocation, eventType: Logging.eventTypes.taskAccepted.rawValue, details: "")
+        })
         
         //Define session
         let session: URLSession = URLSession.shared

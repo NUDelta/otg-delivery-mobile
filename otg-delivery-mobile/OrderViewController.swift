@@ -108,10 +108,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("User entered within coffee region.")
+        Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
 
         CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
             print("Printing task:")
-            print(coffeeRequest ?? "Task incorrectly returned")
+            print(coffeeRequest ?? "No available tasks")
             
             if let coffeeReq = coffeeRequest {
                 //Set most recent request in user defaults
@@ -130,8 +131,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func sendNotification(locationName: String, request: CoffeeRequest){
         print("VIEW CONTROLLER: sending coffee pickup notification")
 
-        //Log to server that user is being notified
-        sendLoggingEvent(forLocation: locationName, forRequest: request)
+        Logging.sendEvent(location: locationName, eventType: Logging.eventTypes.taskNotification.rawValue, details: "")
         
         let content = UNMutableNotificationContent()
         content.title = "\(request.requester?.username ?? "A friend") is hungry!"
@@ -148,39 +148,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 print("Error in notifying from Pre-Tracker: \(error)")
             }
         })
-    }
-    
-    func sendLoggingEvent(forLocation locationName: String, forRequest request: CoffeeRequest){
-        let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/logging"
-        //let apiUrl: String = "http://localhost:8080/logging"
-        
-        let defaults = UserDefaults.standard
-        let requesterName = defaults.object(forKey: "username")
-        
-        var components = URLComponents(string: "")
-        components?.queryItems = [
-            URLQueryItem(name: "username", value: requesterName as? String),
-            URLQueryItem(name: "locationEntered", value: locationName),
-            URLQueryItem(name: "eventType", value: "NOTIFIED"),
-            URLQueryItem(name: "requestId", value: request.requestId),
-        ]
-        
-        let url = URL(string: apiUrl)
-        let session: URLSession = URLSession.shared
-        var requestURL = URLRequest(url: url!)
-        
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
-        let httpBodyString: String? = components?.url?.absoluteString
-        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-        
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("LOGGING: Logged notification to server.")
-        }
-        
-        task.resume()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -201,12 +168,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             controller?.activeEditingRequest = self.activeEditingRequest
             controller?.actionType = self.currentActionType
             
-            print("Sending action type \(currentActionType)")
+            print("Sending action type \(String(describing: currentActionType))")
         }
         
         if segue.identifier == "allTasksSegue" {
             let navController = segue.destination as? UINavigationController
-            let controller = navController?.viewControllers.first as? AllRequestsTableViewController
         }
     }
     

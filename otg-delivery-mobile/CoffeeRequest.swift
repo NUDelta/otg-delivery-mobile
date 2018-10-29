@@ -107,7 +107,6 @@ extension CoffeeRequest {
 
             var coffeeRequest: CoffeeRequest?
             let httpResponse = response as? HTTPURLResponse
-            print(httpResponse?.statusCode)
 
             if(httpResponse?.statusCode != 400){
                 do {
@@ -127,6 +126,8 @@ extension CoffeeRequest {
 
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
+        Logging.sendEvent(location: coffeeRequest.deliveryLocation, eventType: Logging.eventTypes.requestMade.rawValue, details: "")
+        
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
@@ -241,7 +242,6 @@ extension CoffeeRequest {
 
                 var coffeeRequest: CoffeeRequest?
                 let httpResponse = response as? HTTPURLResponse
-                print(httpResponse?.statusCode)
 
                 if(httpResponse?.statusCode != 400){
                     do {

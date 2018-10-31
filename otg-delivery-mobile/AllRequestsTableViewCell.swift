@@ -144,7 +144,7 @@ class AllRequestsTableViewCell: UITableViewCell {
                                             multiplier: 1.0,
                                             constant: 0.0)
         
-        let rightMargin = NSLayoutConstraint(item: pickupTitleLabel,
+        let rightMargin = NSLayoutConstraint(item: pickupDetailsLabel,
                                              attribute: .right,
                                              relatedBy: .equal,
                                              toItem: self,
@@ -155,11 +155,12 @@ class AllRequestsTableViewCell: UITableViewCell {
         let constraints = [
             // Pickup Constraints
             leftMargin,
-            rightMargin,
+            pickupTitleLabel.rightAnchor.constraint(equalTo: leftAnchor, constant: 80),
             pickupTitleLabel.topAnchor.constraint(equalTo: topAnchor, constant: labelTopPadding),
             
             
-            pickupDetailsLabel.rightAnchor.constraint(equalTo: pickupTitleLabel.rightAnchor),
+            //pickupDetailsLabel.rightAnchor.constraint(equalTo: rightMargin),
+            rightMargin,
             pickupDetailsLabel.topAnchor.constraint(equalTo: pickupTitleLabel.topAnchor),
             pickupDetailsLabel.bottomAnchor.constraint(equalTo: pickupTitleLabel.bottomAnchor),
             
@@ -167,17 +168,19 @@ class AllRequestsTableViewCell: UITableViewCell {
             
             //Dropoff Constraints
             dropoffTitleLabel.leftAnchor.constraint(equalTo: pickupTitleLabel.leftAnchor),
-            dropoffTitleLabel.topAnchor.constraint(equalTo: pickupTitleLabel.bottomAnchor),
+            dropoffTitleLabel.rightAnchor.constraint(equalTo: pickupTitleLabel.rightAnchor),
+            dropoffTitleLabel.topAnchor.constraint(equalTo: pickupTitleLabel.bottomAnchor, constant: 5),
             
             dropoffDetailsLabel.rightAnchor.constraint(equalTo: pickupDetailsLabel.rightAnchor),
+            dropoffDetailsLabel.leftAnchor.constraint(equalTo: dropoffTitleLabel.rightAnchor, constant: 10),
             dropoffDetailsLabel.topAnchor.constraint(equalTo: dropoffTitleLabel.topAnchor),
-            dropoffDetailsLabel.bottomAnchor.constraint(equalTo: dropoffTitleLabel.bottomAnchor),
+            dropoffDetailsLabel.bottomAnchor.constraint(equalTo: expirationTitleLabel.topAnchor, constant: -5),
             
             
             
             // Expiration Constraints
             expirationTitleLabel.leftAnchor.constraint(equalTo: pickupTitleLabel.leftAnchor),
-            expirationTitleLabel.topAnchor.constraint(equalTo: dropoffTitleLabel.bottomAnchor),
+            expirationTitleLabel.topAnchor.constraint(equalTo: dropoffTitleLabel.bottomAnchor, constant: 5),
             
             expirationDetailsLabel.rightAnchor.constraint(equalTo: pickupDetailsLabel.rightAnchor),
             expirationDetailsLabel.topAnchor.constraint(equalTo: expirationTitleLabel.topAnchor),
@@ -211,6 +214,7 @@ class AllRequestsTableViewCell: UITableViewCell {
             
             // Item Constraints
             itemTitleLabel.leftAnchor.constraint(equalTo: summaryTitleLabel.rightAnchor, constant: 10),
+            itemTitleLabel.rightAnchor.constraint(equalTo: itemTitleLabel.leftAnchor, constant: 30),
             itemTitleLabel.topAnchor.constraint(equalTo: priceTitleLabel.bottomAnchor),
             
             itemDetailsLabel.rightAnchor.constraint(equalTo: pickupDetailsLabel.rightAnchor),

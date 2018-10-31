@@ -236,7 +236,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     }
                     let helperName = helperUserModel.username
                     let phoneNumber = helperUserModel.phoneNumber
-                    status = "Accepted by \(helperName) - contact at \(phoneNumber)"
+                    status = "Accepted by \(helperName)"
                     DispatchQueue.main.async {
                         cell.statusDetailsLabel.text = status
                     }

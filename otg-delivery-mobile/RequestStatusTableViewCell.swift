@@ -130,11 +130,12 @@ class RequestStatusTableViewCell: UITableViewCell {
             
             // Status title label and details label
             statusTitleLabel.leftAnchor.constraint(equalTo: orderLabel.leftAnchor, constant: 10),
-            statusTitleLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.leftAnchor),
+            statusTitleLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.leftAnchor, constant: -5),
             statusTitleLabel.topAnchor.constraint(equalTo: orderLabel.bottomAnchor,
                                                   constant: labelVerticalSpacing),
             
             statusDetailsLabel.rightAnchor.constraint(equalTo: orderLabel.rightAnchor),
+            statusDetailsLabel.leftAnchor.constraint(equalTo: statusTitleLabel.rightAnchor, constant: 5),
             statusDetailsLabel.topAnchor.constraint(equalTo: statusTitleLabel.topAnchor),
             statusDetailsLabel.bottomAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
             

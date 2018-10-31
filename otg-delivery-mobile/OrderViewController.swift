@@ -469,7 +469,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
         
-         let apiUrl: String = "https://otg-delivery-backend.herokuapp.com/feedback"
+         let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
         //let apiUrl: String = "http://localhost:8080/feedback"
         
         let url = URL(string: apiUrl)

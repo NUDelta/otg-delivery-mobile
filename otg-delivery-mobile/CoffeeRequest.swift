@@ -197,7 +197,6 @@ extension CoffeeRequest {
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
-            URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
             URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
         ]

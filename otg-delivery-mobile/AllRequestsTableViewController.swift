@@ -57,7 +57,7 @@ class AllRequestsTableViewController: UITableViewController {
         cell.expirationDetailsLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
         cell.requesterDetailsLabel.text = request.requester?.username ?? "Requester name cannot load"
         cell.priceDetailsLabel.text = String(request.item?.price ?? 0)
-        cell.itemDetailsLabel.text = request.item?.description
+        cell.itemDetailsLabel.text = request.item?.name
 
 
         // Text wrapping

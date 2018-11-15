@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "otg-delivery-mobile/OrderViewController.swift"
-            timestampString = "562648390.498922"
+            timestampString = "563658334.601451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "493"
@@ -42,12 +42,12 @@
                   moduleName = "otg-delivery-mobile"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/maggielou/Documents/otg-delivery-mobile/otg-delivery-mobile/OrderViewController.swift"
-                  timestampString = "562646828.8461421"
+                  timestampString = "563948626.081268"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "493"
                   endingLineNumber = "493"
-                  offsetFromSymbolStart = "231">
+                  offsetFromSymbolStart = "227">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -57,14 +57,30 @@
                   moduleName = "otg-delivery-mobile"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/maggielou/Documents/otg-delivery-mobile/otg-delivery-mobile/OrderViewController.swift"
-                  timestampString = "562646828.8482389"
+                  timestampString = "563948626.084223"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "493"
                   endingLineNumber = "493"
-                  offsetFromSymbolStart = "246">
+                  offsetFromSymbolStart = "242">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "otg-delivery-mobile/RequesterLocationPickerTableViewController.swift"
+            timestampString = "563948625.934033"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "tableView(_:cellForRowAt:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

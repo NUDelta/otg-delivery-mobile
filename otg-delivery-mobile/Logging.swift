@@ -15,6 +15,7 @@ struct Logging {
     public enum eventTypes : String{
         case enterRegion = "Entered Pickup Region"
         case taskNotification = "Task Notification Sent"
+        case helperIntendedLocation = "Intended Helper Destination"
         case taskAccepted = "Task Accepted"
         case requestMade = "Request Made"
         public static var eventTypeARR = [enterRegion,taskNotification,taskAccepted, requestMade]

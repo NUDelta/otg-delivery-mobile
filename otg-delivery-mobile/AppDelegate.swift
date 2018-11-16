@@ -20,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if (granted) {
                 
                 // setup notification categories
-                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "Accept", options: [.foreground])
-                let rejectAction = UNNotificationAction(identifier: "rejectNotification", title: "Reject", options: [.destructive])
+                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'd like to help!", options: [.foreground])
+                let rejectAction = UNNotificationAction(identifier: "rejectNotification", title: "Cancel", options: [.destructive])
                 
                 let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectAction], intentIdentifiers: [], options: [])
 
@@ -81,10 +81,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switch response.actionIdentifier {
             
             case "acceptNotification":
-                print("In AcceptNotification")
-                acceptLatestRequest()
+                showPendingRequest()
             case "rejectNotification":
-                //If rejected, log to console but do nothing
                 //Should log this to server for research purposes perhaps??
                 print("NOTIFICATION ACTION: request rejected.")
             default:
@@ -97,34 +95,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    //Method that accepts the latest request stored in UserDefaults
-    //And notifies the user on next steps.
-    func acceptLatestRequest() {
-        
-        //Since we set the latestNotificationID in UserDefaults each time user enters a Geofence
-        //If the task is accepted, we can pull it out from there and use it to talk to server
-        let defaults = UserDefaults.standard
-        let latestNotificationId = defaults.object(forKey: "latestRequestNotification")!
-        
-        print("Should be accepting request...")
-        
-        User.acceptRequest(requestId: latestNotificationId as! String, completionHandler: {
-            print("REQUEST ACCEPTED: request successfully accepted.")
-        })
-        
-
-        //Create and show alert
-        let acceptedAlert = UIAlertView()
-        acceptedAlert.title = "Thanks for helping!"
-        acceptedAlert.message = "Please communicate with the requester over Slack with any questions."
-        acceptedAlert.addButton(withTitle: "Ok")
-        acceptedAlert.show()
-    }
-    
     func showPendingRequest() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        let taskConfirmationVC = sb.instantiateViewController(withIdentifier: "TaskConfirmationViewController") as! TaskConfirmationViewController
-        window?.rootViewController = taskConfirmationVC
+        let vc = sb.instantiateViewController(withIdentifier: "HelperLocationFormViewController") as! HelperLocationFormViewController
+        window?.rootViewController = vc
     }
     
 

@@ -33,16 +33,10 @@ class RequestStatusTableViewController: UITableViewController {
         }
         
         let request = myRequests[indexPath.row]
-        cell.orderLabel.text = "HI"
-//        request.getItemName(completionHandler: { (itemName) in
-//            cell.orderLabel.text = itemName
-//            print(itemName + "HERE")
-//        })
-//        print("puppy")
-//        print(request.status)
+
         cell.statusDetailsLabel.text = request.status
         cell.expirationDetailsLabel.text = request.endTime
-        cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
+        cell.deliveryLocationDetailsLabel.text = CoffeeRequest.arrayToJson(arr: request.deliveryLocation)
         cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
         
         // Text wraps

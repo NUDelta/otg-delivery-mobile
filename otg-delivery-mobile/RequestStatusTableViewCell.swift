@@ -19,6 +19,8 @@ class RequestStatusTableViewCell: UITableViewCell {
     let deliveryLocationDetailsLabel = UILabel()
     let deliveryDetailsDetailsLabel = UILabel()
     
+    let deliveryLocationTitleLabel = UILabel()
+    
     let contactHelperButton = UIButton.init(type: .system)
     
     // MARK: - Initialization
@@ -41,7 +43,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         contactHelperButton.layer.cornerRadius = 1.0;
         contactHelperButton.layer.borderWidth = 0.2;
         contactHelperButton.setTitleColor(self.tintColor, for: .normal)
-        contactHelperButton.setTitle("Contact Requester", for: .normal)
+        contactHelperButton.setTitle("Contact Helper", for: .normal)
         contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactHelperButton)
         
@@ -58,11 +60,8 @@ class RequestStatusTableViewCell: UITableViewCell {
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Expiration:"
         
-        let deliveryLocationTitleLabel = UILabel()
-        deliveryLocationTitleLabel.text = "Delivery Location:"
-        
         let deliveryDetailsTitleLabel = UILabel()
-        deliveryDetailsTitleLabel.text = "Delivery Details:"
+        deliveryDetailsTitleLabel.text = "Special Requests:"
         
         let titleLabels = [
             statusTitleLabel,

@@ -24,8 +24,10 @@
 		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
 		22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */; };
 		391F3845218659BD00F1C91B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391F3844218659BD00F1C91B /* Logging.swift */; };
-		39C932C0219D251B001CC47D /* RequesterLocationPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932BF219D251B001CC47D /* RequesterLocationPickerTableViewController.swift */; };
-		39C932C2219D2644001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C1219D2644001CC47D /* MeetingPointTableViewCell.swift */; };
+		393DF993219F03EA0096E765 /* HelperLocationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */; };
+		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
+		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
+		39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */; };
 		39D2343720A523D10020460A /* TaskConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D2343620A523D10020460A /* TaskConfirmationViewController.swift */; };
 		39E7105B216C2CF900A73BCA /* AllRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */; };
 		39E7105D216C376400A73BCA /* AllRequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */; };
@@ -54,8 +56,11 @@
 		22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewCell.swift; sourceTree = "<group>"; };
 		391F3844218659BD00F1C91B /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "otg-delivery-mobile.entitlements"; sourceTree = "<group>"; };
-		39C932BF219D251B001CC47D /* RequesterLocationPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequesterLocationPickerTableViewController.swift; sourceTree = "<group>"; };
-		39C932C1219D2644001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
+		393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperLocationFormViewController.swift; sourceTree = "<group>"; };
+		393DF994219F44590096E765 /* routeTechExpress.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeTechExpress.gpx; sourceTree = "<group>"; };
+		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
+		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
+		39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMeetingPointTableViewController.swift; sourceTree = "<group>"; };
 		39D2343620A523D10020460A /* TaskConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskConfirmationViewController.swift; sourceTree = "<group>"; };
 		39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRequestsTableViewCell.swift; sourceTree = "<group>"; };
 		39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRequestsTableViewController.swift; sourceTree = "<group>"; };
@@ -96,10 +101,14 @@
 				3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */,
 				22BD7F162045E741008A877B /* image-resources */,
 				2238817E203F55370012707C /* route1.gpx */,
+				393DF994219F44590096E765 /* routeTechExpress.gpx */,
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
-				39C932C1219D2644001CC47D /* MeetingPointTableViewCell.swift */,
+				393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */,
+				39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */,
+				39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */,
+				39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */,
 				39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */,
 				39D2343620A523D10020460A /* TaskConfirmationViewController.swift */,
 				39FE213C2097BB900019AE3A /* AcceptedRequestTableViewCell.swift */,
@@ -107,7 +116,6 @@
 				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
 				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
-				39C932BF219D251B001CC47D /* RequesterLocationPickerTableViewController.swift */,
 				228907D820756C6800072961 /* Item.swift */,
 				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
@@ -217,18 +225,20 @@
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
 				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
 				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,
+				39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */,
 				228907D920756C6800072961 /* Item.swift in Sources */,
 				39D2343720A523D10020460A /* TaskConfirmationViewController.swift in Sources */,
+				393DF993219F03EA0096E765 /* HelperLocationFormViewController.swift in Sources */,
 				228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */,
-				39C932C0219D251B001CC47D /* RequesterLocationPickerTableViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				39E7105D216C376400A73BCA /* AllRequestsTableViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
-				39C932C2219D2644001CC47D /* MeetingPointTableViewCell.swift in Sources */,
+				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				39E7105B216C2CF900A73BCA /* AllRequestsTableViewCell.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,
+				39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,17 +379,17 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "otg-delivery-mobile/otg-delivery-mobile.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaoqing Lou (SX58JB7H4H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaoqing Lou (SX58JB7H4H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Northwestern University";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = W4E2C6X642;
+				DEVELOPMENT_TEAM = 823S57WQK3;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.B;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "009b5511-11e1-4079-9cf4-3a03e6d058a2";
-				PROVISIONING_PROFILE_SPECIFIER = "OTG Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab B";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -391,15 +401,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "otg-delivery-mobile/otg-delivery-mobile.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer: Xiaoqing Lou (SX58JB7H4H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Xiaoqing Lou (SX58JB7H4H)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Northwestern University";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
 				CODE_SIGN_STYLE = Manual;
 				"CODE_SIGN_STYLE[sdk=*]" = Manual;
 				DEVELOPMENT_TEAM = 823S57WQK3;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.B;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
 				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab B";

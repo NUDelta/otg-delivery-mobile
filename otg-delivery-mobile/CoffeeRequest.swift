@@ -31,7 +31,7 @@ class CoffeeRequest : Codable{
     var requester: User? = nil
     var item: Item? = nil
     var status: String
-    var deliveryLocation: String
+    var deliveryLocation: [String]
     var deliveryLocationDetails: String
     var helper: String?
     var endTime: String?
@@ -48,7 +48,10 @@ class CoffeeRequest : Codable{
         requester = try container.decode(User.self, forKey: .requester)
         item = try container.decode(Item.self, forKey: .orderDescription)
         status = try container.decode(String.self, forKey: .status)
-        deliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
+        
+        var unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
+        deliveryLocation = CoffeeRequest.JSONStringToArray(json: unparsedDeliveryLocation)
+        
         deliveryLocationDetails = try container.decodeIfPresent(String.self, forKey: .deliveryLocationDetails) ?? ""
         helper = try container.decodeIfPresent(String.self, forKey: .helper) ?? ""
         endTime = try container.decode(String.self, forKey: .endTime)
@@ -60,7 +63,7 @@ class CoffeeRequest : Codable{
         
     }
     
-    init(requester: String, itemId: String, status: String, deliveryLocation: String, deliveryLocationDetails: String, endTime: String) {
+    init(requester: String, itemId: String, status: String, deliveryLocation: [String], deliveryLocationDetails: String, endTime: String) {
         self.requesterId = requester
         self.itemId = itemId
         self.status = status
@@ -126,7 +129,7 @@ extension CoffeeRequest {
 
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
-        Logging.sendEvent(location: coffeeRequest.deliveryLocation, eventType: Logging.eventTypes.requestMade.rawValue, details: "")
+        Logging.sendEvent(location: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation), eventType: Logging.eventTypes.requestMade.rawValue, details: "")
         
         var components = URLComponents(string: "")
         components?.queryItems = [
@@ -134,7 +137,7 @@ extension CoffeeRequest {
             URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
             URLQueryItem(name: "status", value: coffeeRequest.status),
-            URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
+            URLQueryItem(name: "deliveryLocation", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation)),
             URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
         ]
 
@@ -197,7 +200,7 @@ extension CoffeeRequest {
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
             URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
-            URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
+            URLQueryItem(name: "deliveryLocation", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation)),
             URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
         ]
 
@@ -309,5 +312,32 @@ extension CoffeeRequest {
         formatter.timeZone = NSTimeZone.local
         let formattedDate = formatter.string(from: dateAsDate!)
         return formattedDate
+    }
+    
+    static func arrayToJson(arr: [String]) -> String {
+        guard let jsonObject = try? JSONSerialization.data(withJSONObject: arr, options: []) else {
+            return ""
+        }
+        let jsonString = String(data: jsonObject, encoding: String.Encoding.utf8)
+        return jsonString ?? ""
+    }
+    
+    static func JSONStringToArray(json: String) -> [String] {
+        // Remove brackets, quotes, extra characters
+        var parsedJSON = json
+        parsedJSON = parsedJSON.replacingOccurrences(of: "[", with: "")
+        parsedJSON = parsedJSON.replacingOccurrences(of: "\"", with: "")
+        parsedJSON = parsedJSON.replacingOccurrences(of: "]", with: "")
+
+        var separatedJSONArr = parsedJSON.components(separatedBy: ",")
+        return separatedJSONArr
+    }
+    
+    static func prettyParseArray(arr: [String]) -> String {
+        var arrString = arr.joined(separator:", ")
+        arrString = arrString.replacingOccurrences(of: "]", with: "")
+        arrString = arrString.replacingOccurrences(of: "[", with: "")
+        arrString = arrString.replacingOccurrences(of: "\"", with: "")
+        return arrString
     }
 }

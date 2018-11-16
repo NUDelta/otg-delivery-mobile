@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
+    <name> Tech Express Route</name>
+    
+    <!--
+      ("Tech Express", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
+     -->
+    <wpt lat="42.055003" lon="-87.677200"> 
+        <name>South of Tech</name>
+        <time>2014-09-24T14:55:37Z</time>
+    </wpt>
+    
+    <wpt lat="42.058551" lon="-87.677086">
+        <name>North of Tech</name>
+        <time>2014-09-24T14:55:45Z</time>
+    </wpt>
+    
+</gpx>
+

@@ -14,10 +14,11 @@ class AllRequestsTableViewController: UITableViewController {
     
     var requests = [CoffeeRequest]()
     
-    @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
-    }
     
+    @IBAction func cancelButton(_ sender: Any) {
+        let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
+        self.present(mainView, animated: true, completion: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.tableFooterView = UIView()
@@ -52,8 +53,8 @@ class AllRequestsTableViewController: UITableViewController {
         let request = requests[indexPath.row]
         
         // Set labels with request data
-        cell.pickupDetailsLabel.text = "Tomate"
-        cell.dropoffDetailsLabel.text = request.deliveryLocation
+        cell.pickupDetailsLabel.text = "Tech Express"
+        cell.dropoffDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
         cell.expirationDetailsLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
         cell.requesterDetailsLabel.text = request.requester?.username ?? "Requester name cannot load"
         cell.priceDetailsLabel.text = String(request.item?.price ?? 0)
@@ -83,13 +84,16 @@ class AllRequestsTableViewController: UITableViewController {
         let acceptAlert = UIAlertController(title: "Would you like to accept this task?", message: "", preferredStyle: .alert)
         
         let accept = UIAlertAction(title: "OK", style: .default, handler: { (_) in
-            // Accept order and return to requests page
-            let currentRequest = self.requests[indexPath.row]
-            User.acceptRequest(requestId: currentRequest.requestId as! String, completionHandler: {
-                print("REQUEST ACCEPTED: request successfully accepted.")
-            })
-            let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
-            self.present(mainView, animated: true, completion: nil)
+            // Save ID in defaults so can access later
+            let acceptedRequest = self.requests[indexPath.row]
+            
+            let defaults = UserDefaults.standard
+            defaults.set(acceptedRequest.requestId!, forKey: "latestRequestNotification")
+            
+    
+            // Go to meeting point selection
+            self.performSegue(withIdentifier: "helperLocationFormSegue", sender: self)
+            
         })
         
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in

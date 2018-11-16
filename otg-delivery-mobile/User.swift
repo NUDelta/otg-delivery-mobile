@@ -123,7 +123,7 @@ extension User {
         task.resume()
     }
     
-    static func acceptRequest(requestId id: String, completionHandler: @escaping () -> Void) {
+    static func acceptRequest(requestId id: String, meetingPoint: String, completionHandler: @escaping () -> Void) {
         
         //Get username
         let defaults = UserDefaults.standard
@@ -138,7 +138,7 @@ extension User {
                 
                 return
             }
-            Logging.sendEvent(location: request.deliveryLocation, eventType: Logging.eventTypes.taskAccepted.rawValue, details: "")
+            Logging.sendEvent(location: meetingPoint, eventType: Logging.eventTypes.taskAccepted.rawValue, details: CoffeeRequest.arrayToJson(arr: request.deliveryLocation))
         })
         
         //Define session
@@ -149,7 +149,11 @@ extension User {
         requestURL.httpMethod = "PATCH"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-        let components = URLComponents(string: "")
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "meetingPoint", value: meetingPoint),
+        ]
+        
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         

@@ -44,7 +44,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 //        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
 //        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
 //        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088)),
-        ("Tomate", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724))
+        //("Tomate", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724)),
+        ("Tech Express", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
+        ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
     ]
 
     override func viewDidLoad() {
@@ -64,7 +66,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationManager?.startUpdatingLocation()
         // use our predefined locations to setup the geo-fences
         for coffeeLocation in coffeeLocations {
-            let region = CLCircularRegion(center: coffeeLocation.1, radius: 100, identifier: coffeeLocation.0)
+            let region = CLCircularRegion(center: coffeeLocation.1, radius: 200, identifier: coffeeLocation.0)
             region.notifyOnEntry = true
             region.notifyOnExit = false
         
@@ -134,8 +136,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         Logging.sendEvent(location: locationName, eventType: Logging.eventTypes.taskNotification.rawValue, details: "")
         
         let content = UNMutableNotificationContent()
-        content.title = "\(request.requester?.username ?? "A friend") is hungry!"
-        content.body = "Please pick up a \(request.item?.name ?? "[Item not loading - please contact requester]") from \(locationName) and deliver to \(request.requester?.username ?? "the requester") at \(request.deliveryLocation) by \(CoffeeRequest.parseTime(dateAsString: request.endTime!))"
+        content.title = "\(request.requester?.username ?? "A friend") is hungry! Help make their day :)"
+        content.body = "Do you have time to deliver food before \(CoffeeRequest.parseTime(dateAsString: request.endTime!))? Click here for the delivery location."
         
         content.categoryIdentifier = "requestNotification"
         content.sound = UNNotificationSound.default()
@@ -229,6 +231,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             if (request.status == "Accepted") {
                 var status = "Accepted"
+                
+                // Meeting point label
+                cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
+                
                 User.get(with_id: request.helper!, completionHandler: { helperUserModel in
                     guard let helperUserModel = helperUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
@@ -241,16 +247,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         cell.statusDetailsLabel.text = status
                     }
                     
-                    // So phone number can be accessed when pressing button
-                    cell.contactHelperButton.tag = Int(phoneNumber) ?? 0
+                    DispatchQueue.main.async {
+                        // So phone number can be accessed when pressing button
+                        cell.contactHelperButton.tag = Int(phoneNumber) ?? 0
+                    }
+                    
                 })
             } else {
                 cell.statusDetailsLabel.text = request.status
+                cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
             }
             
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
-            cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
+            cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
             
             // Text wraps
@@ -279,7 +289,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.statusDetailsLabel.text = status
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
-            cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
+            cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
             cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
             
             // Text wraps

@@ -22,7 +22,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     @IBOutlet weak var picker: UIDatePicker!
     @IBOutlet weak var itemOrderLabel: UILabel!
     @IBOutlet weak var itemPriceLabel: UILabel!
-    @IBOutlet weak var deliveryLocationForm: UITextField!
     @IBOutlet weak var deliveryDetailsForm: UITextView!
     
     //ACTION TYPE
@@ -45,8 +44,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         self.deliveryDetailsForm.layer.borderColor = UIColor.lightGray.cgColor
         
         self.deliveryDetailsForm.delegate = self
-        self.deliveryLocationForm.delegate = self
-        
         
         guard let actionType = self.actionType else { return }
         
@@ -58,7 +55,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 
                 self.navigationItem.title = "Edit order"
                 self.itemOrderLabel.text = orderChoice?.name ?? "Item not loading"
-                deliveryLocationForm.text = editingRequest.deliveryLocation
                 deliveryDetailsForm.text = editingRequest.deliveryLocationDetails
                 itemPriceLabel.text = String.init(format: "$%.2f", orderChoice?.price ?? 0)
                 
@@ -102,55 +98,51 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         dueDate = Int(sender.date.timeIntervalSince1970)
     }
     
-    //When the submissions is entered
-    @IBAction func submitPressed(sender: UIButton){
-    
-        let defaults = UserDefaults.standard
-        let requesterId = defaults.object(forKey: "userId")
-        
-        //Grab relevant data about the request
-        guard let currentRequestItem = orderChoice else {
-            print("No item currently selected from drink picker modal")
-            return
-        }
-        let itemId = currentRequestItem.id
-        let requestEndTime = picker!.date
-        let deliveryLocation = deliveryLocationForm.text!
-        let deliveryDetails = deliveryDetailsForm.text ?? ""
-        
-        
-        let RFC3339DateFormatter = DateFormatter()
-        RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
-                
-        //Create coffee request from data
-        let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: deliveryLocation, deliveryLocationDetails: deliveryDetails, endTime: responseDate)
-        
-        guard let actionType = self.actionType else { return }
-        
-        switch(actionType){
-            case .Edit:
-                print("SUBMITTING EDITING REQUEST FOR \(String(describing: self.activeEditingRequest))")
-                CoffeeRequest.updateRequest(with_id: self.activeEditingRequest!.requestId!, withRequest: requestFromForm, completionHandler: {})
-                break
-            case .Order:
-                CoffeeRequest.postCoffeeRequest(coffeeRequest: requestFromForm)
-                break
-        }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Button press segue defined in story board
+        if segue.identifier == "meetingPointSegue" {
+            let defaults = UserDefaults.standard
+            let requesterId = defaults.object(forKey: "userId")
             
-        //Dismiss modal
-        dismiss(animated: true, completion: nil)
-        
-        let submissionAlert = UIAlertView()
-        submissionAlert.title = "Order placed!"
-        submissionAlert.message = "You will receive a Slack message when the order is accepted."
-        submissionAlert.addButton(withTitle: "Ok")
-        submissionAlert.show()
+            // Create request from form
+            guard let currentRequestItem = orderChoice else {
+                print("No item currently selected from drink picker modal")
+                return
+            }
+            let itemId = currentRequestItem.id
+            let requestEndTime = picker!.date
+            let deliveryDetails = deliveryDetailsForm.text ?? ""
+            
+            let RFC3339DateFormatter = DateFormatter()
+            RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+            RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            
+            let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
+            
+            //Create coffee request from data
+            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate)
+            
+            // Go to meeting point selection screen
+            let navController = segue.destination as? MeetingPointTableViewController
+            // Pass current request to next screen
+            navController?.currentRequest = requestFromForm
+        }
     }
    
+    @IBAction func selectDeliveryButton(_ sender: Any) {
+        
+        if (orderChoice == nil) {
+            let alert = UIAlertController(title: "What would you like to order?", message: "Please select an item before choosing your delivery location.", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            }))
+            
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        performSegue(withIdentifier: "meetingPointSegue", sender: nil)
+    }
     //When the cancel button on the toolbar is pressed
     @IBAction func cancelPressed(sender: UIBarButtonItem){
         //Dismiss modal

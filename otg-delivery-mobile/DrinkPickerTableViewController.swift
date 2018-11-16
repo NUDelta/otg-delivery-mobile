@@ -53,29 +53,13 @@ class DrinkPickerTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedDrink = items[indexPath.row]
-        itemOrderNotification(forItem: selectedDrink!)
-    }
-    
-    
-    //Create and show custom notification given chosen drink
-    func itemOrderNotification(forItem item: Item) {
-        let alert = UIAlertController(title: "Confirm order", message: String.init(format: "Order for %@", item.name), preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
-            self.delegate?.itemPicked(itemChoice: item)
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-            //do nothing
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
+        self.delegate?.itemPicked(itemChoice: selectedDrink!)
+        self.dismiss(animated: true, completion: nil)
     }
 
     @objc func loadData() {
         print("Load item data")
-        Item.getAll(forLocation: "Tomate", completionHandler: { items in
+        Item.getAll(forLocation: "TechExpress", completionHandler: { items in
             print(items)
             self.items = items
             self.menuItemTable.reloadData()

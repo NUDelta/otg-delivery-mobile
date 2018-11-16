@@ -73,7 +73,7 @@ class AcceptedRequestTableViewCell: UITableViewCell {
         deliveryLocationTitleLabel.text = "Delivery Location:"
         
         let deliveryDetailsTitleLabel = UILabel()
-        deliveryDetailsTitleLabel.text = "Delivery Details:"
+        deliveryDetailsTitleLabel.text = "Special Requests:"
         
         let titleLabels = [
             statusTitleLabel,

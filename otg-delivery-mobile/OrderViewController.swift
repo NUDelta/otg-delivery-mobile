@@ -31,7 +31,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     @IBAction func seeAllTasks(_ sender: UIButton) {
-        self.performSegue(withIdentifier: "allTasksSegue", sender: self)
+        // Only show eligible tasks if user recently entered location - to prevent opportunistically checking
+        // and accepting tasks
+        if  let currentGeofenceLocation = UserDefaults.standard.object(forKey: "currentGeofenceLocation")
+        {
+            self.performSegue(withIdentifier: "allTasksSegue", sender: self)
+        } else {
+            let alert = UIAlertController(title: "You have no eligible tasks.", message: "You will be notified if you become eligible for a task!", preferredStyle: .alert)
+            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+            })
+            
+            alert.addAction(cancel)
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     public static let sharedManager = OrderViewController()
@@ -109,7 +121,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("User entered within coffee region.")
+        print("User entered pickup geofence.")
         Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
 
         CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
@@ -120,13 +132,28 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 //Set most recent request in user defaults
                 let defaults = UserDefaults.standard
                 defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
+                defaults.set(region.identifier, forKey: "currentGeofenceLocation")
                 
                 // instead of sending the name of the region, grab the name of the location from the coffee request
                 // because tomate and coffee lab are in the same region - don't know which request
                 self.sendNotification(locationName: region.identifier, request: coffeeReq)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
+                    self.removeCachedGeofenceLocation()
+                })
             }
         })
         
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Leaving geofence")
+        removeCachedGeofenceLocation()
+    }
+    
+    func removeCachedGeofenceLocation() {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey:"currentGeofenceLocation")
     }
     
     

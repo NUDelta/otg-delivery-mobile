@@ -52,7 +52,7 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bkz-sa-Mfj">
                                 <rect key="frame" x="208" y="350.5" width="146" height="30"/>
-                                <state key="normal" title="See All Unfilled Tasks">
+                                <state key="normal" title="See Eligible Tasks">
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>

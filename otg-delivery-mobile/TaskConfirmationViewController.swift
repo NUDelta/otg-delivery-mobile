@@ -18,6 +18,7 @@ class TaskConfirmationViewController: UIViewController {
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationDetailsLabel: UILabel!
+    @IBOutlet weak var pickupLocationLabel: UILabel!
     
     @IBAction func acceptButton(_ sender: UIButton) {
         // Get ID of pending request
@@ -51,6 +52,7 @@ class TaskConfirmationViewController: UIViewController {
         self.locationLabel.text = meetingPoint
         self.locationDetailsLabel.text = currentRequest!.deliveryLocationDetails
         self.requesterLabel.text = currentRequest!.requester?.username ?? "Requester"
+        self.pickupLocationLabel.text = currentRequest!.pickupLocation
         
         super.viewDidLoad()
 

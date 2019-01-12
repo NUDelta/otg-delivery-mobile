@@ -121,7 +121,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
             let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
             
             //Create coffee request from data
-            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate)
+            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate, pickupLocation: "Tech Express")
             
             // Go to meeting point selection screen
             let navController = segue.destination as? MeetingPointTableViewController

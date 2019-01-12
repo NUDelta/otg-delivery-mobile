@@ -24,6 +24,7 @@ class CoffeeRequest : Codable{
         case status
         case deliveryLocation
         case deliveryLocationDetails
+        case pickupLocation
         case helper
     }
 
@@ -33,6 +34,7 @@ class CoffeeRequest : Codable{
     var status: String
     var deliveryLocation: [String]
     var deliveryLocationDetails: String
+    var pickupLocation: String
     var helper: String?
     var endTime: String?
     var requestId: String?
@@ -56,6 +58,7 @@ class CoffeeRequest : Codable{
         helper = try container.decodeIfPresent(String.self, forKey: .helper) ?? ""
         endTime = try container.decode(String.self, forKey: .endTime)
         requestId = try container.decode(String.self, forKey: .requestId)
+        pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
         
         // Populate id fields
         requesterId = requester?.userId ?? "No requester ID"
@@ -63,12 +66,13 @@ class CoffeeRequest : Codable{
         
     }
     
-    init(requester: String, itemId: String, status: String, deliveryLocation: [String], deliveryLocationDetails: String, endTime: String) {
+    init(requester: String, itemId: String, status: String, deliveryLocation: [String], deliveryLocationDetails: String, endTime: String, pickupLocation: String) {
         self.requesterId = requester
         self.itemId = itemId
         self.status = status
         self.deliveryLocation = deliveryLocation
         self.deliveryLocationDetails = deliveryLocationDetails
+        self.pickupLocation = pickupLocation
         self.endTime = endTime
         self.requestId = ""
         self.helper = ""
@@ -81,6 +85,7 @@ class CoffeeRequest : Codable{
         try container.encode(status, forKey: .status)
         try container.encode(deliveryLocation, forKey: .deliveryLocation)
         try container.encode(deliveryLocationDetails, forKey: .deliveryLocationDetails)
+        try container.encode(pickupLocation, forKey: .pickupLocation)
         try container.encode(helper, forKey: .helper)
         try container.encode(endTime, forKey: .endTime)
         try container.encode(requestId, forKey: .requestId)
@@ -138,7 +143,8 @@ extension CoffeeRequest {
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocation", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation)),
-            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
+            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails),
+            URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)

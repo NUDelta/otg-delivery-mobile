@@ -883,6 +883,7 @@
                         <outlet property="locationDetailsLabel" destination="R4z-3B-cu7" id="JVP-yr-MhZ"/>
                         <outlet property="locationLabel" destination="cSd-iv-Zqk" id="RSb-fD-g0z"/>
                         <outlet property="orderLabel" destination="wD0-Lf-HFl" id="5Tf-Xw-Fnc"/>
+                        <outlet property="pickupLocationLabel" destination="7Qc-uw-hCS" id="H6C-hL-yJQ"/>
                         <outlet property="requesterLabel" destination="x5Z-4N-PE8" id="bzm-S0-91n"/>
                     </connections>
                 </viewController>

@@ -20,10 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if (granted) {
                 
                 // setup notification categories
-                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'd like to help!", options: [.foreground])
-                let rejectAction = UNNotificationAction(identifier: "rejectNotification", title: "Cancel", options: [.destructive])
+                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'm interested! Show me the details.", options: [.foreground])
+                let rejectActionTime = UNNotificationAction(identifier: "rejectNotification", title: "No - I'm in a hurry.", options: [.destructive])
+                let rejectActionInterest = UNNotificationAction(identifier: "rejectNotification", title: "No - I don't feel like it.", options: [.destructive])
+                let rejectActionOther = UNNotificationAction(identifier: "rejectNotification", title: "No - other.", options: [.destructive])
                 
-                let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectAction], intentIdentifiers: [], options: [])
+                let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectActionTime, rejectActionInterest, rejectActionOther], intentIdentifiers: [], options: [])
 
                 // setup notification categories
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()

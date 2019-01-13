@@ -335,6 +335,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
             cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
             
+            // Alert user if task is expired
+            let currentTime = NSDate()
+            if (currentTime.compare(CoffeeRequest.stringToDate(s:request.endTime!)) == .orderedDescending) {
+                let alert = UIAlertController(title: "One of your tasks has expired.", message: "Please mark it as complete or delete it from your table by swiping left if you weren't able to complete it.", preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+                })
+                
+                alert.addAction(cancel)
+                present(alert, animated: true, completion: nil)
+            }
+            
             return cell
         }
         

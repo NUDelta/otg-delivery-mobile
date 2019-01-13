@@ -304,20 +304,26 @@ extension CoffeeRequest {
     }
 
     static func parseTime(dateAsString: String) -> String {
-        // Strip end of date string
-        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
 
-        // Parse input to date
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        let dateAsDate = formatter.date(from: dateAsStringParsed)
+        let dateAsDate = stringToDate(s: dateAsString)
 
         // Set desired date format
         formatter.dateFormat = "h:mm a"
         formatter.timeZone = NSTimeZone.local
-        let formattedDate = formatter.string(from: dateAsDate!)
+        let formattedDate = formatter.string(from: dateAsDate)
         return formattedDate
+    }
+    
+    static func stringToDate(s: String) -> Date {
+        //Remove milliseconds for parsing ease
+        var parsedDateString = s.components(separatedBy: ".")[0]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let date = dateFormatter.date(from: parsedDateString)
+        return date!
     }
     
     static func arrayToJson(arr: [String]) -> String {

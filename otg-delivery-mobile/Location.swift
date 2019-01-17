@@ -52,4 +52,20 @@ extension Location {
         
         task.resume()
     }
+    
+    static func camelCaseToWords(camelCaseString: String) -> String {
+        var newString: String = ""
+        
+        for eachCharacter in camelCaseString {
+            if (eachCharacter >= "A" && eachCharacter <= "Z") == true {
+                newString.append(" ")
+            }
+            newString.append(eachCharacter)
+        }
+        
+        // Remove added space at beginning
+        newString.remove(at: newString.startIndex)
+        
+        return newString
+    }
 }

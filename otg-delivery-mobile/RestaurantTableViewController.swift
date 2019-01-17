@@ -50,7 +50,7 @@ class RestaurantTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantTableViewCell", for: indexPath) as! RestaurantTableViewCell
 
         let restaurant = restaurants[indexPath.row]
-        cell.restaurantLabel.text = restaurant.name
+        cell.restaurantLabel.text = Location.camelCaseToWords(camelCaseString: restaurant.name)
        
         return cell
     }

@@ -20,7 +20,7 @@ class DrinkPickerTableViewController: UITableViewController {
     var restaurant: String?
     
     
-    @IBAction func backButton(_ sender: UIBarButtonItem) {
+    @IBAction func backButton(_ sender: UIButton) {
         let restaurantSelectionModal: RestaurantTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RestaurantTableViewController") as! RestaurantTableViewController
         
         self.present(restaurantSelectionModal, animated: true, completion: nil)

@@ -138,12 +138,11 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         performSegue(withIdentifier: "meetingPointSegue", sender: nil)
     }
     //When the cancel button on the toolbar is pressed
-    @IBAction func cancelPressed(sender: UIBarButtonItem){
-        //Dismiss modal
-        dismiss(animated: true, completion: nil)
+    @IBAction func cancelButton(_ sender: UIButton) {
+        openMainView()
     }
     
-    @IBAction func drinkSelectionButtonPressed(sender: UIButton){
+    @IBAction func backButton(_ sender: UIButton) {
         let restaurantSelectionModal: RestaurantTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RestaurantTableViewController") as! RestaurantTableViewController
         
         self.present(restaurantSelectionModal, animated: true, completion: nil)
@@ -176,6 +175,12 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true);
+    }
+    
+    func openMainView() {
+        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+        
+        self.present(mainPage, animated: true, completion: nil)
     }
 
 

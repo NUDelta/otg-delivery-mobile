@@ -46,7 +46,6 @@ class DrinkPickerTableViewController: UITableViewController {
     
     // Configure cells in table view
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "drinkCell", for: indexPath) as! DrinkPickerTableViewCell
         
         //Configure cell

@@ -66,12 +66,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 self.picker.setDate(date!, animated: true)
             case .Order:
                 self.navigationItem.title = "Place order"
-                
-                //Create an instance of the drink picker
-                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-                drinkPickerModal.delegate = self
-                self.present(drinkPickerModal, animated: true, completion: nil)
-                break
         }
     }
     
@@ -149,13 +143,10 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         dismiss(animated: true, completion: nil)
     }
     
-    //Present modal
     @IBAction func drinkSelectionButtonPressed(sender: UIButton){
-        //Create an instance of the drink picker
-        let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-        drinkPickerModal.delegate = self
+        let restaurantSelectionModal: RestaurantTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RestaurantTableViewController") as! RestaurantTableViewController
         
-        self.present(drinkPickerModal, animated: true, completion: nil)
+        self.present(restaurantSelectionModal, animated: true, completion: nil)
     }
     
     //-=-=-=-=-=-=-=-=-=-=-
@@ -164,8 +155,10 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     // Returned from Drink Picker Controller, when user selects an item to order
     func itemPicked(itemChoice: Item) {
         orderChoice = itemChoice
-        itemOrderLabel.text = ("\(itemChoice.name)")
-        itemPriceLabel.text = itemChoice.getPriceString()
+        DispatchQueue.main.async {
+            self.itemOrderLabel.text = ("\(itemChoice.name)")
+            self.itemPriceLabel.text = itemChoice.getPriceString()
+        }
     }
     
     //-=-=-=-=-=-=-=-=-=-=-

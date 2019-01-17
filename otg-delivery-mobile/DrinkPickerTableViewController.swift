@@ -17,9 +17,17 @@ class DrinkPickerTableViewController: UITableViewController {
     @IBOutlet var menuItemTable: UITableView!
     
     var items = [Item]()
+    var restaurant: String?
+    
+    
+    @IBAction func backButton(_ sender: UIBarButtonItem) {
+        let restaurantSelectionModal: RestaurantTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RestaurantTableViewController") as! RestaurantTableViewController
+        
+        self.present(restaurantSelectionModal, animated: true, completion: nil)
+    }
     
     @IBAction func cancelButton(_ sender: UIBarButtonItem) {
-        self.dismiss(animated: true, completion: nil)
+        openMainView()
     }
     
     //Returned to parent
@@ -53,16 +61,26 @@ class DrinkPickerTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedDrink = items[indexPath.row]
-        self.delegate?.itemPicked(itemChoice: selectedDrink!)
-        self.dismiss(animated: true, completion: nil)
+        
+        let orderPage: OrderModalViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "OrderModalViewController") as! OrderModalViewController
+        orderPage.itemPicked(itemChoice: selectedDrink!)
+        self.present(orderPage, animated: true, completion: nil)
     }
 
-    @objc func loadData() {
+    func loadData() {
         print("Load item data")
-        Item.getAll(forLocation: "TechExpress", completionHandler: { items in
-            print(items)
-            self.items = items
-            self.menuItemTable.reloadData()
-        })
+        if restaurant != nil {
+            Item.getAll(forLocation: restaurant!, completionHandler: { items in
+                print(items)
+                self.items = items
+                self.menuItemTable.reloadData()
+            })
+        }
+    }
+    
+    func openMainView() {
+        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+        
+        self.present(mainPage, animated: true, completion: nil)
     }
 }

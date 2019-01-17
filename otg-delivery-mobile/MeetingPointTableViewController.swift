@@ -42,7 +42,9 @@ class MeetingPointTableViewController: UITableViewController {
             
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
                 CoffeeRequest.postCoffeeRequest(coffeeRequest: self.currentRequest!)
-                self.dismiss(animated: true, completion: nil)
+                let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+                
+                self.present(mainPage, animated: true, completion: nil)
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in

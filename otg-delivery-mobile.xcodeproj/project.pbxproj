@@ -25,6 +25,9 @@
 		22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */; };
 		391F3845218659BD00F1C91B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391F3844218659BD00F1C91B /* Logging.swift */; };
 		393DF993219F03EA0096E765 /* HelperLocationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */; };
+		39C13EEB21EC0267005833B8 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */; };
+		39C13EED21EC0336005833B8 /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */; };
+		39C13EEF21ED2A06005833B8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEE21ED2A06005833B8 /* Location.swift */; };
 		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
 		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
 		39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */; };
@@ -58,6 +61,9 @@
 		3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "otg-delivery-mobile.entitlements"; sourceTree = "<group>"; };
 		393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperLocationFormViewController.swift; sourceTree = "<group>"; };
 		393DF994219F44590096E765 /* routeTechExpress.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeTechExpress.gpx; sourceTree = "<group>"; };
+		39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
+		39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
+		39C13EEE21ED2A06005833B8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
 		39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMeetingPointTableViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +111,8 @@
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
+				39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */,
+				39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */,
 				393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */,
 				39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */,
 				39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */,
@@ -124,6 +132,7 @@
 				2246A2992049C8FA00CE518B /* OrderModalViewController.swift */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				226180DC20997DE2007D92A0 /* User.swift */,
+				39C13EEE21ED2A06005833B8 /* Location.swift */,
 				391F3844218659BD00F1C91B /* Logging.swift */,
 				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
 			);
@@ -233,11 +242,14 @@
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				39E7105D216C376400A73BCA /* AllRequestsTableViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
+				39C13EEF21ED2A06005833B8 /* Location.swift in Sources */,
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
+				39C13EED21EC0336005833B8 /* RestaurantTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				39E7105B216C2CF900A73BCA /* AllRequestsTableViewCell.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,
+				39C13EEB21EC0267005833B8 /* RestaurantTableViewCell.swift in Sources */,
 				39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,14 +1,3 @@
-//
-//  UserModel.swift
-//  otg-delivery-mobile
-//
-//  Created by Sam Naser on 5/2/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
-import Foundation
-
-//
 //  RequestManager.swift
 //  otg-delivery-mobile
 //

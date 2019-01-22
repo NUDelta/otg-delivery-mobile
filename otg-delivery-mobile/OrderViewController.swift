@@ -117,7 +117,40 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locToSave = locations.last!
+        
+        let latitude = Double(locToSave.coordinate.latitude)
+        let longitude = Double(locToSave.coordinate.longitude)
+        let speed = Double(locToSave.speed)
+        let direction = Double(locToSave.course)
+        let uncertainty = Double(locToSave.horizontalAccuracy)
+        let timestamp = Date()
+        
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
+        
         //print(locations.last!)
+//
+//        // get current time and UTC offset
+//        let epochTimestamp = Date()
+//
+//        // create parse object to save
+//        let newLocationUpdate = PFObject(className: "LocationUpdates")
+//        newLocationUpdate["latitude"] = locationToSave.coordinate.latitude
+//        newLocationUpdate["longitude"] = locationToSave.coordinate.longitude
+//        newLocationUpdate["heading"] = locationToSave.course
+//        newLocationUpdate["speed"] = locationToSave.speed
+//        newLocationUpdate["horizontalAccuracy"] = locationToSave.horizontalAccuracy
+//        newLocationUpdate["vendorId"] = vendorId
+//        newLocationUpdate["timestamp"] = epochTimestamp
+//        newLocationUpdate["gmtOffset"] = gmtOffset
+//
+//        // save location update
+//        newLocationUpdate.saveInBackground(block: ({ (success: Bool, error: Error?) -> Void in
+//            if (!success) {
+//                print("Error in location update to Parse: \(String(describing: error)). Attempting eventually.")
+//                newLocationUpdate.saveEventually()
+//            }
+//        }))
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {

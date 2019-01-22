@@ -38,7 +38,7 @@ class MeetingPointTableViewController: UITableViewController {
             // Set locations on request object
             currentRequest?.deliveryLocation = selectedLocations
             
-            let alert = UIAlertController(title: "Are you sure you want to submit this request?", message: "You will be notified of your meeting point when a helper accepts. You are expected at this meeting point within 5 minutes of when your helper texts that they are on their way.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Are you sure you want to submit this request?", message: "You are expected at your meeting point within 5 minutes of when your helper texts that they are on their way.", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
                 CoffeeRequest.postCoffeeRequest(coffeeRequest: self.currentRequest!)

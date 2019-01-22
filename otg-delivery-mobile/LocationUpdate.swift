@@ -33,7 +33,7 @@ struct LocationUpdate : Codable {
 }
 
 extension LocationUpdate {
-    static func post(locUpdate: LocationUpdate, completionHandler: @escaping(LocationUpdate?) -> Void) {
+    static func post(locUpdate: LocationUpdate) {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "latitude", value: String(locUpdate.latitude)),
@@ -56,27 +56,14 @@ extension LocationUpdate {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            
-            guard let data = data else {
-                return
-            }
-            
-            var locUpdateData: LocationUpdate?
             let httpResponse = response as? HTTPURLResponse
             
-            if(httpResponse?.statusCode != 400){
-                do {
-                    let decoder = JSONDecoder()
-                    //print(String(data: data, encoding: String.Encoding.utf8) as! String)
-                    locUpdateData = try decoder.decode(LocationUpdate.self, from: data)
-                } catch {
-                    print("LOCATION UPDATE MODEL: error trying to convert data to JSON...")
-                    print(error)
-                }
+            // Keep retrying if unsuccessful
+            //print(httpResponse?.statusCode)
+            if(httpResponse?.statusCode != 200){
+                print("Retry")
+                self.post(locUpdate: locUpdate)
             }
-            
-            completionHandler(locUpdateData)
-            
         }
         
         task.resume()

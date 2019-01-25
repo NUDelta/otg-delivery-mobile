@@ -9,9 +9,7 @@
 import Foundation
 
 struct LocationUpdate : Codable {
-    //private static let apiUrl: String = "https://otg-delivery.herokuapp.com/locupdates"
-    private static let apiUrl: String = "http://localhost:8080/locupdates"
-    
+    private static let apiUrl: String = Constants.apiUrl + "locupdates"    
     
     enum CodingKeys : String, CodingKey {
         case latitude

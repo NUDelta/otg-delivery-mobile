@@ -70,6 +70,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         
+        // Enable location tracking when app sleeps
+        locationManager!.pausesLocationUpdatesAutomatically = false
+        locationManager!.startMonitoringSignificantLocationChanges()
+        
         if CLLocationManager.authorizationStatus() == .notDetermined {
             locationManager?.requestAlwaysAuthorization()
             locationManager?.requestWhenInUseAuthorization()
@@ -115,6 +119,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         loadData()
     }
+    
+
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!

@@ -8,9 +8,10 @@
 
 import UIKit
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
 
@@ -49,6 +50,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
         
+        // Restart terminated app if receives a location update
+        if let locationValue = launchOptions?[UIApplicationLaunchOptionsKey.location] {
+            var locationManager = CLLocationManager()
+            
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            
+            // Enable location tracking when app sleeps
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.startMonitoringSignificantLocationChanges()
+            
+            if CLLocationManager.authorizationStatus() == .notDetermined {
+                locationManager.requestAlwaysAuthorization()
+                locationManager.requestWhenInUseAuthorization()
+            }
+            
+            locationManager.startUpdatingLocation()
+        }
+        
         if #available(iOS 11, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
@@ -74,6 +95,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         return true
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locToSave = locations.last!
+        
+        let latitude = Double(locToSave.coordinate.latitude)
+        let longitude = Double(locToSave.coordinate.longitude)
+        let speed = Double(locToSave.speed)
+        let direction = Double(locToSave.course)
+        let uncertainty = Double(locToSave.horizontalAccuracy)
+        let timestamp = Date()
+        
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
+        LocationUpdate.post(locUpdate: locUpdate)
     }
 	
     //Handle user response to notification

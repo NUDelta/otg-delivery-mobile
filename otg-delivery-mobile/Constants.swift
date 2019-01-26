@@ -1,9 +1,7 @@
-//
-//  Constants.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 1/22/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import Foundation
+
+struct Constants {
+    static let apiUrl: String = "https://otg-delivery.herokuapp.com/"
+    //static let apiUrl: String = "http://localhost:8080/"
+    
+}

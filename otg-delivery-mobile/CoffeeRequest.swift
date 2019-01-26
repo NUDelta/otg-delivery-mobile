@@ -11,9 +11,8 @@ import Foundation
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
 class CoffeeRequest : Codable{
-    //API Location
-    //private static let apiUrl: String = "https://otg-delivery.herokuapp.com/requests"
-    private static let apiUrl: String = "http://localhost:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
+    private static let apiUrl: String = Constants.apiUrl + "requests"
+
 
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {

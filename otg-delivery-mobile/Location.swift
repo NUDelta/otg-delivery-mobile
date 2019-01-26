@@ -9,8 +9,7 @@
 import Foundation
 
 struct Location : Codable {
-    //private static let apiUrl: String = "https://otg-delivery.herokuapp.com/locations"
-    private static let apiUrl: String = "http://localhost:8080/locations"
+    private static let apiUrl: String = Constants.apiUrl + "locations"
     
     
     enum CodingKeys : String, CodingKey {

@@ -120,6 +120,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         loadData()
     }
     
+
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
         

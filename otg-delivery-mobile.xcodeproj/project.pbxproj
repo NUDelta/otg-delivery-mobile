@@ -68,6 +68,7 @@
 		39C13EEE21ED2A06005833B8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		39C13EF021F695B0005833B8 /* LocationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdate.swift; sourceTree = "<group>"; };
 		39C13EF221F769B0005833B8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeEvanstonDowntown.gpx; sourceTree = "<group>"; };
 		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
 		39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMeetingPointTableViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 				22BD7F162045E741008A877B /* image-resources */,
 				2238817E203F55370012707C /* route1.gpx */,
 				393DF994219F44590096E765 /* routeTechExpress.gpx */,
+				39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */,
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
@@ -126,8 +128,9 @@
 				39FE213C2097BB900019AE3A /* AcceptedRequestTableViewCell.swift */,
 				39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */,
 				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
-				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
+				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
 				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
+				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
@@ -140,7 +143,6 @@
 				39C13EF021F695B0005833B8 /* LocationUpdate.swift */,
 				39C13EEE21ED2A06005833B8 /* Location.swift */,
 				391F3844218659BD00F1C91B /* Logging.swift */,
-				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
 			);
 			path = "otg-delivery-mobile";
 			sourceTree = "<group>";

@@ -10,6 +10,7 @@ import UIKit
 
 protocol DrinkPickerModalDelegate {
     func itemPicked(itemChoice: Item)
+    func restaurantPicked(restaurant: String)
 }
 
 class DrinkPickerTableViewController: UITableViewController {
@@ -63,6 +64,7 @@ class DrinkPickerTableViewController: UITableViewController {
         
         let orderPage: OrderModalViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "OrderModalViewController") as! OrderModalViewController
         orderPage.itemPicked(itemChoice: selectedDrink!)
+        orderPage.restaurantPicked(restaurant: restaurant!)
         self.present(orderPage, animated: true, completion: nil)
     }
 

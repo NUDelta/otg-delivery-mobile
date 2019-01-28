@@ -59,6 +59,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //("Tomate", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724)),
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
+        ("Downtown Evanston", CLLocationCoordinate2D(latitude: 42.048555, longitude: -87.681854)),
     ]
 
     override func viewDidLoad() {
@@ -68,7 +69,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.delegate = self
-        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        // Accuracy of location data
+        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        // The minimum distance before an update event is generated
+        locationManager?.distanceFilter = 50.0
         
         // Enable location tracking when app sleeps
         locationManager!.pausesLocationUpdatesAutomatically = false
@@ -180,7 +184,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         let content = UNMutableNotificationContent()
         content.title = "\(request.requester?.username ?? "A friend") is hungry! Help make their day :)"
-        content.body = "Do you have time to deliver food before \(CoffeeRequest.parseTime(dateAsString: request.endTime!))? Click here for the delivery location."
+        content.body = "Do you have time to deliver food from \(Location.camelCaseToWords(camelCaseString: request.pickupLocation)) before \(CoffeeRequest.parseTime(dateAsString: request.endTime!))? Click here for the delivery location."
         
         content.categoryIdentifier = "requestNotification"
         content.sound = UNNotificationSound.default()

@@ -53,7 +53,7 @@ class AllRequestsTableViewController: UITableViewController {
         let request = requests[indexPath.row]
         
         // Set labels with request data
-        cell.pickupDetailsLabel.text = "Tech Express"
+        cell.pickupDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
         cell.dropoffDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
         cell.expirationDetailsLabel.text = CoffeeRequest.parseTime(dateAsString: request.endTime!)
         cell.requesterDetailsLabel.text = request.requester?.username ?? "Requester name cannot load"

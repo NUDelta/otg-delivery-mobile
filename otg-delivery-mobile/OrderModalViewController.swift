@@ -31,6 +31,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     var selectedPlace: String?
     var dueDate: Int?
     var orderChoice: Item?
+    var restaurantPicked: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,7 +116,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
             let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
             
             //Create coffee request from data
-            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate, pickupLocation: "Tech Express")
+            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate, pickupLocation: restaurantPicked!)
             
             // Go to meeting point selection screen
             let navController = segue.destination as? MeetingPointTableViewController
@@ -158,6 +159,10 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
             self.itemOrderLabel.text = ("\(itemChoice.name)")
             self.itemPriceLabel.text = itemChoice.getPriceString()
         }
+    }
+    
+    func restaurantPicked(restaurant: String) {
+        restaurantPicked = restaurant
     }
     
     //-=-=-=-=-=-=-=-=-=-=-

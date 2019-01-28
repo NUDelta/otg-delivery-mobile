@@ -56,7 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             locationManager.allowsBackgroundLocationUpdates = true
             locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            // Accuracy of location data
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            // The minimum distance before an update event is generated
+            locationManager.distanceFilter = 50.0
             
             // Enable location tracking when app sleeps
             locationManager.pausesLocationUpdatesAutomatically = false

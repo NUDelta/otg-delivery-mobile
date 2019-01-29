@@ -60,6 +60,9 @@ class RequestStatusTableViewCell: UITableViewCell {
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Expiration:"
         
+        let pickupLocationTitleLabel = UILabel()
+        pickupLocationTitleLabel.text = "Restaurant:"
+        
         let specialRequestsTitleLabel = UILabel()
         specialRequestsTitleLabel.text = "Special Requests:"
         
@@ -67,6 +70,7 @@ class RequestStatusTableViewCell: UITableViewCell {
             statusTitleLabel,
             expirationTitleLabel,
             deliveryLocationTitleLabel,
+            pickupLocationTitleLabel,
             specialRequestsTitleLabel
         ]
         
@@ -157,14 +161,15 @@ class RequestStatusTableViewCell: UITableViewCell {
             deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor, constant: -labelVerticalSpacing),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: pickupLocationTitleLabel.topAnchor, constant: -labelVerticalSpacing),
             
+            pickupLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            pickupLocationTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
             // Details title label and details label
             
             specialRequestsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            specialRequestsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
-                                                           constant: labelVerticalSpacing),
+            specialRequestsTitleLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
             
             // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
             

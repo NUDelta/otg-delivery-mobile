@@ -18,6 +18,7 @@ class RequestStatusTableViewCell: UITableViewCell {
     let expirationDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
     let specialRequestsDetailsLabel = UILabel()
+    let pickupLocationDetailsLabel = UILabel()
     
     let deliveryLocationTitleLabel = UILabel()
     
@@ -96,6 +97,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         
         let deliveryDetailLabels = [
             deliveryLocationDetailsLabel,
+            pickupLocationDetailsLabel,
             specialRequestsDetailsLabel
         ]
         deliveryDetailLabels.forEach { label in
@@ -105,6 +107,7 @@ class RequestStatusTableViewCell: UITableViewCell {
             label.translatesAutoresizingMaskIntoConstraints = false
             addSubview(label)
         }
+        pickupLocationDetailsLabel.text = "CAT"
         
         // Layout Constraints
         let leftMarginConstraint = NSLayoutConstraint(item: orderLabel,
@@ -166,12 +169,16 @@ class RequestStatusTableViewCell: UITableViewCell {
             pickupLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
             pickupLocationTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
+            pickupLocationDetailsLabel.leftAnchor.constraint(equalTo: pickupLocationTitleLabel.leftAnchor),
+            pickupLocationDetailsLabel.rightAnchor.constraint(equalTo: pickupLocationTitleLabel.rightAnchor),
+            pickupLocationDetailsLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
+            pickupLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor, constant: -labelVerticalSpacing),
+            
+            
             // Details title label and details label
             
             specialRequestsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            specialRequestsTitleLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
-            
-            // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
+            specialRequestsTitleLabel.topAnchor.constraint(equalTo: pickupLocationDetailsLabel.bottomAnchor, constant: labelVerticalSpacing),
             
             specialRequestsDetailsLabel.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
             specialRequestsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),

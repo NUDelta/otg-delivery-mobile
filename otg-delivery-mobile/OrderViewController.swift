@@ -314,6 +314,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
+            cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
             cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
             
             // Text wraps
@@ -321,6 +322,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.statusDetailsLabel.numberOfLines = 0
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
+            cell.pickupLocationDetailsLabel.numberOfLines = 0
             cell.specialRequestsDetailsLabel.numberOfLines = 0
             
             // Contact helper button

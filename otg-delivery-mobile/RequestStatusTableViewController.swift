@@ -32,11 +32,14 @@ class RequestStatusTableViewController: UITableViewController {
             fatalError("Couldn't dequeue RequestStatusTableViewCell")
         }
         
+        print("Panda")
+        
         let request = myRequests[indexPath.row]
 
         cell.statusDetailsLabel.text = request.status
         cell.expirationDetailsLabel.text = request.endTime
         cell.deliveryLocationDetailsLabel.text = CoffeeRequest.arrayToJson(arr: request.deliveryLocation)
+        cell.pickupLocationDetailsLabel.text =  request.endTime
         cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
         
         // Text wraps
@@ -44,6 +47,7 @@ class RequestStatusTableViewController: UITableViewController {
         cell.statusDetailsLabel.numberOfLines = 0
         cell.expirationDetailsLabel.numberOfLines = 0
         cell.deliveryLocationDetailsLabel.numberOfLines = 0
+        cell.pickupLocationDetailsLabel.numberOfLines = 0
         cell.specialRequestsDetailsLabel.numberOfLines = 0
         
         return cell

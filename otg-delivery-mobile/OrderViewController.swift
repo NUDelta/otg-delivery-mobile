@@ -136,7 +136,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
         
-        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
+        let defaults = UserDefaults.standard
+        guard let requesterId = defaults.object(forKey: "userId") as? String else {
+            print("Helper ID not in defaults")
+            return
+        }
+        
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: requesterId)
         LocationUpdate.post(locUpdate: locUpdate)
     }
     

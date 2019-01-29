@@ -17,7 +17,7 @@ class RequestStatusTableViewCell: UITableViewCell {
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
-    let deliveryDetailsDetailsLabel = UILabel()
+    let specialRequestsDetailsLabel = UILabel()
     
     let deliveryLocationTitleLabel = UILabel()
     
@@ -60,14 +60,14 @@ class RequestStatusTableViewCell: UITableViewCell {
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Expiration:"
         
-        let deliveryDetailsTitleLabel = UILabel()
-        deliveryDetailsTitleLabel.text = "Special Requests:"
+        let specialRequestsTitleLabel = UILabel()
+        specialRequestsTitleLabel.text = "Special Requests:"
         
         let titleLabels = [
             statusTitleLabel,
             expirationTitleLabel,
             deliveryLocationTitleLabel,
-            deliveryDetailsTitleLabel
+            specialRequestsTitleLabel
         ]
         
         titleLabels.forEach { label in
@@ -92,7 +92,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         
         let deliveryDetailLabels = [
             deliveryLocationDetailsLabel,
-            deliveryDetailsDetailsLabel
+            specialRequestsDetailsLabel
         ]
         deliveryDetailLabels.forEach { label in
             label.font = subtitleDetailFont
@@ -157,26 +157,25 @@ class RequestStatusTableViewCell: UITableViewCell {
             deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryDetailsTitleLabel.topAnchor),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor, constant: -labelVerticalSpacing),
             
             
             // Details title label and details label
             
-            deliveryDetailsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryDetailsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
+            specialRequestsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            specialRequestsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
                                                            constant: labelVerticalSpacing),
             
             // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
             
-            deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: contactHelperButton.topAnchor),
-            //deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+            specialRequestsDetailsLabel.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            specialRequestsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            specialRequestsDetailsLabel.topAnchor.constraint(equalTo: specialRequestsTitleLabel.bottomAnchor),
+            specialRequestsDetailsLabel.bottomAnchor.constraint(equalTo: contactHelperButton.topAnchor, constant: -10),
             
-            contactHelperButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+            contactHelperButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
             contactHelperButton.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            contactHelperButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: -10),
+            contactHelperButton.topAnchor.constraint(equalTo: specialRequestsDetailsLabel.bottomAnchor, constant: 10),
             contactHelperButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
             ]

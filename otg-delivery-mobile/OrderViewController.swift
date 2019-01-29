@@ -314,14 +314,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
-            cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
+            cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
             
             // Text wraps
             cell.orderLabel.numberOfLines = 0
             cell.statusDetailsLabel.numberOfLines = 0
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
-            cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+            cell.specialRequestsDetailsLabel.numberOfLines = 0
             
             // Contact helper button
             cell.contentView.isUserInteractionEnabled = true;

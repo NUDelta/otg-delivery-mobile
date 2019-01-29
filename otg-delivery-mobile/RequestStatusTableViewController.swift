@@ -37,14 +37,14 @@ class RequestStatusTableViewController: UITableViewController {
         cell.statusDetailsLabel.text = request.status
         cell.expirationDetailsLabel.text = request.endTime
         cell.deliveryLocationDetailsLabel.text = CoffeeRequest.arrayToJson(arr: request.deliveryLocation)
-        cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
+        cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
         
         // Text wraps
         cell.orderLabel.numberOfLines = 0
         cell.statusDetailsLabel.numberOfLines = 0
         cell.expirationDetailsLabel.numberOfLines = 0
         cell.deliveryLocationDetailsLabel.numberOfLines = 0
-        cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+        cell.specialRequestsDetailsLabel.numberOfLines = 0
         
         return cell
     }

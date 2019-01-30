@@ -67,4 +67,17 @@ extension Location {
         
         return newString
     }
+    
+    static func isCorrectGeofence(geofence: String, requestLocation: String) -> Bool {
+        switch(geofence) {
+        case "Noyes":
+            return requestLocation == "Tomate" || requestLocation == "CoffeeLab"
+        case "Tech Express":
+            return requestLocation == "TechExpress"
+        case "Downtown Evanston":
+            return requestLocation == "Starbucks" || requestLocation == "Panera" || requestLocation == "OliveMeditarraneanGrill" || requestLocation == "BlazePizza" || requestLocation == "AndysFrozenCustard"
+        default:
+            return false
+        }
+    }
 }

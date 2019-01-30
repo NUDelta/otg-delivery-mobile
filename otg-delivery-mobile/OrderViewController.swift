@@ -56,7 +56,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 //        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
 //        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
 //        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088)),
-        //("Tomate", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724)),
+        ("Noyes", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724)),
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
         ("Downtown Evanston", CLLocationCoordinate2D(latitude: 42.048555, longitude: -87.681854)),
@@ -155,18 +155,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             print(coffeeRequest ?? "No available tasks")
             
             if let coffeeReq = coffeeRequest {
-                //Set most recent request in user defaults
-                let defaults = UserDefaults.standard
-                defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
-                defaults.set(region.identifier, forKey: "currentGeofenceLocation")
-                
-                // instead of sending the name of the region, grab the name of the location from the coffee request
-                // because tomate and coffee lab are in the same region - don't know which request
-                self.sendNotification(locationName: region.identifier, request: coffeeReq)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
-                    self.removeCachedGeofenceLocation()
-                })
+                // Check if request is for correct region
+                if Location.isCorrectGeofence(geofence: region.identifier, requestLocation: coffeeReq.pickupLocation) {
+                    //Set most recent request in user defaults
+                    let defaults = UserDefaults.standard
+                    defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
+                    defaults.set(region.identifier, forKey: "currentGeofenceLocation")
+                    
+                    self.sendTaskNotification(request: coffeeReq)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
+                        self.removeCachedGeofenceLocation()
+                    })
+                }
             }
         })
         
@@ -183,10 +184,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     
-    func sendNotification(locationName: String, request: CoffeeRequest){
+    func sendTaskNotification(request: CoffeeRequest){
         print("VIEW CONTROLLER: sending coffee pickup notification")
 
-        Logging.sendEvent(location: locationName, eventType: Logging.eventTypes.taskNotification.rawValue, details: "")
+        Logging.sendEvent(location: request.pickupLocation, eventType: Logging.eventTypes.taskNotification.rawValue, details: "")
         
         let content = UNMutableNotificationContent()
         content.title = "\(request.requester?.username ?? "A friend") is hungry! Help make their day :)"

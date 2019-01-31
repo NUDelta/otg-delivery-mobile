@@ -365,7 +365,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return cell
 
         } else if tableView == acceptedRequestTableView {
-            let cell = AcceptedRequestTableViewCell()
+            let cell = TaskTableViewCell()
  
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
@@ -388,6 +388,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
          
             // Initialize buttons
             cell.contentView.isUserInteractionEnabled = true;
+            
+            cell.pickedUpButton.tag = indexPath.row
+            cell.pickedUpButton.addTarget(self, action: #selector(pickedUpOrder), for: .touchUpInside)
+            
             cell.completeOrderButton.tag = indexPath.row
             cell.completeOrderButton.addTarget(self, action: #selector(completeOrder), for: .touchUpInside)
             
@@ -432,6 +436,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             self.present(messageVC, animated: false, completion: nil)
         }
+    }
+    
+    @objc func pickedUpOrder(sender: UIButton) {
+        let row_number = sender.tag
+        let currentTask = self.acceptedRequests[row_number]
+        
+        let message = "Your request was just picked up!"
+        User.sendNotification(deviceId: currentTask.requester!.deviceId, message: message)
+        
+        let updatedStatus = "Picked Up"
+        CoffeeRequest.updateStatus(requestId: currentTask.requestId!, status: updatedStatus,completionHandler: {})
     }
     
     @objc func completeOrder(sender: UIButton) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AcceptedRequestTableViewCell: UITableViewCell {
+class TaskTableViewCell: UITableViewCell {
     
     // MARK: - Properties
     static let reuseIdentifier = "acceptedRequestReuseIdentifier"
@@ -20,6 +20,7 @@ class AcceptedRequestTableViewCell: UITableViewCell {
     let deliveryDetailsDetailsLabel = UILabel()
     
     let completeOrderButton = UIButton.init(type: .system)
+    let pickedUpButton = UIButton.init(type: .system)
     let contactRequesterButton = UIButton.init(type: .system)
     
     // MARK: - Initialization
@@ -46,6 +47,14 @@ class AcceptedRequestTableViewCell: UITableViewCell {
         completeOrderButton.translatesAutoresizingMaskIntoConstraints = false
         //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
         self.addSubview(completeOrderButton)
+        
+        pickedUpButton.backgroundColor = UIColor.clear
+        pickedUpButton.layer.cornerRadius = 1.0;
+        pickedUpButton.layer.borderWidth = 0.2;
+        pickedUpButton.setTitleColor(self.tintColor, for: .normal)
+        pickedUpButton.setTitle("Mark Order as Picked Up", for: .normal)
+        pickedUpButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(pickedUpButton)
         
         contactRequesterButton.backgroundColor = UIColor.clear
         contactRequesterButton.layer.cornerRadius = 1.0;
@@ -182,13 +191,18 @@ class AcceptedRequestTableViewCell: UITableViewCell {
             deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -10),
+            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: pickedUpButton.topAnchor, constant: -10),
             
 //            // Button constraints
+            pickedUpButton.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -5),
+            pickedUpButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
+            pickedUpButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+            pickedUpButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: 10),
+            
             completeOrderButton.bottomAnchor.constraint(equalTo: contactRequesterButton.topAnchor, constant: -5),
             completeOrderButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
             completeOrderButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
-            completeOrderButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: 5),
+            completeOrderButton.topAnchor.constraint(equalTo: pickedUpButton.bottomAnchor, constant: 5),
             
             contactRequesterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
             contactRequesterButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),

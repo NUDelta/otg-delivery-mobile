@@ -30,6 +30,8 @@
 		39C13EEF21ED2A06005833B8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEE21ED2A06005833B8 /* Location.swift */; };
 		39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF021F695B0005833B8 /* LocationUpdate.swift */; };
 		39C13EF321F769B0005833B8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF221F769B0005833B8 /* Constants.swift */; };
+		39C13EF62202A922005833B8 /* DeliveryTimeframeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */; };
+		39C13EF82202A949005833B8 /* DeliveryTimeframeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */; };
 		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
 		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
 		39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */; };
@@ -69,6 +71,8 @@
 		39C13EF021F695B0005833B8 /* LocationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdate.swift; sourceTree = "<group>"; };
 		39C13EF221F769B0005833B8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeEvanstonDowntown.gpx; sourceTree = "<group>"; };
+		39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeframeTableViewController.swift; sourceTree = "<group>"; };
+		39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeframeTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
 		39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMeetingPointTableViewController.swift; sourceTree = "<group>"; };
@@ -121,8 +125,10 @@
 				39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */,
 				393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */,
 				39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */,
-				39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */,
 				39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */,
+				39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */,
+				39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */,
+				39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */,
 				39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */,
 				39D2343620A523D10020460A /* TaskConfirmationViewController.swift */,
 				39FE213C2097BB900019AE3A /* TaskTableViewCell.swift */,
@@ -236,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39C13EF62202A922005833B8 /* DeliveryTimeframeTableViewController.swift in Sources */,
 				39C13EF321F769B0005833B8 /* Constants.swift in Sources */,
 				39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */,
 				39FE213D2097BB900019AE3A /* TaskTableViewCell.swift in Sources */,
@@ -254,6 +261,7 @@
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				39C13EEF21ED2A06005833B8 /* Location.swift in Sources */,
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
+				39C13EF82202A949005833B8 /* DeliveryTimeframeTableViewCell.swift in Sources */,
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
 				39C13EED21EC0336005833B8 /* RestaurantTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,

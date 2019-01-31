@@ -325,6 +325,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 // Meeting point label
                 cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
                 
+                // Estimated delivery label
+                cell.expirationTitleLabel.text = "Estimated Delivery Time:"
+                let splitStatus = request.status.components(separatedBy: "(")
+                cell.statusDetailsLabel.text = splitStatus[0]
+                cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
+                
+                // Contact helper button
                 User.get(with_id: request.helper!, completionHandler: { helperUserModel in
                     guard let helperUserModel = helperUserModel else {
                         print("No helper returned when trying to get helper name for a request.")
@@ -336,15 +343,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         // So phone number can be accessed when pressing button
                         cell.contactHelperButton.tag = Int(phoneNumber) ?? 0
                     }
-                    
                 })
             } else {
                 cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
+                
+                cell.expirationTitleLabel.text = "Expiration:"
+                let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
+                cell.expirationDetailsLabel.text = endTime
+                
+                cell.statusDetailsLabel.text = request.status
             }
-            
-            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
-            cell.statusDetailsLabel.text = request.status
-            cell.expirationDetailsLabel.text = endTime
+
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
             cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
             cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails

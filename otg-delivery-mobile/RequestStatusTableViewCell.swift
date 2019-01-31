@@ -20,6 +20,8 @@ class RequestStatusTableViewCell: UITableViewCell {
     let specialRequestsDetailsLabel = UILabel()
     let pickupLocationDetailsLabel = UILabel()
     
+    
+    let expirationTitleLabel = UILabel()
     let deliveryLocationTitleLabel = UILabel()
     
     let contactHelperButton = UIButton.init(type: .system)
@@ -57,9 +59,6 @@ class RequestStatusTableViewCell: UITableViewCell {
         // Title Labels (left column)
         let statusTitleLabel = UILabel()
         statusTitleLabel.text = "Status:"
-        
-        let expirationTitleLabel = UILabel()
-        expirationTitleLabel.text = "Expiration:"
         
         let pickupLocationTitleLabel = UILabel()
         pickupLocationTitleLabel.text = "Restaurant:"

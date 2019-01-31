@@ -110,7 +110,7 @@ extension User {
         task.resume()
     }
     
-    static func acceptRequest(requestId id: String, meetingPoint: String, completionHandler: @escaping () -> Void) {
+    static func acceptRequest(requestId id: String, meetingPoint: String, timeEstimate: String, completionHandler: @escaping () -> Void) {
         
         //Get username
         let defaults = UserDefaults.standard
@@ -139,6 +139,7 @@ extension User {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "meetingPoint", value: meetingPoint),
+             URLQueryItem(name: "timeEstimate", value: timeEstimate),
         ]
         
         let httpBodyString: String? = components?.url?.absoluteString

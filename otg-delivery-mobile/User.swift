@@ -249,4 +249,34 @@ extension User {
         
         task.resume()
     }
+    
+    static func sendNotification(deviceId: String, message: String) {
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "deviceId", value: deviceId),
+            URLQueryItem(name: "message", value: message),
+        ]
+        
+        let url = URL(string: User.apiUrl + "/sendNotification")
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            
+            guard let data = data else {
+                return
+            }
+            print("Sent notification to user with device ID \(deviceId)")
+            
+        }
+        
+        task.resume()
+    }
 }

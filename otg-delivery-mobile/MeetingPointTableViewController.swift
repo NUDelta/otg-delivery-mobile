@@ -11,7 +11,7 @@ import UIKit
 class MeetingPointTableViewController: UITableViewController {
     
     var currentRequest: CoffeeRequest?
-    var meetingPoints = ["Tech Lobby", "Ford Lobby", "Bridge between Tech and Mudd", "DTR Space Mudd", "SPAC Lobby", "Corner of Sheridan and Noyes", "Norris Starbucks", "Main Library Sign-In Desk"]
+    var meetingPoints = ["Tech Lobby", "Bridge between Tech and Mudd", "SPAC, By Entrance", "Kresge, By Entrance", "Norris, By Front Entrance", "Main Library Sign-In Desk", "Plex Lobby", "Willard Lobby"]
 
     @IBOutlet var meetingPointTableView: UITableView!
     

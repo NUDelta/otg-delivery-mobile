@@ -49,7 +49,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     public static let sharedManager = OrderViewController()
 
     var locationManager: CLLocationManager?
-    let coffeeLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
+    let pickupLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
 //        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
 //        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
 //        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
@@ -61,6 +61,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
         ("Downtown Evanston", CLLocationCoordinate2D(latitude: 42.048555, longitude: -87.681854)),
     ]
+    
+    let meetingPointLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
+        ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
+        ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
+        ("Bridge between Tech and Mudd", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)),
+        ("Main Library Sign-In Desk", CLLocationCoordinate2D(latitude: 42.053166, longitude: -87.674774)),
+        ("Kresge, By Entrance", CLLocationCoordinate2D(latitude: 42.051352, longitude: -87.675254)),
+        ("SPAC, By Entrance", CLLocationCoordinate2D(latitude: 42.059135, longitude: -87.672755)),
+        ("Norris, By Front Entrance", CLLocationCoordinate2D(latitude: 42.053328,  longitude: -87.673141)),
+        ("Plex Lobby", CLLocationCoordinate2D(latitude: 42.053822, longitude: -87.678237)),
+        ("Willard Lobby", CLLocationCoordinate2D(latitude: 42.051655,
+        longitude:  -87.681316)),
+        ]
+        
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,10 +99,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         
         locationManager?.startUpdatingLocation()
         // use our predefined locations to setup the geo-fences
-        for coffeeLocation in coffeeLocations {
+        for coffeeLocation in (pickupLocations + meetingPointLocations) {
             let region = CLCircularRegion(center: coffeeLocation.1, radius: 200, identifier: coffeeLocation.0)
             region.notifyOnEntry = true
-            region.notifyOnExit = false
+            region.notifyOnExit = true
         
             locationManager?.startMonitoring(for: region)
         }
@@ -147,35 +161,59 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("User entered pickup geofence.")
-        Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
-
-        CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
-            print("Printing task:")
-            print(coffeeRequest ?? "No available tasks")
+        if pickupLocations.contains(where: { $0.locationName == region.identifier }){
             
-            if let coffeeReq = coffeeRequest {
-                // Check if request is for correct region
-                if Location.isCorrectGeofence(geofence: region.identifier, requestLocation: coffeeReq.pickupLocation) {
-                    //Set most recent request in user defaults
-                    let defaults = UserDefaults.standard
-                    defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
-                    defaults.set(region.identifier, forKey: "currentGeofenceLocation")
-                    
-                    self.sendTaskNotification(request: coffeeReq)
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
-                        self.removeCachedGeofenceLocation()
-                    })
+            print("User entered pickup geofence.")
+            Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
+            
+            CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
+                
+                if let coffeeReq = coffeeRequest {
+                    print("Available Task for region \(region.identifier)")
+                    // Check if request is for correct region
+                    if Location.isCorrectGeofence(geofence: region.identifier, requestLocation: coffeeReq.pickupLocation) {
+                        //Set most recent request in user defaults
+                        let defaults = UserDefaults.standard
+                        defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
+                        defaults.set(region.identifier, forKey: "currentGeofenceLocation")
+                        
+                        self.sendTaskNotification(request: coffeeReq)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
+                            self.removeCachedGeofenceLocation()
+                        })
+                    }
                 }
+            })
+        } else if meetingPointLocations.contains(where: {$0.locationName == region.identifier}) {
+            // Check if a helper is entering the geofence they are delivering to
+            if let currentTaskIndex = acceptedRequests.firstIndex(where: {$0.deliveryLocation[0] == region.identifier} ) {
+                let currentTask = acceptedRequests[currentTaskIndex]
+                
+                let message = "Your helper is almost at the meeting point! Please be there within 3-5 minutes and look out for texts from them."
+                User.sendNotification(deviceId: currentTask.requester!.deviceId, message: message)
+                
+                let updatedStatus = "Almost at meeting point (3-5 min)"
+                CoffeeRequest.updateStatus(requestId: currentTask.requestId!, status: updatedStatus,completionHandler: {})
             }
-        })
-        
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("Leaving geofence")
         removeCachedGeofenceLocation()
+        
+        // Update requester if helper leaves pickup location
+        if pickupLocations.contains(where: { $0.locationName == region.identifier }){
+            if let currentTaskIndex = acceptedRequests.firstIndex(where: { Location.isCorrectGeofence(geofence: region.identifier, requestLocation: $0.pickupLocation)} ) {
+                let currentTask = acceptedRequests[currentTaskIndex]
+                
+                let message = "Your helper is on their way! Please be ready in around 15 minutes."
+                User.sendNotification(deviceId: currentTask.requester!.deviceId, message: message)
+                
+                let updatedStatus = "On its way! (~15 min)"
+                CoffeeRequest.updateStatus(requestId: currentTask.requestId!, status: updatedStatus,completionHandler: {})
+            }
+        }
     }
     
     func removeCachedGeofenceLocation() {
@@ -283,9 +321,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = myRequests[indexPath.row]
             cell.orderLabel.text = request.item?.name ?? "Item not loading"
 
-            if (request.status == "Accepted") {
-                var status = "Accepted"
-                
+            if (request.status != "Pending") {
                 // Meeting point label
                 cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
                 
@@ -294,12 +330,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         print("No helper returned when trying to get helper name for a request.")
                         return
                     }
-                    let helperName = helperUserModel.username
                     let phoneNumber = helperUserModel.phoneNumber
-                    status = "Accepted by \(helperName)"
-                    DispatchQueue.main.async {
-                        cell.statusDetailsLabel.text = status
-                    }
                     
                     DispatchQueue.main.async {
                         // So phone number can be accessed when pressing button
@@ -308,11 +339,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     
                 })
             } else {
-                cell.statusDetailsLabel.text = request.status
                 cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
             }
             
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
+            cell.statusDetailsLabel.text = request.status
             cell.expirationDetailsLabel.text = endTime
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
             cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)

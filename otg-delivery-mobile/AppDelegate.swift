@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func showPendingRequest() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "HelperLocationFormViewController") as! HelperLocationFormViewController
+        let vc = sb.instantiateViewController(withIdentifier: "HelperMeetingPointViewController") as! HelperMeetingPointTableViewController
         window?.rootViewController = vc
     }
     

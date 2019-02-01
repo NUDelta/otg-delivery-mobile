@@ -385,15 +385,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.statusDetailsLabel.text = status
             let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
             cell.expirationDetailsLabel.text = endTime
+            cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
-            cell.deliveryDetailsDetailsLabel.text = request.deliveryLocationDetails
+            cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
             
             // Text wraps
             cell.orderLabel.numberOfLines = 0
             cell.statusDetailsLabel.numberOfLines = 0
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
-            cell.deliveryDetailsDetailsLabel.numberOfLines = 0
+            cell.specialRequestsDetailsLabel.numberOfLines = 0
          
             // Initialize buttons
             cell.contentView.isUserInteractionEnabled = true;

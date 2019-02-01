@@ -16,8 +16,9 @@ class TaskTableViewCell: UITableViewCell {
     let orderLabel = UILabel()
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
+    let pickupLocationDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
-    let deliveryDetailsDetailsLabel = UILabel()
+    let specialRequestsDetailsLabel = UILabel()
     
     let completeOrderButton = UIButton.init(type: .system)
     let pickedUpButton = UIButton.init(type: .system)
@@ -78,17 +79,21 @@ class TaskTableViewCell: UITableViewCell {
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Expiration:"
         
+        let pickupLocationTitleLabel = UILabel()
+        pickupLocationTitleLabel.text = "Pickup Location:"
+        
         let deliveryLocationTitleLabel = UILabel()
         deliveryLocationTitleLabel.text = "Delivery Location:"
         
-        let deliveryDetailsTitleLabel = UILabel()
-        deliveryDetailsTitleLabel.text = "Special Requests:"
+        let specialRequestsTitleLabel = UILabel()
+        specialRequestsTitleLabel.text = "Special Requests:"
         
         let titleLabels = [
             statusTitleLabel,
             expirationTitleLabel,
+            pickupLocationTitleLabel,
             deliveryLocationTitleLabel,
-            deliveryDetailsTitleLabel
+            specialRequestsTitleLabel
         ]
         
         titleLabels.forEach { label in
@@ -112,8 +117,9 @@ class TaskTableViewCell: UITableViewCell {
         }
         
         let deliveryDetailLabels = [
+            pickupLocationDetailsLabel,
             deliveryLocationDetailsLabel,
-            deliveryDetailsDetailsLabel
+            specialRequestsDetailsLabel
         ]
         deliveryDetailLabels.forEach { label in
             label.font = subtitleDetailFont
@@ -169,44 +175,52 @@ class TaskTableViewCell: UITableViewCell {
             expirationDetailsLabel.topAnchor.constraint(equalTo: expirationTitleLabel.topAnchor),
             expirationDetailsLabel.bottomAnchor.constraint(equalTo: expirationTitleLabel.bottomAnchor),
             
+            pickupLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            pickupLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
+            
+            pickupLocationDetailsLabel.leftAnchor.constraint(equalTo: pickupLocationTitleLabel.leftAnchor),
+            pickupLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            pickupLocationDetailsLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
+            pickupLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryLocationTitleLabel.topAnchor),
+            
             // Location title label and details label
             
             deliveryLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
+            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: pickupLocationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
             deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryDetailsTitleLabel.topAnchor),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor),
             
             
             // Details title label and details label
             
-            deliveryDetailsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryDetailsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
+            specialRequestsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            specialRequestsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
                                                            constant: labelVerticalSpacing),
             
             // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
             
-            deliveryDetailsDetailsLabel.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            deliveryDetailsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            deliveryDetailsDetailsLabel.topAnchor.constraint(equalTo: deliveryDetailsTitleLabel.bottomAnchor),
-            deliveryDetailsDetailsLabel.bottomAnchor.constraint(equalTo: pickedUpButton.topAnchor, constant: -10),
+            specialRequestsDetailsLabel.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            specialRequestsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            specialRequestsDetailsLabel.topAnchor.constraint(equalTo: specialRequestsTitleLabel.bottomAnchor),
+            specialRequestsDetailsLabel.bottomAnchor.constraint(equalTo: pickedUpButton.topAnchor, constant: -10),
             
 //            // Button constraints
             pickedUpButton.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -5),
-            pickedUpButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            pickedUpButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
-            pickedUpButton.topAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.bottomAnchor, constant: 10),
+            pickedUpButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            pickedUpButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
+            pickedUpButton.topAnchor.constraint(equalTo: specialRequestsDetailsLabel.bottomAnchor, constant: 10),
             
             completeOrderButton.bottomAnchor.constraint(equalTo: contactRequesterButton.topAnchor, constant: -5),
-            completeOrderButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            completeOrderButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+            completeOrderButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            completeOrderButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
             completeOrderButton.topAnchor.constraint(equalTo: pickedUpButton.bottomAnchor, constant: 5),
             
             contactRequesterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            contactRequesterButton.leftAnchor.constraint(equalTo: deliveryDetailsTitleLabel.leftAnchor),
-            contactRequesterButton.rightAnchor.constraint(equalTo: deliveryDetailsDetailsLabel.rightAnchor),
+            contactRequesterButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            contactRequesterButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
             contactRequesterButton.topAnchor.constraint(equalTo: completeOrderButton.bottomAnchor, constant: 5),
 
         ]

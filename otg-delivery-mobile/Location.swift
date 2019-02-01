@@ -80,4 +80,17 @@ extension Location {
             return false
         }
     }
+    
+    static func geofenceToPickupLocations(geofence: String) -> [String] {
+        switch(geofence) {
+        case "Noyes":
+            return ["Tomate", "CoffeeLab"]
+        case "Tech Express":
+            return ["TechExpress"]
+        case "Downtown Evanston":
+            return ["Starbucks" ,"Panera", "OliveMeditarraneanGrill" ,"BlazePizza" ,"AndysFrozenCustard"]
+        default:
+            return []
+        }
+    }
 }

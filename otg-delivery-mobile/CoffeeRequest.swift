@@ -92,18 +92,31 @@ class CoffeeRequest : Codable{
 }
 extension CoffeeRequest {
 
-    static func getOpenTask(completionHandler: @escaping (CoffeeRequest?) -> Void) {
-
+    static func getOpenTask(geofence: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
+        var eligiblePickupLocations = Location.geofenceToPickupLocations(geofence: geofence)
+        
         //Get username
         let defaults = UserDefaults.standard
         guard let requesterId = defaults.object(forKey: "userId") as? String else {
             print("Helper ID not in defaults")
             return
         }
+    
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "eligiblePickupLocations", value: CoffeeRequest.arrayToJson(arr: eligiblePickupLocations))
+        ]
 
         let session: URLSession = URLSession.shared
         let url = URL(string: CoffeeRequest.apiUrl + "/task/\(requesterId)")
-        let requestURL = URLRequest(url: url!)
+        var requestURL = URLRequest(url: url!)
+    
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+    
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
 
         let task = session.dataTask(with: requestURL){ data, response, error in
             guard let data = data else {

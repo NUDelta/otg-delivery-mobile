@@ -166,23 +166,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             print("User entered pickup geofence.")
             Logging.sendEvent(location: region.identifier, eventType: Logging.eventTypes.enterRegion.rawValue, details: "")
             
-            CoffeeRequest.getOpenTask(completionHandler: { coffeeRequest in
+            CoffeeRequest.getOpenTask(geofence: region.identifier, completionHandler: { coffeeRequest in
                 
                 if let coffeeReq = coffeeRequest {
                     print("Available Task for region \(region.identifier)")
-                    // Check if request is for correct region
-                    if Location.isCorrectGeofence(geofence: region.identifier, requestLocation: coffeeReq.pickupLocation) {
-                        //Set most recent request in user defaults
-                        let defaults = UserDefaults.standard
-                        defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
-                        defaults.set(region.identifier, forKey: "currentGeofenceLocation")
-                        
-                        self.sendTaskNotification(request: coffeeReq)
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
-                            self.removeCachedGeofenceLocation()
-                        })
-                    }
+                    //Set most recent request in user defaults
+                    let defaults = UserDefaults.standard
+                    defaults.set(coffeeReq.requestId!, forKey: "latestRequestNotification")
+                    defaults.set(region.identifier, forKey: "currentGeofenceLocation")
+                    
+                    self.sendTaskNotification(request: coffeeReq)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(15 * 60), execute: {
+                        self.removeCachedGeofenceLocation()
+                    })
                 }
             })
         } else if meetingPointLocations.contains(where: {$0.locationName == region.identifier}) {

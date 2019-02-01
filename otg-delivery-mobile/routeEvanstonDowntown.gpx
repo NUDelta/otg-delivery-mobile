@@ -33,4 +33,17 @@
         <time>2014-09-24T14:56:00Z</time>
     </wpt>
     
+    <wpt lat="42.048555" lon="-87.681854">
+        <name>Panera</name>
+        
+        <!--
+         Optionally provide a time element for each waypoint. Xcode will interpolate movement
+         at a rate of speed based on the time elapsed between each waypoint. If you do not provide
+         a time element, then Xcode will use a fixed rate of speed.
+         
+         Waypoints must be sorted by time in ascending order.
+         -->
+        <time>2014-09-24T18:56:00Z</time>
+    </wpt>
+    
 </gpx>

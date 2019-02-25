@@ -11,9 +11,8 @@ import Foundation
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
 class CoffeeRequest : Codable{
-    //API Location
-    private static let apiUrl: String = "https://otg-delivery.herokuapp.com/requests"
-    //private static let apiUrl: String = "http://localhost:8080/requests" // if TIC TCP Conn fail error, update IP address to that of computer running the server - system preferences/network/wifi
+    private static let apiUrl: String = Constants.apiUrl + "requests"
+
 
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -24,6 +23,7 @@ class CoffeeRequest : Codable{
         case status
         case deliveryLocation
         case deliveryLocationDetails
+        case pickupLocation
         case helper
     }
 
@@ -33,6 +33,7 @@ class CoffeeRequest : Codable{
     var status: String
     var deliveryLocation: [String]
     var deliveryLocationDetails: String
+    var pickupLocation: String
     var helper: String?
     var endTime: String?
     var requestId: String?
@@ -56,6 +57,7 @@ class CoffeeRequest : Codable{
         helper = try container.decodeIfPresent(String.self, forKey: .helper) ?? ""
         endTime = try container.decode(String.self, forKey: .endTime)
         requestId = try container.decode(String.self, forKey: .requestId)
+        pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
         
         // Populate id fields
         requesterId = requester?.userId ?? "No requester ID"
@@ -63,12 +65,13 @@ class CoffeeRequest : Codable{
         
     }
     
-    init(requester: String, itemId: String, status: String, deliveryLocation: [String], deliveryLocationDetails: String, endTime: String) {
+    init(requester: String, itemId: String, status: String, deliveryLocation: [String], deliveryLocationDetails: String, endTime: String, pickupLocation: String) {
         self.requesterId = requester
         self.itemId = itemId
         self.status = status
         self.deliveryLocation = deliveryLocation
         self.deliveryLocationDetails = deliveryLocationDetails
+        self.pickupLocation = pickupLocation
         self.endTime = endTime
         self.requestId = ""
         self.helper = ""
@@ -81,6 +84,7 @@ class CoffeeRequest : Codable{
         try container.encode(status, forKey: .status)
         try container.encode(deliveryLocation, forKey: .deliveryLocation)
         try container.encode(deliveryLocationDetails, forKey: .deliveryLocationDetails)
+        try container.encode(pickupLocation, forKey: .pickupLocation)
         try container.encode(helper, forKey: .helper)
         try container.encode(endTime, forKey: .endTime)
         try container.encode(requestId, forKey: .requestId)
@@ -88,18 +92,31 @@ class CoffeeRequest : Codable{
 }
 extension CoffeeRequest {
 
-    static func getOpenTask(completionHandler: @escaping (CoffeeRequest?) -> Void) {
-
+    static func getOpenTask(geofence: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
+        var eligiblePickupLocations = Location.geofenceToPickupLocations(geofence: geofence)
+        
         //Get username
         let defaults = UserDefaults.standard
         guard let requesterId = defaults.object(forKey: "userId") as? String else {
             print("Helper ID not in defaults")
             return
         }
+    
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "eligiblePickupLocations", value: CoffeeRequest.arrayToJson(arr: eligiblePickupLocations))
+        ]
 
         let session: URLSession = URLSession.shared
         let url = URL(string: CoffeeRequest.apiUrl + "/task/\(requesterId)")
-        let requestURL = URLRequest(url: url!)
+        var requestURL = URLRequest(url: url!)
+    
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+    
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
 
         let task = session.dataTask(with: requestURL){ data, response, error in
             guard let data = data else {
@@ -138,7 +155,8 @@ extension CoffeeRequest {
             URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocation", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation)),
-            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
+            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails),
+            URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -298,20 +316,26 @@ extension CoffeeRequest {
     }
 
     static func parseTime(dateAsString: String) -> String {
-        // Strip end of date string
-        var dateAsStringParsed = dateAsString.components(separatedBy: ".")[0]
 
-        // Parse input to date
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        let dateAsDate = formatter.date(from: dateAsStringParsed)
+        let dateAsDate = stringToDate(s: dateAsString)
 
         // Set desired date format
         formatter.dateFormat = "h:mm a"
         formatter.timeZone = NSTimeZone.local
-        let formattedDate = formatter.string(from: dateAsDate!)
+        let formattedDate = formatter.string(from: dateAsDate)
         return formattedDate
+    }
+    
+    static func stringToDate(s: String) -> Date {
+        //Remove milliseconds for parsing ease
+        var parsedDateString = s.components(separatedBy: ".")[0]
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let date = dateFormatter.date(from: parsedDateString)
+        return date!
     }
     
     static func arrayToJson(arr: [String]) -> String {

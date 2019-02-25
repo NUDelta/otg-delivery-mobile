@@ -11,7 +11,7 @@ import UIKit
 class MeetingPointTableViewController: UITableViewController {
     
     var currentRequest: CoffeeRequest?
-    var meetingPoints = ["Tech Lobby", "Ford Lobby", "Bridge between Tech and Mudd", "DTR Space Mudd", "SPAC Lobby", "Corner of Sheridan and Noyes", "Norris Starbucks", "Main Library Sign-In Desk"]
+    var meetingPoints = ["Tech Lobby", "Bridge between Tech and Mudd", "SPAC, By Entrance", "Kresge, By Entrance", "Norris, By Front Entrance", "Main Library Sign-In Desk", "Plex Lobby", "Willard Lobby"]
 
     @IBOutlet var meetingPointTableView: UITableView!
     
@@ -38,11 +38,13 @@ class MeetingPointTableViewController: UITableViewController {
             // Set locations on request object
             currentRequest?.deliveryLocation = selectedLocations
             
-            let alert = UIAlertController(title: "Are you sure you want to submit this request?", message: "You will be notified of your meeting point when a helper accepts. You are expected at this meeting point within 5 minutes of when your helper texts that they are on their way.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Are you sure you want to submit this request?", message: "You are expected at your meeting point within 5 minutes of when your helper texts that they are on their way.", preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
                 CoffeeRequest.postCoffeeRequest(coffeeRequest: self.currentRequest!)
-                self.dismiss(animated: true, completion: nil)
+                let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+                
+                self.present(mainPage, animated: true, completion: nil)
             }))
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in

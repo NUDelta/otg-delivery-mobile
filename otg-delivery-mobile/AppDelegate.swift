@@ -8,9 +8,10 @@
 
 import UIKit
 import UserNotifications
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
 
@@ -20,10 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if (granted) {
                 
                 // setup notification categories
-                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'd like to help!", options: [.foreground])
-                let rejectAction = UNNotificationAction(identifier: "rejectNotification", title: "Cancel", options: [.destructive])
+                let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'm interested! Show me the details.", options: [.foreground])
+                let rejectActionTime = UNNotificationAction(identifier: "rejectNotification", title: "No - I'm in a hurry.", options: [.destructive])
+                let rejectActionInterest = UNNotificationAction(identifier: "rejectNotification", title: "No - I don't feel like it.", options: [.destructive])
+                let rejectActionOther = UNNotificationAction(identifier: "rejectNotification", title: "No - other.", options: [.destructive])
                 
-                let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectAction], intentIdentifiers: [], options: [])
+                let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectActionTime, rejectActionInterest, rejectActionOther], intentIdentifiers: [], options: [])
 
                 // setup notification categories
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -46,6 +49,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
+        
+        // Restart terminated app if receives a location update
+        if let locationValue = launchOptions?[UIApplicationLaunchOptionsKey.location] {
+            var locationManager = CLLocationManager()
+            
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.delegate = self
+            // Accuracy of location data
+            locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            // The minimum distance before an update event is generated
+            locationManager.distanceFilter = 50.0
+            
+            // Enable location tracking when app sleeps
+            locationManager.pausesLocationUpdatesAutomatically = false
+            locationManager.startMonitoringSignificantLocationChanges()
+            
+            if CLLocationManager.authorizationStatus() == .notDetermined {
+                locationManager.requestAlwaysAuthorization()
+                locationManager.requestWhenInUseAuthorization()
+            }
+            
+            locationManager.startUpdatingLocation()
+        }
         
         if #available(iOS 11, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
@@ -73,6 +99,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         return true
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locToSave = locations.last!
+        
+        let latitude = Double(locToSave.coordinate.latitude)
+        let longitude = Double(locToSave.coordinate.longitude)
+        let speed = Double(locToSave.speed)
+        let direction = Double(locToSave.course)
+        let uncertainty = Double(locToSave.horizontalAccuracy)
+        let timestamp = Date()
+        
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
+        LocationUpdate.post(locUpdate: locUpdate)
+    }
 	
     //Handle user response to notification
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -97,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func showPendingRequest() {
         let sb = UIStoryboard(name: "Main", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "HelperLocationFormViewController") as! HelperLocationFormViewController
+        let vc = sb.instantiateViewController(withIdentifier: "HelperMeetingPointViewController") as! HelperMeetingPointTableViewController
         window?.rootViewController = vc
     }
     

@@ -18,25 +18,9 @@ class TaskConfirmationViewController: UIViewController {
     @IBOutlet weak var orderLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var locationDetailsLabel: UILabel!
+    @IBOutlet weak var pickupLocationLabel: UILabel!
     
     @IBAction func acceptButton(_ sender: UIButton) {
-        // Get ID of pending request
-        let defaults = UserDefaults.standard
-        let latestRequestId = defaults.object(forKey: "latestRequestNotification")!
-        
-        // Accept order and return to requests page
-        User.acceptRequest(requestId: latestRequestId as! String, meetingPoint: meetingPoint, completionHandler: {
-            print("REQUEST ACCEPTED: request successfully accepted.")
-        })
-        
-        let alert = UIAlertController(title: "Thank you for your help!", message: "Please text the requester when you are on your way, using the 'Contact Requester' button on your home screen.", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { _ in
-            let mainView: UINavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavController") as! UINavigationController
-            self.present(mainView, animated: true, completion: nil)
-        }))
-
-        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func declineButton(_ sender: UIButton) {
@@ -51,6 +35,7 @@ class TaskConfirmationViewController: UIViewController {
         self.locationLabel.text = meetingPoint
         self.locationDetailsLabel.text = currentRequest!.deliveryLocationDetails
         self.requesterLabel.text = currentRequest!.requester?.username ?? "Requester"
+        self.pickupLocationLabel.text = currentRequest!.pickupLocation
         
         super.viewDidLoad()
 
@@ -58,5 +43,13 @@ class TaskConfirmationViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "deliveryTimeframeSegue" {
+            let navController = segue.destination as? DeliveryTimeframeTableViewController
+            // Pass current request to next screen
+            navController?.meetingPoint = meetingPoint
+        }
     }
 }

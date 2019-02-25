@@ -9,8 +9,7 @@
 import Foundation
 
 struct Logging {
-    private static let apiUrl: String = "https://otg-delivery.herokuapp.com/logging"
-    //private static let apiUrl: String = "http://localhost:8080/logging"
+    private static let apiUrl: String = Constants.apiUrl + "logging"
     
     public enum eventTypes : String{
         case enterRegion = "Entered Pickup Region"

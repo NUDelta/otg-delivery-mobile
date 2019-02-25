@@ -31,6 +31,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     var selectedPlace: String?
     var dueDate: Int?
     var orderChoice: Item?
+    var restaurantPicked: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,12 +67,6 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
                 self.picker.setDate(date!, animated: true)
             case .Order:
                 self.navigationItem.title = "Place order"
-                
-                //Create an instance of the drink picker
-                let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-                drinkPickerModal.delegate = self
-                self.present(drinkPickerModal, animated: true, completion: nil)
-                break
         }
     }
     
@@ -121,7 +116,7 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
             let responseDate = RFC3339DateFormatter.string(from: requestEndTime)
             
             //Create coffee request from data
-            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate)
+            let requestFromForm: CoffeeRequest = CoffeeRequest(requester: requesterId as! String, itemId: itemId, status: "Pending", deliveryLocation: [""], deliveryLocationDetails: deliveryDetails, endTime: responseDate, pickupLocation: restaurantPicked!)
             
             // Go to meeting point selection screen
             let navController = segue.destination as? MeetingPointTableViewController
@@ -144,18 +139,14 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
         performSegue(withIdentifier: "meetingPointSegue", sender: nil)
     }
     //When the cancel button on the toolbar is pressed
-    @IBAction func cancelPressed(sender: UIBarButtonItem){
-        //Dismiss modal
-        dismiss(animated: true, completion: nil)
+    @IBAction func cancelButton(_ sender: UIButton) {
+        openMainView()
     }
     
-    //Present modal
-    @IBAction func drinkSelectionButtonPressed(sender: UIButton){
-        //Create an instance of the drink picker
-        let drinkPickerModal: DrinkPickerTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DrinkPickerController") as! DrinkPickerTableViewController
-        drinkPickerModal.delegate = self
+    @IBAction func backButton(_ sender: UIButton) {
+        let restaurantSelectionModal: RestaurantTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RestaurantTableViewController") as! RestaurantTableViewController
         
-        self.present(drinkPickerModal, animated: true, completion: nil)
+        self.present(restaurantSelectionModal, animated: true, completion: nil)
     }
     
     //-=-=-=-=-=-=-=-=-=-=-
@@ -164,8 +155,14 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
     // Returned from Drink Picker Controller, when user selects an item to order
     func itemPicked(itemChoice: Item) {
         orderChoice = itemChoice
-        itemOrderLabel.text = ("\(itemChoice.name)")
-        itemPriceLabel.text = itemChoice.getPriceString()
+        DispatchQueue.main.async {
+            self.itemOrderLabel.text = ("\(itemChoice.name)")
+            self.itemPriceLabel.text = itemChoice.getPriceString()
+        }
+    }
+    
+    func restaurantPicked(restaurant: String) {
+        restaurantPicked = restaurant
     }
     
     //-=-=-=-=-=-=-=-=-=-=-
@@ -183,6 +180,12 @@ class OrderModalViewController: UIViewController, UITextFieldDelegate, UITextVie
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true);
+    }
+    
+    func openMainView() {
+        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+        
+        self.present(mainPage, animated: true, completion: nil)
     }
 
 

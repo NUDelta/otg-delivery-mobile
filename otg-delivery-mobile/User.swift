@@ -1,14 +1,3 @@
-//
-//  UserModel.swift
-//  otg-delivery-mobile
-//
-//  Created by Sam Naser on 5/2/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
-import Foundation
-
-//
 //  RequestManager.swift
 //  otg-delivery-mobile
 //
@@ -19,9 +8,7 @@ import Foundation
 import Foundation
 
 struct User : Codable{
-    //API Location
-    private static let apiUrl: String = "https://otg-delivery.herokuapp.com/users"
-    //private static let apiUrl: String = "http://localhost:8080/users"
+    private static let apiUrl: String = Constants.apiUrl + "users"
     
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
@@ -123,7 +110,7 @@ extension User {
         task.resume()
     }
     
-    static func acceptRequest(requestId id: String, meetingPoint: String, completionHandler: @escaping () -> Void) {
+    static func acceptRequest(requestId id: String, meetingPoint: String, timeEstimate: String, completionHandler: @escaping () -> Void) {
         
         //Get username
         let defaults = UserDefaults.standard
@@ -152,6 +139,7 @@ extension User {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "meetingPoint", value: meetingPoint),
+             URLQueryItem(name: "timeEstimate", value: timeEstimate),
         ]
         
         let httpBodyString: String? = components?.url?.absoluteString
@@ -258,6 +246,36 @@ extension User {
                 return
             }
             print("USER MODEL: Removed helper from request \(taskId).")
+        }
+        
+        task.resume()
+    }
+    
+    static func sendNotification(deviceId: String, message: String) {
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "deviceId", value: deviceId),
+            URLQueryItem(name: "message", value: message),
+        ]
+        
+        let url = URL(string: User.apiUrl + "/sendNotification")
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            
+            guard let data = data else {
+                return
+            }
+            print("Sent notification to user with device ID \(deviceId)")
+            
         }
         
         task.resume()

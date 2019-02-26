@@ -77,6 +77,18 @@ class CoffeeRequest : Codable{
         self.helper = ""
     }
     
+    init() {
+        self.requesterId = ""
+        self.itemId = ""
+        self.status = ""
+        self.deliveryLocation = []
+        self.deliveryLocationDetails = ""
+        self.pickupLocation = ""
+        self.endTime = ""
+        self.requestId = ""
+        self.helper = ""
+    }
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(requesterId, forKey: .requester)

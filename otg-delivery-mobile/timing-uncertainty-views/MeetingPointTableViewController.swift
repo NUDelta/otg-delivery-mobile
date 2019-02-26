@@ -36,32 +36,26 @@ class MeetingPointTableViewController: UITableViewController {
             self.present(alert, animated: true, completion: nil)
         } else {
             // Set locations on request object
-            currentRequest?.deliveryLocation = selectedLocations
-            
-            let alert = UIAlertController(title: "Are you sure you want to submit this request?", message: "You are expected at your meeting point within 5 minutes of when your helper texts that they are on their way.", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-                CoffeeRequest.postCoffeeRequest(coffeeRequest: self.currentRequest!)
-                let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-                
-                self.present(mainPage, animated: true, completion: nil)
-            }))
-            
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-                self.dismiss(animated: true, completion: nil)
-            }))
-            
-            self.present(alert, animated: true, completion: nil)
+            currentRequest!.deliveryLocation = selectedLocations
+            let nextPage: RequestTimeframeViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestTimeframeViewController") as! RequestTimeframeViewController
+            nextPage.currentRequest = currentRequest
+            self.present(nextPage, animated: true, completion: nil)
         }
     }
     
     @IBAction func cancelButton(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
+        
+        self.present(mainPage, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         meetingPointTableView.setEditing(true, animated: false)
+        
+        if currentRequest == nil {
+            currentRequest = CoffeeRequest()
+        }
     }
 
     // MARK: - Table view data source

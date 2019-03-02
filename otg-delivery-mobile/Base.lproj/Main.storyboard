@@ -360,6 +360,7 @@
                                     <color key="titleShadowColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
+                                    <action selector="submitButton:" destination="5eo-rU-udR" eventType="touchUpInside" id="xZP-yW-n0A"/>
                                     <segue destination="BYZ-38-t0r" kind="show" id="JUl-uq-RFC"/>
                                 </connections>
                             </button>
@@ -1234,6 +1235,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nfS-TQ-NOg"/>
+        <segue reference="JUl-uq-RFC"/>
     </inferredMetricsTieBreakers>
 </document>

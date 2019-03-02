@@ -191,49 +191,25 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             //TODO: Revert
             //let request = myRequests[indexPath.row]
-            let request = CoffeeRequest(requester: "M", itemId: "M", status: "M", deliveryLocation: ["M"], deliveryLocationDetails: "M", endTime: "M", pickupLocation: "M")
+            let request = CoffeeRequest()
+            
+            cell.statusDetailsLabel.text = request.status
+            cell.expirationDetailsLabel.text = CoffeeRequest.generateTwoHourTimeframeString(startTime: request.orderStartTime)
+            cell.contactHelperButton.tag = Int(3033623343)
+            
+            cell.timeFrame1Label.text = "timeFrame1Label"
+            cell.timeFrame2Label.text = "timeFrame2Label"
+            cell.timeFrame3Label.text = "timeFrame3Label"
+             //cell.timeFrame4Label.text = "timeFrame4Label"
 
-            if (request.status != "Pending") {
+            if (request.status != "Searching for Helper") {
                 // Meeting point label
                 cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
-                
-                // Estimated delivery label
-                cell.expirationTitleLabel.text = "Estimated Delivery Time:"
-                let splitStatus = request.status.components(separatedBy: "(")
-                cell.statusDetailsLabel.text = splitStatus[0]
-                
-                //TODO: Revert
-                //cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
-                
-                cell.timeFrame1Label.text = "timeFrame1Label"
-                cell.timeFrame2Label.text = "timeFrame2Label"
-                cell.timeFrame3Label.text = "timeFrame3Label"
-                //cell.timeFrame4Label.text = "timeFrame4Label"
-                
-                // Contact helper button
-                User.get(with_id: request.helper!, completionHandler: { helperUserModel in
-                    guard let helperUserModel = helperUserModel else {
-                        print("No helper returned when trying to get helper name for a request.")
-                        return
-                    }
-                    let phoneNumber = helperUserModel.phoneNumber
-                    
-                    DispatchQueue.main.async {
-                        // So phone number can be accessed when pressing button
-                        cell.contactHelperButton.tag = Int(phoneNumber) ?? 0
-                    }
-                })
+                cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             } else {
                 cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
-                
-                cell.expirationTitleLabel.text = "Expiration:"
-                let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
-                cell.expirationDetailsLabel.text = endTime
-                
-                cell.statusDetailsLabel.text = request.status
+                cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocationOptions)
             }
-
-            cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
 
             // Text wraps
             cell.statusDetailsLabel.numberOfLines = 0
@@ -296,7 +272,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                     
                     // Delete request from database
                     let deleteID = deletedRequest.requestId
-                    CoffeeRequest.deleteRequest(with_id: deleteID!)
+                    CoffeeRequest.deleteRequest(with_id: deleteID)
                     self.myRequestTableView.reloadData()
                 } )
                 

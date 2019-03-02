@@ -33,10 +33,15 @@ class RequestConfirmationViewController: UIViewController {
         prevPage.currentRequest = currentRequest
         self.present(prevPage, animated: true, completion: nil)
     }
+    
     @IBAction func cancelButton(_ sender: Any) {
         let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
         
         self.present(mainPage, animated: true, completion: nil)
+    }
+    
+    @IBAction func submitButton(_ sender: Any) {
+        CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!)
     }
     
     /*

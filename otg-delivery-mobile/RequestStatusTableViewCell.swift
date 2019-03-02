@@ -21,8 +21,7 @@ class RequestStatusTableViewCell: UITableViewCell {
     let timeFrame3Label = UILabel()
     let timeFrame4Label = UILabel()
     
-    
-    let expirationTitleLabel = UILabel()
+    // Title label text can change
     let deliveryLocationTitleLabel = UILabel()
     
     let contactHelperButton = UIButton.init(type: .system)
@@ -54,6 +53,9 @@ class RequestStatusTableViewCell: UITableViewCell {
         // Title Labels (left column)
         let statusTitleLabel = UILabel()
         statusTitleLabel.text = "Status:"
+        
+        let expirationTitleLabel = UILabel()
+        expirationTitleLabel.text = "Delivery Timeframe:"
         
         let timeProbTitleLabel = UILabel()
         timeProbTitleLabel.text = "% Requests Typically Completed:"

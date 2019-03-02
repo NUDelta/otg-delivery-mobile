@@ -9,12 +9,9 @@
 /* Begin PBXBuildFile section */
 		220788D2204F194100DA1026 /* Delta_Enterprise_Export.sh in Resources */ = {isa = PBXBuildFile; fileRef = 220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */; };
 		2238817F203F55370012707C /* route1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2238817E203F55370012707C /* route1.gpx */; };
-		2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A2992049C8FA00CE518B /* OrderModalViewController.swift */; };
 		2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2246A29B2049CD7A00CE518B /* LoginViewController.swift */; };
 		226180DD20997DE2007D92A0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226180DC20997DE2007D92A0 /* User.swift */; };
 		228907D920756C6800072961 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907D820756C6800072961 /* Item.swift */; };
-		228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */; };
-		228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */; };
 		22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278820129CCE005BA4B9 /* AppDelegate.swift */; };
 		22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22AD278A20129CCE005BA4B9 /* OrderViewController.swift */; };
 		22AD278E20129CCE005BA4B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD278C20129CCE005BA4B9 /* Main.storyboard */; };
@@ -24,36 +21,23 @@
 		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
 		22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */; };
 		391F3845218659BD00F1C91B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391F3844218659BD00F1C91B /* Logging.swift */; };
-		393DF993219F03EA0096E765 /* HelperLocationFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */; };
 		394DD8072225ECC7002504E9 /* RequestTimeframeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */; };
 		394DD80A2225EF63002504E9 /* SpecialRequestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8092225EF63002504E9 /* SpecialRequestsViewController.swift */; };
 		394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */; };
-		39C13EEB21EC0267005833B8 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */; };
-		39C13EED21EC0336005833B8 /* RestaurantTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */; };
 		39C13EEF21ED2A06005833B8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEE21ED2A06005833B8 /* Location.swift */; };
 		39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF021F695B0005833B8 /* LocationUpdate.swift */; };
 		39C13EF321F769B0005833B8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF221F769B0005833B8 /* Constants.swift */; };
-		39C13EF62202A922005833B8 /* DeliveryTimeframeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */; };
-		39C13EF82202A949005833B8 /* DeliveryTimeframeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */; };
 		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
 		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
-		39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */; };
-		39D2343720A523D10020460A /* TaskConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D2343620A523D10020460A /* TaskConfirmationViewController.swift */; };
-		39E7105B216C2CF900A73BCA /* AllRequestsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */; };
-		39E7105D216C376400A73BCA /* AllRequestsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */; };
-		39FE213D2097BB900019AE3A /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FE213C2097BB900019AE3A /* TaskTableViewCell.swift */; };
 		39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		220788D1204F194100DA1026 /* Delta_Enterprise_Export.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = Delta_Enterprise_Export.sh; sourceTree = "<group>"; };
 		2238817E203F55370012707C /* route1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = route1.gpx; sourceTree = "<group>"; };
-		2246A2992049C8FA00CE518B /* OrderModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModalViewController.swift; sourceTree = "<group>"; };
 		2246A29B2049CD7A00CE518B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		226180DC20997DE2007D92A0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		228907D820756C6800072961 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkPickerTableViewController.swift; sourceTree = "<group>"; };
-		228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkPickerTableViewCell.swift; sourceTree = "<group>"; };
 		22AD278520129CCE005BA4B9 /* otg-delivery-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "otg-delivery-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22AD278820129CCE005BA4B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		22AD278A20129CCE005BA4B9 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
@@ -66,26 +50,16 @@
 		22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewCell.swift; sourceTree = "<group>"; };
 		391F3844218659BD00F1C91B /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "otg-delivery-mobile.entitlements"; sourceTree = "<group>"; };
-		393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperLocationFormViewController.swift; sourceTree = "<group>"; };
 		393DF994219F44590096E765 /* routeTechExpress.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeTechExpress.gpx; sourceTree = "<group>"; };
 		394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTimeframeViewController.swift; sourceTree = "<group>"; };
 		394DD8092225EF63002504E9 /* SpecialRequestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialRequestsViewController.swift; sourceTree = "<group>"; };
 		394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConfirmationViewController.swift; sourceTree = "<group>"; };
-		39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
-		39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewController.swift; sourceTree = "<group>"; };
 		39C13EEE21ED2A06005833B8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		39C13EF021F695B0005833B8 /* LocationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdate.swift; sourceTree = "<group>"; };
 		39C13EF221F769B0005833B8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeEvanstonDowntown.gpx; sourceTree = "<group>"; };
-		39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeframeTableViewController.swift; sourceTree = "<group>"; };
-		39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryTimeframeTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
-		39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMeetingPointTableViewController.swift; sourceTree = "<group>"; };
-		39D2343620A523D10020460A /* TaskConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskConfirmationViewController.swift; sourceTree = "<group>"; };
-		39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRequestsTableViewCell.swift; sourceTree = "<group>"; };
-		39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllRequestsTableViewController.swift; sourceTree = "<group>"; };
-		39FE213C2097BB900019AE3A /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,25 +102,12 @@
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
-				39C13EEA21EC0267005833B8 /* RestaurantTableViewCell.swift */,
-				39C13EEC21EC0336005833B8 /* RestaurantTableViewController.swift */,
-				393DF992219F03EA0096E765 /* HelperLocationFormViewController.swift */,
 				39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */,
-				39C13EF52202A922005833B8 /* DeliveryTimeframeTableViewController.swift */,
-				39C13EF72202A949005833B8 /* DeliveryTimeframeTableViewCell.swift */,
-				39C932C7219E14FD001CC47D /* HelperMeetingPointTableViewController.swift */,
-				39E7105C216C376400A73BCA /* AllRequestsTableViewController.swift */,
-				39D2343620A523D10020460A /* TaskConfirmationViewController.swift */,
-				39FE213C2097BB900019AE3A /* TaskTableViewCell.swift */,
-				39E7105A216C2CF900A73BCA /* AllRequestsTableViewCell.swift */,
 				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
 				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
-				228907DA2075711E00072961 /* DrinkPickerTableViewController.swift */,
-				228907DC2075A5AF00072961 /* DrinkPickerTableViewCell.swift */,
 				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
-				2246A2992049C8FA00CE518B /* OrderModalViewController.swift */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				39C13EF221F769B0005833B8 /* Constants.swift */,
 				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
@@ -259,36 +220,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				39C13EF62202A922005833B8 /* DeliveryTimeframeTableViewController.swift in Sources */,
 				39C13EF321F769B0005833B8 /* Constants.swift in Sources */,
 				39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */,
-				39FE213D2097BB900019AE3A /* TaskTableViewCell.swift in Sources */,
 				22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */,
 				39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
-				2246A29A2049C8FA00CE518B /* OrderModalViewController.swift in Sources */,
-				228907DD2075A5AF00072961 /* DrinkPickerTableViewCell.swift in Sources */,
 				39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */,
 				228907D920756C6800072961 /* Item.swift in Sources */,
 				394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */,
-				39D2343720A523D10020460A /* TaskConfirmationViewController.swift in Sources */,
 				394DD80A2225EF63002504E9 /* SpecialRequestsViewController.swift in Sources */,
-				393DF993219F03EA0096E765 /* HelperLocationFormViewController.swift in Sources */,
-				228907DB2075711E00072961 /* DrinkPickerTableViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
-				39E7105D216C376400A73BCA /* AllRequestsTableViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				394DD8072225ECC7002504E9 /* RequestTimeframeViewController.swift in Sources */,
 				39C13EEF21ED2A06005833B8 /* Location.swift in Sources */,
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
-				39C13EF82202A949005833B8 /* DeliveryTimeframeTableViewCell.swift in Sources */,
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
-				39C13EED21EC0336005833B8 /* RestaurantTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
-				39E7105B216C2CF900A73BCA /* AllRequestsTableViewCell.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,
-				39C13EEB21EC0267005833B8 /* RestaurantTableViewCell.swift in Sources */,
-				39C932C8219E14FD001CC47D /* HelperMeetingPointTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -171,14 +171,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     // Return number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        var rowCount = 0
-        
-        if(tableView == myRequestTableView){
-            rowCount = self.myRequests.count
-        }
-        
-        return rowCount
+        return 1
+//        var rowCount = 0
+//
+//        if(tableView == myRequestTableView){
+//            rowCount = self.myRequests.count
+//        }
+//
+//        return rowCount
     }
     
     // Configure and display cells in table view
@@ -188,8 +188,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let cell = RequestStatusTableViewCell()
             
             // Grab request to render
-            let request = myRequests[indexPath.row]
-            cell.orderLabel.text = request.item?.name ?? "Item not loading"
+            
+            //TODO: Revert
+            //let request = myRequests[indexPath.row]
+            let request = CoffeeRequest(requester: "M", itemId: "M", status: "M", deliveryLocation: ["M"], deliveryLocationDetails: "M", endTime: "M", pickupLocation: "M")
 
             if (request.status != "Pending") {
                 // Meeting point label
@@ -199,7 +201,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 cell.expirationTitleLabel.text = "Estimated Delivery Time:"
                 let splitStatus = request.status.components(separatedBy: "(")
                 cell.statusDetailsLabel.text = splitStatus[0]
-                cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
+                
+                //TODO: Revert
+                //cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
+                
+                cell.timeFrame1Label.text = "timeFrame1Label"
+                cell.timeFrame2Label.text = "timeFrame2Label"
+                cell.timeFrame3Label.text = "timeFrame3Label"
+                //cell.timeFrame4Label.text = "timeFrame4Label"
                 
                 // Contact helper button
                 User.get(with_id: request.helper!, completionHandler: { helperUserModel in
@@ -225,17 +234,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
 
             cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
-            cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
-            cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
-            
+
             // Text wraps
-            cell.orderLabel.numberOfLines = 0
             cell.statusDetailsLabel.numberOfLines = 0
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
-            cell.pickupLocationDetailsLabel.numberOfLines = 0
-            cell.specialRequestsDetailsLabel.numberOfLines = 0
-            
+
             // Contact helper button
             cell.contentView.isUserInteractionEnabled = true;
             cell.contactHelperButton.tag = indexPath.row

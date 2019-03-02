@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum OrderActionType {
+    case Order
+    case Edit
+}
+
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
 class CoffeeRequest : Codable{
@@ -72,11 +77,12 @@ class CoffeeRequest : Codable{
     }
     
     init() {
+        // Populate with test data
         self.requesterId = ""
-        self.orderStartTime = ""
-        self.status = ""
-        self.deliveryLocationOptions = []
-        self.timeProbabilityCondition = ""
+        self.orderStartTime = "2019-02-11T19:43:24.940Z"
+        self.status = "Test Status"
+        self.deliveryLocationOptions = ["Test Location A", "Test Location B"]
+        self.timeProbabilityCondition = "Test Condition"
         self.requestId = ""
     }
     

@@ -114,33 +114,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         LocationUpdate.post(locUpdate: locUpdate)
     }
 	
-    //Handle user response to notification
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
-        //Switch over user response to our notification
-        switch response.actionIdentifier {
-            
-            case "acceptNotification":
-                showPendingRequest()
-            case "rejectNotification":
-                //Should log this to server for research purposes perhaps??
-                print("NOTIFICATION ACTION: request rejected.")
-            default:
-                showPendingRequest()
-            
-        }
-        
-        //not sure why this needs to be here
-        completionHandler()
-        
-    }
-    
-    func showPendingRequest() {
-        let sb = UIStoryboard(name: "Main", bundle: nil)
-        let vc = sb.instantiateViewController(withIdentifier: "HelperMeetingPointViewController") as! HelperMeetingPointTableViewController
-        window?.rootViewController = vc
-    }
-    
+//    //Handle user response to notification
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+//        
+//        //Switch over user response to our notification
+//        switch response.actionIdentifier {
+//            
+//            case "acceptNotification":
+//                showPendingRequest()
+//            case "rejectNotification":
+//                //Should log this to server for research purposes perhaps??
+//                print("NOTIFICATION ACTION: request rejected.")
+//            default:
+//            
+//        }
+//        
+//        //not sure why this needs to be here
+//        completionHandler()
+//        
+//    }
 
     
     func applicationWillResignActive(_ application: UIApplication) {

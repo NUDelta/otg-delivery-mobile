@@ -36,7 +36,7 @@ class MeetingPointTableViewController: UITableViewController {
             self.present(alert, animated: true, completion: nil)
         } else {
             // Set locations on request object
-            currentRequest!.deliveryLocation = selectedLocations
+            currentRequest!.deliveryLocationOptions = selectedLocations
             let nextPage: RequestTimeframeViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestTimeframeViewController") as! RequestTimeframeViewController
             nextPage.currentRequest = currentRequest
             self.present(nextPage, animated: true, completion: nil)

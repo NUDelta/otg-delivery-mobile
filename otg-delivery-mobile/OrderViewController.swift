@@ -171,14 +171,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     // Return number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-//        var rowCount = 0
-//
-//        if(tableView == myRequestTableView){
-//            rowCount = self.myRequests.count
-//        }
-//
-//        return rowCount
+        return myRequests.count
     }
     
     // Configure and display cells in table view
@@ -189,18 +182,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             
             // Grab request to render
             
-            //TODO: Revert
-            //let request = myRequests[indexPath.row]
-            let request = CoffeeRequest()
+            let request = myRequests[indexPath.row]
             
             cell.statusDetailsLabel.text = request.status
             cell.expirationDetailsLabel.text = CoffeeRequest.generateTwoHourTimeframeString(startTime: request.orderStartTime)
             cell.contactHelperButton.tag = Int(3033623343)
             
-            cell.timeFrame1Label.text = "timeFrame1Label"
-            cell.timeFrame2Label.text = "timeFrame2Label"
-            cell.timeFrame3Label.text = "timeFrame3Label"
-             //cell.timeFrame4Label.text = "timeFrame4Label"
+            cell.timeFrame1Label.text = request.timeProbabilities[0]
+            cell.timeFrame2Label.text = request.timeProbabilities[1]
+            cell.timeFrame3Label.text = request.timeProbabilities[2]
+            cell.timeFrame4Label.text = request.timeProbabilities[3]
 
             if (request.status != "Searching for Helper") {
                 // Meeting point label

@@ -72,6 +72,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             
             defaults.set(userId, forKey: "userId")
             defaults.set(usernameText, forKey: "username")
+            defaults.set(0, forKey: "requestsPlaced")
+
             
             print("LOGIN: transitioning to main view")
             //Async so should wrap in this block

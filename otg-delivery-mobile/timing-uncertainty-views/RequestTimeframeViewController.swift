@@ -12,8 +12,14 @@ class RequestTimeframeViewController: UIViewController {
     
     var currentRequest: CoffeeRequest?
 
+    @IBOutlet weak var startTimeLabel: UILabel!
+    @IBOutlet weak var endTimeLabel: UILabel!
+    @IBOutlet weak var timePicker: UIDatePicker!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        getTimeFromTimePicker()
         
         if currentRequest == nil {
             let alert = UIAlertController(title: "We apologize. There is some error with your order.", message: "", preferredStyle: .alert)
@@ -42,11 +48,53 @@ class RequestTimeframeViewController: UIViewController {
     
     
     @IBAction func nextPageButton(_ sender: Any) {
-        let nextPage: SpecialRequestsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SpecialRequestsViewController") as! SpecialRequestsViewController
+        setTimeOnRequestObject()
+        
+        let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
         nextPage.currentRequest = currentRequest
         self.present(nextPage, animated: true, completion: nil)
         
     }
+    
+    @IBAction func timeChanged(_ sender: UIDatePicker) {
+        getTimeFromTimePicker()
+    }
+    
+    func getTimeFromTimePicker() {
+        timePicker.datePickerMode = UIDatePickerMode.time
+        let timeSelected = timePicker.date
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.timeZone = NSTimeZone.local
+        let startTime = formatter.string(from: timeSelected)
+        
+        let calendar = Calendar.current
+        let endTimeDate = calendar.date(byAdding: .hour, value: 2, to: timeSelected)
+        let endTime = formatter.string(from: endTimeDate!)
+        
+        
+        startTimeLabel.text = startTime
+        endTimeLabel.text = endTime
+    }
+    
+    func setTimeOnRequestObject() {
+        let RFC3339DateFormatter = DateFormatter()
+        RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        RFC3339DateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        RFC3339DateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        let requestStartTime = RFC3339DateFormatter.string(from: timePicker.date)
+        
+        let calendar = Calendar.current
+        let requestEndTimeDate = calendar.date(byAdding: .hour, value: 2, to: timePicker.date)
+        let requestEndTime = RFC3339DateFormatter.string(from: requestEndTimeDate!)
+        
+        currentRequest?.orderStartTime = requestStartTime
+        currentRequest?.orderEndTime = requestEndTime
+    }
+    
+    
     /*
     // MARK: - Navigation
 

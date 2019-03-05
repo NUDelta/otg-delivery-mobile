@@ -11,7 +11,7 @@ import UIKit
 class MeetingPointTableViewController: UITableViewController {
     
     var currentRequest: CoffeeRequest?
-    var meetingPoints = ["Tech Lobby", "Bridge between Tech and Mudd", "SPAC, By Entrance", "Kresge, By Entrance", "Norris, By Front Entrance", "Main Library Sign-In Desk", "Plex Lobby", "Willard Lobby"]
+    var meetingPoints = ["Tech Lobby", "Bridge between Tech and Mudd", "SPAC Entrance", "Kresge Entrance", "Norris Front Entrance", "Main Library Sign-In Desk", "Plex Lobby", "Willard Lobby"]
 
     @IBOutlet var meetingPointTableView: UITableView!
     
@@ -55,6 +55,10 @@ class MeetingPointTableViewController: UITableViewController {
         
         if currentRequest == nil {
             currentRequest = CoffeeRequest()
+            
+            let defaults = UserDefaults.standard
+            currentRequest!.requesterId = defaults.object(forKey: "userId") as! String
+            currentRequest!.status = "Searching for Helper"
         }
     }
 

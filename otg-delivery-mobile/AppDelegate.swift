@@ -179,9 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print(deviceTokenString)
         defaults.set(deviceTokenString, forKey: "tokenId")
         
-        // also set lastNotified to 0
         defaults.set(0, forKey: "lastNotified")
-        
     }
     
     // Handle silent push notifications

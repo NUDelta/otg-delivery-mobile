@@ -24,6 +24,7 @@ class CoffeeRequest : Codable{
         case requestId = "_id"
         case requester
         case orderStartTime
+        case orderEndTime
         case status
         case deliveryLocationOptions
         case deliveryLocation
@@ -31,6 +32,7 @@ class CoffeeRequest : Codable{
         case helperTextTime
         case requesterTextRespondTime
         case timeProbabilityCondition
+        case timeProbabilities
         case planningNotes
     }
 
@@ -39,6 +41,7 @@ class CoffeeRequest : Codable{
     var requesterId: String
     var requester: User? = nil
     var orderStartTime: String
+    var orderEndTime: String
     var status: String
     var deliveryLocationOptions: [String]
     var timeProbabilityCondition: String
@@ -49,6 +52,7 @@ class CoffeeRequest : Codable{
     var helperTextTime = ""
     var requesterTextRespondTime = ""
     var planningNotes = ""
+    var timeProbabilities = ["5%", "0%", "5%", "0%"]
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -56,20 +60,28 @@ class CoffeeRequest : Codable{
         // Decode data from JSON
         requester = try container.decode(User.self, forKey: .requester)
         orderStartTime = try container.decode(String.self, forKey: .orderStartTime)
+        orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
         status = try container.decode(String.self, forKey: .status)
         
         let unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
         deliveryLocationOptions = CoffeeRequest.JSONStringToArray(json: unparsedDeliveryLocation)
-        
+
         timeProbabilityCondition = try container.decode(String.self, forKey: .timeProbabilityCondition)
+        let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
+        timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
         
         requestId = try container.decode(String.self, forKey: .requestId)
-        requesterId = try container.decode(String.self, forKey: .requester)
+        if (requester != nil) {
+            requesterId = requester!.userId!
+        } else {
+            requesterId = "No ID"
+        }
     }
     
-    init(requester: String, orderStartTime: String, status: String, deliveryLocationOptions: [String], timeProbabilityCondition: String) {
+    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, deliveryLocationOptions: [String], timeProbabilityCondition: String) {
         self.requesterId = requester
         self.orderStartTime = orderStartTime
+        self.orderEndTime = orderEndTime
         self.status = status
         self.deliveryLocationOptions = deliveryLocationOptions
         self.timeProbabilityCondition = timeProbabilityCondition
@@ -79,7 +91,19 @@ class CoffeeRequest : Codable{
     init() {
         // Populate with test data
         self.requesterId = ""
+        self.orderStartTime = ""
+        self.orderEndTime = ""
+        self.status = ""
+        self.deliveryLocationOptions = []
+        self.timeProbabilityCondition = ""
+        self.requestId = ""
+    }
+    
+    init(mockValues: Bool) {
+        // Populate with test data
+        self.requesterId = ""
         self.orderStartTime = "2019-02-11T19:43:24.940Z"
+        self.orderEndTime = "2019-02-11T21:43:24.940Z"
         self.status = "Test Status"
         self.deliveryLocationOptions = ["Test Location A", "Test Location B"]
         self.timeProbabilityCondition = "Test Condition"
@@ -91,6 +115,7 @@ class CoffeeRequest : Codable{
         try container.encode(requestId, forKey: .requestId)
         try container.encode(requesterId, forKey: .requester)
         try container.encode(orderStartTime, forKey: .orderStartTime)
+        try container.encode(orderEndTime, forKey: .orderEndTime)
         try container.encode(status, forKey: .status)
         try container.encode(deliveryLocationOptions, forKey: .deliveryLocationOptions)
         try container.encode(timeProbabilityCondition, forKey: .timeProbabilityCondition)
@@ -106,9 +131,11 @@ extension CoffeeRequest {
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
             URLQueryItem(name: "orderStartTime", value: coffeeRequest.orderStartTime),
+            URLQueryItem(name: "orderEndTime", value: coffeeRequest.orderEndTime),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocationOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions)),
-            URLQueryItem(name: "timeProbabilityCondition", value: coffeeRequest.timeProbabilityCondition)
+            URLQueryItem(name: "timeProbabilityCondition", value: coffeeRequest.timeProbabilityCondition),
+            URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -281,7 +308,10 @@ extension CoffeeRequest {
     
     static func stringToDate(s: String) -> Date {
         //Remove milliseconds for parsing ease
-        let parsedDateString = s.components(separatedBy: ".")[0]
+        var parsedDateString = s.components(separatedBy: ".")[0]
+        if parsedDateString.last! == "Z" {
+            parsedDateString = String(parsedDateString.dropLast())
+        }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"

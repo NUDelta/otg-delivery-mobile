@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class RequestConfirmationViewController: UIViewController {
     
@@ -58,18 +59,65 @@ class RequestConfirmationViewController: UIViewController {
         let defaults = UserDefaults.standard
         var requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
         defaults.set(requestsPlaced, forKey: "requestsPlaced")
+        
+        // Set up notifications
+        let secondsNowToStartTime = (CoffeeRequest.stringToDate(s: currentRequest!.orderStartTime)).timeIntervalSinceNow
+        
+        // Set up request acceptance notification
+        let seconds1hr15min = 60 * 5//60 * 75
+        let secondsNowToAcceptanceTime =
+            Int(secondsNowToStartTime) + seconds1hr15min
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToAcceptanceTime), execute: {
+            User.sendNotification(deviceId: Constants.myUserId, message: "Send \(defaults.object(forKey: "username")) notification that their request has been accepted. Tell DTR helper to be ready in 15 min and to choose a meeting point.")
+        })
+        
+        // Set up text user notification
+        let seconds1hr23min = 60 * 3//60 * 83
+        let secondsNowToTextTime = Int(secondsNowToStartTime) + seconds1hr23min
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToTextTime), execute: {
+            User.sendNotification(deviceId: Constants.myUserId, message: "Text user \(String(describing: defaults.object(forKey: "username")))")
+        })
+        
+        // Set up helper arriving soon notification
+        // Set up text user notification
+        let seconds1hr25min = 60 * 1//60 * 85
+        let secondsNowToArrivalNotification = Int(secondsNowToStartTime) + seconds1hr25min
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToArrivalNotification), execute: {
+            User.sendNotification(deviceId: defaults.object(forKey:"tokenId") as! String, message: "Your helper is arriving soon! Please go meet them at the meeting point now.")
+            User.sendNotification(deviceId: Constants.myUserId, message: "Tell DTR helper to head to meeting point now to meets.")
+        })
+    }
+    
+    func sendTaskAcceptanceNotification() {
+//        let content = UNMutableNotificationContent()
+//        content.title = "Your meeting has been accepted!"
+//        content.body = "Your meeting point is:
+//
+//        Do you have time to deliver food from \(Location.camelCaseToWords(camelCaseString: request.pickupLocation)) before \(CoffeeRequest.parseTime(dateAsString: request.endTime!))? Click here for the delivery location."
+//
+//        content.categoryIdentifier = "requestNotification"
+//        content.sound = UNNotificationSound.default()
+//
+//        let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
+//        let notificationRequest = UNNotificationRequest(identifier: "identifier", content: content, trigger: trigger)
+//
+//        UNUserNotificationCenter.current().add(notificationRequest, withCompletionHandler: { (error) in
+//            if let error = error {
+//                print("Error in notifying from Pre-Tracker: \(error)")
+//            }
+//        })
     }
     
     func setTimeProbabilities(request: CoffeeRequest) -> CoffeeRequest {
         let defaults = UserDefaults.standard
         let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int
         
-        if (requestsPlaced <= 1) {
-            request.timeProbabilities[1] = "10%"
-            request.timeProbabilities[3] = "30%"
-        } else {
+        if (requestsPlaced < 1) {
             request.timeProbabilities[1] = "30%"
-            request.timeProbabilities[3] = "10%"
+            request.timeProbabilities[3] = "60%"
+        } else {
+            request.timeProbabilities[1] = "60%"
+            request.timeProbabilities[3] = "30%"
         }
         
         return request

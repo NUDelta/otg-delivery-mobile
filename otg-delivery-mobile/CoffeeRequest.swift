@@ -31,7 +31,6 @@ class CoffeeRequest : Codable{
         case diffHelperRequesterArrivalTime
         case helperTextTime
         case requesterTextRespondTime
-        case timeProbabilityCondition
         case timeProbabilities
         case planningNotes
     }
@@ -44,7 +43,6 @@ class CoffeeRequest : Codable{
     var orderEndTime: String
     var status: String
     var deliveryLocationOptions: [String]
-    var timeProbabilityCondition: String
     
     // Will be set later
     var deliveryLocation = ""
@@ -63,10 +61,9 @@ class CoffeeRequest : Codable{
         orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
         status = try container.decode(String.self, forKey: .status)
         
-        let unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocation) ?? ""
+        let unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocationOptions) ?? ""
         deliveryLocationOptions = CoffeeRequest.JSONStringToArray(json: unparsedDeliveryLocation)
 
-        timeProbabilityCondition = try container.decode(String.self, forKey: .timeProbabilityCondition)
         let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
         timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
         
@@ -78,13 +75,12 @@ class CoffeeRequest : Codable{
         }
     }
     
-    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, deliveryLocationOptions: [String], timeProbabilityCondition: String) {
+    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, deliveryLocationOptions: [String]) {
         self.requesterId = requester
         self.orderStartTime = orderStartTime
         self.orderEndTime = orderEndTime
         self.status = status
         self.deliveryLocationOptions = deliveryLocationOptions
-        self.timeProbabilityCondition = timeProbabilityCondition
         self.requestId = ""
     }
     
@@ -95,7 +91,6 @@ class CoffeeRequest : Codable{
         self.orderEndTime = ""
         self.status = ""
         self.deliveryLocationOptions = []
-        self.timeProbabilityCondition = ""
         self.requestId = ""
     }
     
@@ -106,7 +101,6 @@ class CoffeeRequest : Codable{
         self.orderEndTime = "2019-02-11T21:43:24.940Z"
         self.status = "Test Status"
         self.deliveryLocationOptions = ["Test Location A", "Test Location B"]
-        self.timeProbabilityCondition = "Test Condition"
         self.requestId = ""
     }
     
@@ -118,7 +112,6 @@ class CoffeeRequest : Codable{
         try container.encode(orderEndTime, forKey: .orderEndTime)
         try container.encode(status, forKey: .status)
         try container.encode(deliveryLocationOptions, forKey: .deliveryLocationOptions)
-        try container.encode(timeProbabilityCondition, forKey: .timeProbabilityCondition)
     }
 }
 extension CoffeeRequest {
@@ -134,7 +127,6 @@ extension CoffeeRequest {
             URLQueryItem(name: "orderEndTime", value: coffeeRequest.orderEndTime),
             URLQueryItem(name: "status", value: coffeeRequest.status),
             URLQueryItem(name: "deliveryLocationOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions)),
-            URLQueryItem(name: "timeProbabilityCondition", value: coffeeRequest.timeProbabilityCondition),
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
         ]
 
@@ -320,6 +312,14 @@ extension CoffeeRequest {
         return date!
     }
     
+    static func dateToString(d: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let s = dateFormatter.string(from: d)
+        return s
+    }
+    
     static func arrayToJson(arr: [String]) -> String {
         guard let jsonObject = try? JSONSerialization.data(withJSONObject: arr, options: []) else {
             return ""
@@ -347,13 +347,20 @@ extension CoffeeRequest {
         return arrString
     }
     
-    static func generateTwoHourTimeframeString(startTime: String) -> String {
-        let parsedTime = parseTime(dateAsString: startTime)
-        var parsedTimeSplit = parsedTime.components(separatedBy: ":")
-        let startHour = Int(parsedTimeSplit[0])
-        let startMinute = parsedTimeSplit[1]
+    static func generateTimeframeString(startTime: String, timeframeMins: Int) -> String {
+        let start = stringToDate(s: startTime)
+        let end = addMinToDate(date: start, numMin: timeframeMins)
         
-        let timeframe = parsedTime + " - " + String(startHour! + 2) + ":" + startMinute
+        let timeframe = parseTime(dateAsString: dateToString(d: start)) + " - " + parseTime(dateAsString: dateToString(d: end))
         return timeframe
+    }
+    
+    static func addMinToDate(date: Date, numMin: Int) -> Date {
+        let calendar = Calendar.current
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.timeZone = NSTimeZone.local
+        
+        return calendar.date(byAdding: .minute, value: numMin, to: date)!
     }
 }

@@ -181,17 +181,34 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let cell = RequestStatusTableViewCell()
             
             // Grab request to render
-            
             let request = myRequests[indexPath.row]
             
             cell.statusDetailsLabel.text = request.status
-            cell.expirationDetailsLabel.text = CoffeeRequest.generateTwoHourTimeframeString(startTime: request.orderStartTime)
+            cell.expirationDetailsLabel.text = CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 120)
             cell.contactHelperButton.tag = Int(3033623343)
             
-            cell.timeFrame1Label.text = request.timeProbabilities[0]
-            cell.timeFrame2Label.text = request.timeProbabilities[1]
-            cell.timeFrame3Label.text = request.timeProbabilities[2]
-            cell.timeFrame4Label.text = request.timeProbabilities[3]
+            // Populate time probabilities
+            let calendar = Calendar.current
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            formatter.timeZone = NSTimeZone.local
+            
+            let startTime = CoffeeRequest.stringToDate(s: request.orderStartTime)
+
+            let timeframe1 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 30, to: startTime)!)
+            let timeframe2 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 60, to: startTime)!)
+            let timeframe3 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 90, to: startTime)!)
+            
+            cell.timeFrame1Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 30))"
+            cell.timeFrame2Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe1, timeframeMins: 30))"
+            cell.timeFrame3Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe2, timeframeMins: 30))"
+            cell.timeFrame4Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe3, timeframeMins: 30))"
+
+            cell.probability1Label.text = request.timeProbabilities[0]
+            cell.probability2Label.text = request.timeProbabilities[1]
+            cell.probability3Label.text = request.timeProbabilities[2]
+            cell.probability4Label.text = request.timeProbabilities[3]
+
 
             if (request.status != "Searching for Helper") {
                 // Meeting point label

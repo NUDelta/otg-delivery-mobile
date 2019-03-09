@@ -15,6 +15,7 @@ class RequestStatusTableViewCell: UITableViewCell {
     
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
+    let itemDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
     let timeFrame1Label = UILabel()
     let probability1Label = UILabel()
@@ -61,12 +62,16 @@ class RequestStatusTableViewCell: UITableViewCell {
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Delivery Timeframe:"
         
+        let itemTitlelabel = UILabel()
+        itemTitlelabel.text = "Item:"
+        
         let timeProbTitleLabel = UILabel()
         timeProbTitleLabel.text = "% Requests Typically Completed:"
         
         let titleLabels = [
             statusTitleLabel,
             expirationTitleLabel,
+            itemTitlelabel,
             deliveryLocationTitleLabel,
             timeProbTitleLabel
         ]
@@ -92,6 +97,7 @@ class RequestStatusTableViewCell: UITableViewCell {
         }
         
         let deliveryDetailLabels = [
+            itemDetailsLabel,
             deliveryLocationDetailsLabel,
             timeFrame1Label,
             timeFrame2Label,
@@ -163,22 +169,29 @@ class RequestStatusTableViewCell: UITableViewCell {
             expirationDetailsLabel.topAnchor.constraint(equalTo: expirationTitleLabel.topAnchor),
             expirationDetailsLabel.bottomAnchor.constraint(equalTo: expirationTitleLabel.bottomAnchor),
             
-            // Location title label and details label
+            itemTitlelabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            itemTitlelabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing * 2),
+            
+            itemDetailsLabel.leftAnchor.constraint(equalTo: itemTitlelabel.leftAnchor),
+            itemDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            itemDetailsLabel.topAnchor.constraint(equalTo: itemTitlelabel.bottomAnchor),
+            itemDetailsLabel.bottomAnchor.constraint(equalTo: deliveryLocationTitleLabel.topAnchor, constant: -labelVerticalSpacing),
+            
             
             deliveryLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
+            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: itemDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
             deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: timeProbTitleLabel.topAnchor, constant: -labelVerticalSpacing),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: timeProbTitleLabel.topAnchor, constant: -labelVerticalSpacing * 2),
             
             timeProbTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            timeProbTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor, constant: labelVerticalSpacing),
+            timeProbTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor, constant: labelVerticalSpacing * 2),
             
             timeFrame1Label.leftAnchor.constraint(equalTo: timeProbTitleLabel.leftAnchor),
             timeFrame1Label.rightAnchor.constraint(equalTo: probability1Label.leftAnchor),
-            timeFrame1Label.topAnchor.constraint(equalTo: timeProbTitleLabel.bottomAnchor, constant: labelVerticalSpacing),
+            timeFrame1Label.topAnchor.constraint(equalTo: timeProbTitleLabel.bottomAnchor, constant: labelVerticalSpacing * 2),
             timeFrame1Label.bottomAnchor.constraint(equalTo: timeFrame2Label.topAnchor, constant: -10),
             
             probability1Label.leftAnchor.constraint(equalTo: statusDetailsLabel.leftAnchor),

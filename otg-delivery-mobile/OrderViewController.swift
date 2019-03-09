@@ -194,8 +194,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = myRequests[indexPath.row]
             
             cell.statusDetailsLabel.text = request.status
-            cell.expirationDetailsLabel.text = CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 120)
-            cell.contactHelperButton.tag = Int(3033623343)
+            cell.itemDetailsLabel.text = request.item
+            cell.contactHelperButton.tag = 0
             
             // Populate time probabilities
             let calendar = Calendar.current
@@ -221,10 +221,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
 
             if (request.status != "Searching for Helper") {
+                // Delivery minute estimate
+                let splitStatus = request.status.components(separatedBy: "(")
+                cell.statusDetailsLabel.text = splitStatus[0]
+                cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
+                
                 // Meeting point label
                 cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
                 cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
             } else {
+                cell.expirationDetailsLabel.text = CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 120)
                 cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
                 cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocationOptions)
             }
@@ -248,24 +254,25 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     @objc func contactUser(sender: UIButton) {
         print("In contact requester")
-        let phoneNumber = String(sender.tag)
+        //let phoneNumber = String(sender.tag)
+        let phoneNumber = "3033623343"
         let messageVC = MFMessageComposeViewController()
 
         // Request has not been accepted
-        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
-            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
-            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
-            })
-            
-            alert.addAction(cancel)
-            present(alert, animated: true, completion: nil)
-        } else { // Request has been accepted, message helper
+//        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
+//            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
+//            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+//            })
+//
+//            alert.addAction(cancel)
+//            present(alert, animated: true, completion: nil)
+//        } else { // Request has been accepted, message helper
             messageVC.body = "";
             messageVC.recipients = [phoneNumber]
             messageVC.messageComposeDelegate = self
             
             self.present(messageVC, animated: false, completion: nil)
-        }
+        //}
     }
 
      // Support conditional editing of the table view.

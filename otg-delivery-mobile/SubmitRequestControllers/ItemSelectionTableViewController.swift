@@ -72,7 +72,9 @@ class ItemSelectionTableViewController: UITableViewController {
     func loadData() {
         Item.getAll(forLocation: "Study", completionHandler: { items in
             self.items = items
-            self.menuItemTable.reloadData()
+            DispatchQueue.main.async {
+                self.menuItemTable.reloadData()
+            }
         })
     }
 }

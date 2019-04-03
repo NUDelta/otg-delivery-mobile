@@ -21,7 +21,7 @@ class MeetingPointTableViewController: UITableViewController {
         // Grab selected locations
         if let selectedRows = meetingPointTableView.indexPathsForSelectedRows {
             for row in selectedRows{
-                var cell = meetingPointTableView.cellForRow(at: row) as! MeetingPointTableViewCell
+                let cell = meetingPointTableView.cellForRow(at: row) as! MeetingPointTableViewCell
                 selectedLocations.append(cell.locationLabel.text!)
             }
         }
@@ -102,9 +102,9 @@ class MeetingPointTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedLocation = meetingPoints[indexPath.row]
+        //var selectedLocation = meetingPoints[indexPath.row]
     }
-    
+
     func loadData() {
         MeetingPoint.getAll(completionHandler: { meetingPoints in
             self.meetingPoints = meetingPoints

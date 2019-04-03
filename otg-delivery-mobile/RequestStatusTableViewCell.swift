@@ -25,28 +25,28 @@ class RequestStatusTableViewCell: UITableViewCell {
     let probability3Label = UILabel()
     let timeFrame4Label = UILabel()
     let probability4Label = UILabel()
-    
+
     // Title label text can change
     let deliveryLocationTitleLabel = UILabel()
-    
+
     let contactHelperButton = UIButton.init(type: .system)
-    
+
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         self.contentView.isUserInteractionEnabled = false;
-        
+
         let subtitleTitleColor = UIColor.darkGray
         let subtitleTitleFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        
+
         let subtitleDetailColor = UIColor.lightGray
         let subtitleDetailFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-        
+
         let labelVerticalSpacing: CGFloat = 5.0
         let labelTopPadding: CGFloat = 10.0
         let labelBottomPadding: CGFloat = 10.0
-        
+
         contactHelperButton.backgroundColor = UIColor.clear
         contactHelperButton.layer.cornerRadius = 1.0;
         contactHelperButton.layer.borderWidth = 0.2;
@@ -54,20 +54,20 @@ class RequestStatusTableViewCell: UITableViewCell {
         contactHelperButton.setTitle("Contact Helper", for: .normal)
         contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactHelperButton)
-        
+
         // Title Labels (left column)
         let statusTitleLabel = UILabel()
         statusTitleLabel.text = "Status:"
-        
+
         let expirationTitleLabel = UILabel()
         expirationTitleLabel.text = "Delivery Timeframe:"
-        
+
         let itemTitlelabel = UILabel()
         itemTitlelabel.text = "Item:"
-        
+
         let timeProbTitleLabel = UILabel()
         timeProbTitleLabel.text = "% Requests Typically Completed:"
-        
+
         let titleLabels = [
             statusTitleLabel,
             expirationTitleLabel,
@@ -146,20 +146,22 @@ class RequestStatusTableViewCell: UITableViewCell {
         
         let constraints = [
             // Order title label
-            
+
             leftMarginConstraint,
             rightMarginConstraint,
-            
+
             // Status title label and details label
             statusTitleLabel.topAnchor.constraint(equalTo: topAnchor,
                                                   constant: labelTopPadding),
-            
+            statusTitleLabel.bottomAnchor.constraint(equalTo: bottomAnchor,
+                                                  constant: labelBottomPadding),
+
             statusDetailsLabel.topAnchor.constraint(equalTo: statusTitleLabel.topAnchor),
             statusDetailsLabel.rightAnchor.constraint(equalTo: rightAnchor),
             statusDetailsLabel.bottomAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
-            
+
             // Expiration title label and details label
-            
+
             expirationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
             expirationTitleLabel.rightAnchor.constraint(equalTo: expirationDetailsLabel.leftAnchor),
             expirationTitleLabel.topAnchor.constraint(equalTo: statusDetailsLabel.bottomAnchor,

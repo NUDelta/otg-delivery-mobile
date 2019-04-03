@@ -271,7 +271,7 @@ extension User {
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             
-            guard let data = data else {
+            guard data != nil else {
                 return
             }
             print("Sent notification to user with device ID \(deviceId)")

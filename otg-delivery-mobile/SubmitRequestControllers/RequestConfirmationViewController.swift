@@ -59,7 +59,7 @@ class RequestConfirmationViewController: UIViewController {
         CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!)
         
         let defaults = UserDefaults.standard
-        var requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
+        let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
         defaults.set(requestsPlaced, forKey: "requestsPlaced")
         
         // Set up notifications
@@ -70,7 +70,7 @@ class RequestConfirmationViewController: UIViewController {
         let secondsNowToAcceptanceTime =
             Int(secondsNowToStartTime) + seconds1hr15min
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToAcceptanceTime), execute: {
-            User.sendNotification(deviceId: Constants.myUserId, message: "Send \(defaults.object(forKey: "username")) notification that their request has been accepted. Tell DTR helper to be ready in 15 min and to choose a meeting point. Meeting points: \(CoffeeRequest.prettyParseArray(arr: self.currentRequest!.deliveryLocationOptions))")
+            User.sendNotification(deviceId: Constants.myUserId, message: "Send \(String(describing: defaults.object(forKey: "username"))) notification that their request has been accepted. Tell DTR helper to be ready in 15 min and to choose a meeting point. Meeting points: \(CoffeeRequest.prettyParseArray(arr: self.currentRequest!.deliveryLocationOptions))")
         })
         
         // Set up text user notification

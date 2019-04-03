@@ -51,8 +51,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registerForNotifications()
         
         // Restart terminated app if receives a location update
-        if let locationValue = launchOptions?[UIApplication.LaunchOptionsKey.location] {
-            var locationManager = CLLocationManager()
+        if (launchOptions?[UIApplication.LaunchOptionsKey.location]) != nil {
+            let locationManager = CLLocationManager()
             
             locationManager.allowsBackgroundLocationUpdates = true
             locationManager.delegate = self
@@ -72,34 +72,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             locationManager.startUpdatingLocation()
         }
-        
-        if #available(iOS 11, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
-            application.registerForRemoteNotifications()
-        }
-        
+        //iOS 10 and up support
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
             application.registerForRemoteNotifications()
         }
-            // iOS 9 support
-        else if #available(iOS 9, *) {
-            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
-            UIApplication.shared.registerForRemoteNotifications()
-        }
-            // iOS 8 support
+        // iOS 8 and 9 support
         else if #available(iOS 8, *) {
             UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.badge, .sound, .alert], categories: nil))
             UIApplication.shared.registerForRemoteNotifications()
         }
-            // iOS 7 support
+        // iOS 7 support
         else {
             application.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
         }
-        
+
         return true
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
         
@@ -109,7 +99,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let direction = Double(locToSave.course)
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
-        
+
         let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
         LocationUpdate.post(locUpdate: locUpdate)
     }
@@ -163,9 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
-    // MARK - Push Notification Setup
-    
+
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         if notificationSettings.types != [] {
             application.registerForRemoteNotifications()

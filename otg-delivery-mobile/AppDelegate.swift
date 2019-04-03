@@ -45,13 +45,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
         
         // Restart terminated app if receives a location update
-        if let locationValue = launchOptions?[UIApplicationLaunchOptionsKey.location] {
+        if let locationValue = launchOptions?[UIApplication.LaunchOptionsKey.location] {
             var locationManager = CLLocationManager()
             
             locationManager.allowsBackgroundLocationUpdates = true

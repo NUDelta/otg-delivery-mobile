@@ -95,10 +95,10 @@ class MeetingPointTableViewController: UITableViewController {
         return cell
     }
     
-    func tableView(tableView: UITableView,editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    func tableView(tableView: UITableView,editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell.EditingStyle {
             
         // Selectable check marks
-        return UITableViewCellEditingStyle.init(rawValue: 3)!
+        return UITableViewCell.EditingStyle.init(rawValue: 3)!
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

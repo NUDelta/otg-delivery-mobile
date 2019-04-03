@@ -12,14 +12,14 @@ import CoreLocation
 import MessageUI
 
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
-    
+
     var myRequests = [CoffeeRequest]()
-    
+
     @IBOutlet weak var myRequestTableView: UITableView!
-    
+
     var currentActionType: OrderActionType?
     var activeEditingRequest: CoffeeRequest?
-    
+
     //On plus sign pressed
     @IBAction func createNewOrder() {
         // Check time - only open 11AM - 5PM
@@ -28,14 +28,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             self.performSegue(withIdentifier: "orderFormSegue", sender: self)
         } else {
             let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
-            
+
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             }))
-            
+
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
     public static let sharedManager = OrderViewController()
 
     var locationManager: CLLocationManager?
@@ -51,7 +51,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
         ("Downtown Evanston", CLLocationCoordinate2D(latitude: 42.048555, longitude: -87.681854)),
     ]
-    
+
     let meetingPointLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
         ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
         ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
@@ -64,52 +64,50 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         ("Willard Lobby", CLLocationCoordinate2D(latitude: 42.051655,
         longitude:  -87.681316)),
         ]
-        
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // initialize location manager
         locationManager = CLLocationManager()
-        
+
         locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.delegate = self
         // Accuracy of location data
         locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
         // The minimum distance before an update event is generated
         locationManager?.distanceFilter = 50.0
-        
+
         // Enable location tracking when app sleeps
         locationManager!.pausesLocationUpdatesAutomatically = false
         locationManager!.startMonitoringSignificantLocationChanges()
-        
+
         if CLLocationManager.authorizationStatus() == .notDetermined {
             locationManager?.requestAlwaysAuthorization()
             locationManager?.requestWhenInUseAuthorization()
         }
-        
+
         locationManager?.startUpdatingLocation()
         // use our predefined locations to setup the geo-fences
         for coffeeLocation in (pickupLocations + meetingPointLocations) {
             let region = CLCircularRegion(center: coffeeLocation.1, radius: 200, identifier: coffeeLocation.0)
             region.notifyOnEntry = true
             region.notifyOnExit = true
-        
+
             locationManager?.startMonitoring(for: region)
         }
-        
+
         // Initialize My Requests table
         myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
-        
+
         loadData()
-        
+
         // Initialize listener for whenever app becoming active
         // To reload request data and update table
-        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -119,12 +117,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
         }
-        
         loadData()
     }
-    
 
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
         
@@ -134,27 +129,27 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let direction = Double(locToSave.course)
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
-        
+
         let defaults = UserDefaults.standard
         guard let requesterId = defaults.object(forKey: "userId") as? String else {
             print("Helper ID not in defaults")
             return
         }
-        
+
         let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: requesterId)
         LocationUpdate.post(locUpdate: locUpdate)
     }
-    
+
     func removeCachedGeofenceLocation() {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey:"currentGeofenceLocation")
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "loginSegue" {
             let navController = segue.destination as? UINavigationController
             let controller = navController?.viewControllers.first as? LoginViewController
-        
+
             controller?.didLogIn = { [weak self] in
                 DispatchQueue.main.async {
                     self?.dismiss(animated: true, completion: nil)
@@ -162,7 +157,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         }
     }
-    
+
     @objc func loadData() {
         User.getMyRequests(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
@@ -173,42 +168,42 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
 
     // MARK: Table View Configuration
-    
+
     //Return number of sections in table view
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     // Return number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myRequests.count
     }
-    
+
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Render label data
         if tableView == myRequestTableView {
             let cell = RequestStatusTableViewCell()
-            
+
             // Grab request to render
             let request = myRequests[indexPath.row]
-            
+
             cell.statusDetailsLabel.text = request.status
             cell.itemDetailsLabel.text = request.item
             cell.contactHelperButton.tag = 0
-            
+
             // Populate time probabilities
             let calendar = Calendar.current
             let formatter = DateFormatter()
             formatter.dateFormat = "h:mm a"
             formatter.timeZone = NSTimeZone.local
-            
+
             let startTime = CoffeeRequest.stringToDate(s: request.orderStartTime)
 
             let timeframe1 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 30, to: startTime)!)
             let timeframe2 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 60, to: startTime)!)
             let timeframe3 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 90, to: startTime)!)
-            
+
             cell.timeFrame1Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 30))"
             cell.timeFrame2Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe1, timeframeMins: 30))"
             cell.timeFrame3Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe2, timeframeMins: 30))"
@@ -218,7 +213,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.probability2Label.text = request.timeProbabilities[1]
             cell.probability3Label.text = request.timeProbabilities[2]
             cell.probability4Label.text = request.timeProbabilities[3]
-
 
             if (request.status != "Searching for Helper") {
                 // Delivery minute estimate
@@ -248,10 +242,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return cell
 
         }
-        
+
         return UITableViewCell()
     }
-    
+
     @objc func contactUser(sender: UIButton) {
         print("In contact requester")
         //let phoneNumber = String(sender.tag)
@@ -270,7 +264,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             messageVC.body = "";
             messageVC.recipients = [phoneNumber]
             messageVC.messageComposeDelegate = self
-            
+
             self.present(messageVC, animated: false, completion: nil)
         //}
     }
@@ -280,34 +274,33 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
          // Return false if you do not want the specified item to be editable.
          return true
      }
-    
 
      // Override to support editing the table view.
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
          if editingStyle == .delete {
-            
+
             if tableView == myRequestTableView {
                 // Launch request editor on click
                 let deleteConfirmation = UIAlertController(title: "Are you sure you would like to delete this request?", message: "", preferredStyle: .alert)
-                
+
                 let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: {(action: UIAlertAction!) in
                     // Delete the row from the table view
                     let deletedRequest = self.myRequests.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .fade)
-                    
+
                     // Delete request from database
                     let deleteID = deletedRequest.requestId
                     CoffeeRequest.deleteRequest(with_id: deleteID)
                     self.myRequestTableView.reloadData()
                 } )
-                
+
                 // Do nothing on 'Cancel'
                 let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-                
+
                 // Add actions to editor
                 deleteConfirmation.addAction(cancelAction)
                 deleteConfirmation.addAction(confirmAction)
-                
+
                 present(deleteConfirmation, animated: true, completion: nil)
             }
          }

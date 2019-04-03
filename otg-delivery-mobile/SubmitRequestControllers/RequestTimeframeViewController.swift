@@ -61,7 +61,7 @@ class RequestTimeframeViewController: UIViewController {
     }
     
     func getTimeFromTimePicker() {
-        timePicker.datePickerMode = UIDatePickerMode.time
+        timePicker.datePickerMode = UIDatePicker.Mode.time
         let timeSelected = timePicker.date
         
         let formatter = DateFormatter()

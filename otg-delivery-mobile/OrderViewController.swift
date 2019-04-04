@@ -1,6 +1,5 @@
 //
-//  ViewController.swift
-//  another_example
+//  OrderViewController.swift
 //
 //  Created by Sam Naser on 1/19/18.
 //  Copyright © 2018 Sam Naser. All rights reserved.
@@ -110,9 +109,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        print("SHOULD BE PRINTING USER ID")
-        print(UserDefaults.standard.object(forKey: "userId") as Any)
+
+        print("USER ID: ", UserDefaults.standard.object(forKey: "userId") as Any)
         //If user not logged in, transition to login page
         if UserDefaults.standard.object(forKey: "userId") == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
@@ -310,13 +308,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         if tableView == myRequestTableView {
-            
             // Launch request editor on click
             let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
 
-            
             let action = UIAlertAction(title: "OK", style: .default, handler: { [weak editAlert] (_) in
                 self.currentActionType = .Edit
                 self.activeEditingRequest = self.myRequests[indexPath.row]

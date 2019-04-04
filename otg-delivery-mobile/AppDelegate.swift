@@ -31,25 +31,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 // setup notification categories
                 UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
                 UNUserNotificationCenter.current().setNotificationCategories([category])
-                
+
                 // setup remote notifications
                 DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                 }
-                
+
                 print("Notification setup complete")
             } else {
                 print("Error when registering for notifications: \(String(describing: error))")
             }
         })
     }
-    
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
-        
+
         // Restart terminated app if receives a location update
         if (launchOptions?[UIApplication.LaunchOptionsKey.location]) != nil {
             let locationManager = CLLocationManager()

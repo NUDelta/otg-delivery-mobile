@@ -19,8 +19,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var currentActionType: OrderActionType?
     var activeEditingRequest: CoffeeRequest?
 
-    //On plus sign pressed
+    //On schedule delivery button pressed
     @IBAction func createNewOrder() {
+        self.currentActionType = .Order
+        self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+
+        //TODO: REIMPLEMENT THIS WHILE TESTING
+        /*
         // Check time - only open 11AM - 5PM
         if (checkDeliveryAvailabilityTimeframe()) {
             self.currentActionType = .Order
@@ -33,6 +38,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             self.present(alert, animated: true, completion: nil)
         }
+        */
     }
 
     public static let sharedManager = OrderViewController()

@@ -9,7 +9,7 @@ import Foundation
 
 struct User : Codable{
     private static let apiUrl: String = Constants.apiUrl + "users"
-    
+
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
         case userId = "_id"
@@ -17,7 +17,7 @@ struct User : Codable{
         case username
         case phoneNumber
     }
-    
+
     //all fields that go into a request
     let userId: String?
     let deviceId: String
@@ -39,21 +39,22 @@ extension User {
             URLQueryItem(name: "username", value: user.username),
             URLQueryItem(name: "phoneNumber", value: user.phoneNumber),
         ]
-        
+
         let url = URL(string: User.apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
-        
+
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
+
         //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-        
-        let task = session.dataTask(with: requestURL){ data, response, error in
+
+        let task = session.dataTask(with: requestURL) { data, response, error in
 
             guard let data = data else {
+                print(error as Any)
                 return
             }
             print("USER DATA: user data returned.")

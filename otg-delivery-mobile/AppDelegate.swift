@@ -191,7 +191,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
     }
 
-    
-
 }
 

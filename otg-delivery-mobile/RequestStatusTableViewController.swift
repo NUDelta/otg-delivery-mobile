@@ -9,10 +9,10 @@
 import UIKit
 
 class RequestStatusTableViewController: UITableViewController {
-    
+
     var myRequests = [CoffeeRequest]()
     @IBOutlet weak var MyRequestsTableView: UITableView!
-    
+
     // Cell configuration implemented in OrderViewController
-    
+
 }

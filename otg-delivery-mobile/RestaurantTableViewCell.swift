@@ -1,16 +1,16 @@
 //
-//  MeetingPointTableViewCell.swift
+//  RestaurantTableViewCell.swift
 //  otg-delivery-mobile
 //
-//  Created by Maggie Lou on 11/15/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
+//  Created by Maggie Lou on 1/13/19.
+//  Copyright © 2019 Sam Naser. All rights reserved.
 //
 
 import UIKit
 
-class MeetingPointTableViewCell: UITableViewCell {
+class RestaurantTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var restaurantLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

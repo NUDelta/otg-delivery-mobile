@@ -9,7 +9,7 @@ import Foundation
 
 struct User : Codable{
     private static let apiUrl: String = Constants.apiUrl + "users"
-
+    
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
         case userId = "_id"
@@ -17,7 +17,7 @@ struct User : Codable{
         case username
         case phoneNumber
     }
-
+    
     //all fields that go into a request
     let userId: String?
     let deviceId: String
@@ -39,22 +39,21 @@ extension User {
             URLQueryItem(name: "username", value: user.username),
             URLQueryItem(name: "phoneNumber", value: user.phoneNumber),
         ]
-
+        
         let url = URL(string: User.apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
-
+        
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
+        
         //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-
-        let task = session.dataTask(with: requestURL) { data, response, error in
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
 
             guard let data = data else {
-                print(error as Any)
                 return
             }
             print("USER DATA: user data returned.")
@@ -111,48 +110,48 @@ extension User {
         task.resume()
     }
     
-//    static func acceptRequest(requestId id: String, meetingPoint: String, timeEstimate: String, completionHandler: @escaping () -> Void) {
-//        
-//        //Get username
-//        let defaults = UserDefaults.standard
-//        guard let helperId = defaults.object(forKey: "userId") as? String else {
-//            print("Helper ID not in defaults")
-//            return
-//        }
-//        
-//        CoffeeRequest.getRequest(with_id: id, completionHandler: { (request) in
-//            guard let request = request else {
-//                print("USER MODEL.acceptRequest: No request returned.")
-//                
-//                return
-//            }
-//            Logging.sendEvent(location: meetingPoint, eventType: Logging.eventTypes.taskAccepted.rawValue, details: CoffeeRequest.arrayToJson(arr: request.deliveryLocation))
-//        })
-//        
-//        //Define session
-//        let session: URLSession = URLSession.shared
-//        let url = URL(string: ("\(User.apiUrl)/\(helperId)/accept/\(id)"))
-//        var requestURL = URLRequest(url: url!)
-//        
-//        requestURL.httpMethod = "PATCH"
-//        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//        
-//        var components = URLComponents(string: "")
-//        components?.queryItems = [
-//            URLQueryItem(name: "meetingPoint", value: meetingPoint),
-//             URLQueryItem(name: "timeEstimate", value: timeEstimate),
-//        ]
-//        
-//        let httpBodyString: String? = components?.url?.absoluteString
-//        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-//        
-//        let task = session.dataTask(with: requestURL){ data, response, error in
-//            print("USER MODEL: Accept request \(id)")
-//            completionHandler()
-//        }
-//        
-//        task.resume()
-//    }
+    static func acceptRequest(requestId id: String, meetingPoint: String, timeEstimate: String, completionHandler: @escaping () -> Void) {
+        
+        //Get username
+        let defaults = UserDefaults.standard
+        guard let helperId = defaults.object(forKey: "userId") as? String else {
+            print("Helper ID not in defaults")
+            return
+        }
+        
+        CoffeeRequest.getRequest(with_id: id, completionHandler: { (request) in
+            guard let request = request else {
+                print("USER MODEL.acceptRequest: No request returned.")
+                
+                return
+            }
+            Logging.sendEvent(location: meetingPoint, eventType: Logging.eventTypes.taskAccepted.rawValue, details: CoffeeRequest.arrayToJson(arr: request.deliveryLocation))
+        })
+        
+        //Define session
+        let session: URLSession = URLSession.shared
+        let url = URL(string: ("\(User.apiUrl)/\(helperId)/accept/\(id)"))
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "meetingPoint", value: meetingPoint),
+             URLQueryItem(name: "timeEstimate", value: timeEstimate),
+        ]
+        
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("USER MODEL: Accept request \(id)")
+            completionHandler()
+        }
+        
+        task.resume()
+    }
     
     static func getMyRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
@@ -272,7 +271,7 @@ extension User {
         
         let task = session.dataTask(with: requestURL){ data, response, error in
             
-            guard data != nil else {
+            guard let data = data else {
                 return
             }
             print("Sent notification to user with device ID \(deviceId)")

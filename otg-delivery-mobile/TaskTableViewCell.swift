@@ -8,23 +8,21 @@
 
 import UIKit
 
-class RequestStatusTableViewCell: UITableViewCell {
+class TaskTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    static let reuseIdentifier = "requestStatusReuseIdentifier"
+    static let reuseIdentifier = "acceptedRequestReuseIdentifier"
     
     let orderLabel = UILabel()
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
+    let pickupLocationDetailsLabel = UILabel()
     let deliveryLocationDetailsLabel = UILabel()
     let specialRequestsDetailsLabel = UILabel()
-    let pickupLocationDetailsLabel = UILabel()
     
-    
-    let expirationTitleLabel = UILabel()
-    let deliveryLocationTitleLabel = UILabel()
-    
-    let contactHelperButton = UIButton.init(type: .system)
+    let completeOrderButton = UIButton.init(type: .system)
+    let pickedUpButton = UIButton.init(type: .system)
+    let contactRequesterButton = UIButton.init(type: .system)
     
     // MARK: - Initialization
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -39,16 +37,34 @@ class RequestStatusTableViewCell: UITableViewCell {
         let subtitleDetailFont = UIFont.systemFont(ofSize: 12, weight: .regular)
         
         let labelVerticalSpacing: CGFloat = 5.0
-        let labelTopPadding: CGFloat = 10.0
-        let labelBottomPadding: CGFloat = 10.0
+        let labelTopPadding: CGFloat = 10.0        
         
-        contactHelperButton.backgroundColor = UIColor.clear
-        contactHelperButton.layer.cornerRadius = 1.0;
-        contactHelperButton.layer.borderWidth = 0.2;
-        contactHelperButton.setTitleColor(self.tintColor, for: .normal)
-        contactHelperButton.setTitle("Contact Helper", for: .normal)
-        contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contactHelperButton)
+        //Edit button
+        completeOrderButton.backgroundColor = UIColor.clear
+        completeOrderButton.layer.cornerRadius = 1.0;
+        completeOrderButton.layer.borderWidth = 0.2;
+        completeOrderButton.setTitleColor(self.tintColor, for: .normal)
+        completeOrderButton.setTitle("Mark Order as Completed", for: .normal)
+        completeOrderButton.translatesAutoresizingMaskIntoConstraints = false
+        //editButton.addTarget(self, action: #selector(self.editActionTest), for: .touchUpInside)
+        self.addSubview(completeOrderButton)
+        
+        pickedUpButton.backgroundColor = UIColor.clear
+        pickedUpButton.layer.cornerRadius = 1.0;
+        pickedUpButton.layer.borderWidth = 0.2;
+        pickedUpButton.setTitleColor(self.tintColor, for: .normal)
+        pickedUpButton.setTitle("Mark Order as Picked Up", for: .normal)
+        pickedUpButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(pickedUpButton)
+        
+        contactRequesterButton.backgroundColor = UIColor.clear
+        contactRequesterButton.layer.cornerRadius = 1.0;
+        contactRequesterButton.layer.borderWidth = 0.2;
+        contactRequesterButton.setTitleColor(self.tintColor, for: .normal)
+        contactRequesterButton.setTitle("Contact Requester", for: .normal)
+        contactRequesterButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactRequesterButton)
+
         
         
         // Order Label
@@ -60,8 +76,14 @@ class RequestStatusTableViewCell: UITableViewCell {
         let statusTitleLabel = UILabel()
         statusTitleLabel.text = "Status:"
         
+        let expirationTitleLabel = UILabel()
+        expirationTitleLabel.text = "Expiration:"
+        
         let pickupLocationTitleLabel = UILabel()
-        pickupLocationTitleLabel.text = "Restaurant:"
+        pickupLocationTitleLabel.text = "Pickup Location:"
+        
+        let deliveryLocationTitleLabel = UILabel()
+        deliveryLocationTitleLabel.text = "Delivery Location:"
         
         let specialRequestsTitleLabel = UILabel()
         specialRequestsTitleLabel.text = "Special Requests:"
@@ -69,8 +91,8 @@ class RequestStatusTableViewCell: UITableViewCell {
         let titleLabels = [
             statusTitleLabel,
             expirationTitleLabel,
-            deliveryLocationTitleLabel,
             pickupLocationTitleLabel,
+            deliveryLocationTitleLabel,
             specialRequestsTitleLabel
         ]
         
@@ -95,8 +117,8 @@ class RequestStatusTableViewCell: UITableViewCell {
         }
         
         let deliveryDetailLabels = [
-            deliveryLocationDetailsLabel,
             pickupLocationDetailsLabel,
+            deliveryLocationDetailsLabel,
             specialRequestsDetailsLabel
         ]
         deliveryDetailLabels.forEach { label in
@@ -106,7 +128,6 @@ class RequestStatusTableViewCell: UITableViewCell {
             label.translatesAutoresizingMaskIntoConstraints = false
             addSubview(label)
         }
-        pickupLocationDetailsLabel.text = "CAT"
         
         // Layout Constraints
         let leftMarginConstraint = NSLayoutConstraint(item: orderLabel,
@@ -124,7 +145,7 @@ class RequestStatusTableViewCell: UITableViewCell {
                                                        attribute: .rightMargin,
                                                        multiplier: 1.0,
                                                        constant: 0.0)
-        
+
         
         let constraints = [
             // Order title label
@@ -135,12 +156,11 @@ class RequestStatusTableViewCell: UITableViewCell {
             
             // Status title label and details label
             statusTitleLabel.leftAnchor.constraint(equalTo: orderLabel.leftAnchor, constant: 10),
-            statusTitleLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.leftAnchor, constant: -5),
+            statusTitleLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.leftAnchor),
             statusTitleLabel.topAnchor.constraint(equalTo: orderLabel.bottomAnchor,
                                                   constant: labelVerticalSpacing),
             
             statusDetailsLabel.rightAnchor.constraint(equalTo: orderLabel.rightAnchor),
-            statusDetailsLabel.leftAnchor.constraint(equalTo: statusTitleLabel.rightAnchor, constant: 5),
             statusDetailsLabel.topAnchor.constraint(equalTo: statusTitleLabel.topAnchor),
             statusDetailsLabel.bottomAnchor.constraint(equalTo: statusTitleLabel.bottomAnchor),
             
@@ -155,58 +175,71 @@ class RequestStatusTableViewCell: UITableViewCell {
             expirationDetailsLabel.topAnchor.constraint(equalTo: expirationTitleLabel.topAnchor),
             expirationDetailsLabel.bottomAnchor.constraint(equalTo: expirationTitleLabel.bottomAnchor),
             
+            pickupLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
+            pickupLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
+            
+            pickupLocationDetailsLabel.leftAnchor.constraint(equalTo: pickupLocationTitleLabel.leftAnchor),
+            pickupLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
+            pickupLocationDetailsLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
+            pickupLocationDetailsLabel.bottomAnchor.constraint(equalTo: deliveryLocationTitleLabel.topAnchor),
+            
             // Location title label and details label
             
             deliveryLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: expirationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
+            deliveryLocationTitleLabel.topAnchor.constraint(equalTo: pickupLocationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
             
             deliveryLocationDetailsLabel.leftAnchor.constraint(equalTo: deliveryLocationTitleLabel.leftAnchor),
             deliveryLocationDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             deliveryLocationDetailsLabel.topAnchor.constraint(equalTo: deliveryLocationTitleLabel.bottomAnchor),
-            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: pickupLocationTitleLabel.topAnchor, constant: -labelVerticalSpacing),
-            
-            pickupLocationTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            pickupLocationTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,constant: labelVerticalSpacing),
-            
-            pickupLocationDetailsLabel.leftAnchor.constraint(equalTo: pickupLocationTitleLabel.leftAnchor),
-            pickupLocationDetailsLabel.rightAnchor.constraint(equalTo: pickupLocationTitleLabel.rightAnchor),
-            pickupLocationDetailsLabel.topAnchor.constraint(equalTo: pickupLocationTitleLabel.bottomAnchor),
-            pickupLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor, constant: -labelVerticalSpacing),
+            deliveryLocationDetailsLabel.bottomAnchor.constraint(equalTo: specialRequestsTitleLabel.topAnchor),
             
             
             // Details title label and details label
             
             specialRequestsTitleLabel.leftAnchor.constraint(equalTo: statusTitleLabel.leftAnchor),
-            specialRequestsTitleLabel.topAnchor.constraint(equalTo: pickupLocationDetailsLabel.bottomAnchor, constant: labelVerticalSpacing),
+            specialRequestsTitleLabel.topAnchor.constraint(equalTo: deliveryLocationDetailsLabel.bottomAnchor,
+                                                           constant: labelVerticalSpacing),
+            
+            // Set the bottom of the cell (to set the height of the cell) to be the bottom of this label
             
             specialRequestsDetailsLabel.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
             specialRequestsDetailsLabel.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             specialRequestsDetailsLabel.topAnchor.constraint(equalTo: specialRequestsTitleLabel.bottomAnchor),
-            specialRequestsDetailsLabel.bottomAnchor.constraint(equalTo: contactHelperButton.topAnchor, constant: -10),
+            specialRequestsDetailsLabel.bottomAnchor.constraint(equalTo: pickedUpButton.topAnchor, constant: -10),
             
-            contactHelperButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
-            contactHelperButton.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
-            contactHelperButton.topAnchor.constraint(equalTo: specialRequestsDetailsLabel.bottomAnchor, constant: 10),
-            contactHelperButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+//            // Button constraints
+            pickedUpButton.bottomAnchor.constraint(equalTo: completeOrderButton.topAnchor, constant: -5),
+            pickedUpButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            pickedUpButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
+            pickedUpButton.topAnchor.constraint(equalTo: specialRequestsDetailsLabel.bottomAnchor, constant: 10),
             
-            ]
+            completeOrderButton.bottomAnchor.constraint(equalTo: contactRequesterButton.topAnchor, constant: -5),
+            completeOrderButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            completeOrderButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
+            completeOrderButton.topAnchor.constraint(equalTo: pickedUpButton.bottomAnchor, constant: 5),
+            
+            contactRequesterButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            contactRequesterButton.leftAnchor.constraint(equalTo: specialRequestsTitleLabel.leftAnchor),
+            contactRequesterButton.rightAnchor.constraint(equalTo: specialRequestsDetailsLabel.rightAnchor),
+            contactRequesterButton.topAnchor.constraint(equalTo: completeOrderButton.bottomAnchor, constant: 5),
+
+        ]
         NSLayoutConstraint.activate(constraints)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
-    
-}
 
+}

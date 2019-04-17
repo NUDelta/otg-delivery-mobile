@@ -1,16 +1,18 @@
 //
-//  MeetingPointTableViewCell.swift
+//  DrinkPickerTableViewCell.swift
 //  otg-delivery-mobile
 //
-//  Created by Maggie Lou on 11/15/18.
+//  Created by Sam Naser on 4/4/18.
 //  Copyright © 2018 Sam Naser. All rights reserved.
 //
 
 import UIKit
 
-class MeetingPointTableViewCell: UITableViewCell {
+class DrinkPickerTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var itemNameLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -9,10 +9,10 @@
 import UIKit
 
 class RequestStatusTableViewCell: UITableViewCell {
-    
+
     // MARK: - Properties
     static let reuseIdentifier = "requestStatusReuseIdentifier"
-    
+
     let statusDetailsLabel = UILabel()
     let expirationDetailsLabel = UILabel()
     let itemDetailsLabel = UILabel()
@@ -142,8 +142,7 @@ class RequestStatusTableViewCell: UITableViewCell {
                                                        attribute: .rightMargin,
                                                        multiplier: 1.0,
                                                        constant: 0.0)
-        
-        
+
         let constraints = [
             // Order title label
 
@@ -235,7 +234,7 @@ class RequestStatusTableViewCell: UITableViewCell {
             contactHelperButton.rightAnchor.constraint(equalTo: statusDetailsLabel.rightAnchor),
             contactHelperButton.topAnchor.constraint(equalTo: timeFrame4Label.bottomAnchor, constant: 10),
             contactHelperButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
-            
+
             ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -254,6 +253,5 @@ class RequestStatusTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
 }
 

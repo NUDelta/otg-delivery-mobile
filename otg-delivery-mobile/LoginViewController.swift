@@ -53,7 +53,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         var tokenValue: String = "Default token value"
 
         //If we're on a real device, this token id should be set
-        let defaults = UserDefaults.standard
         if let tokenId = defaults.object(forKey: "tokenId") as? String {
             tokenValue = tokenId
         }

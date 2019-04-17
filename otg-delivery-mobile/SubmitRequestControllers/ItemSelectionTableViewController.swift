@@ -63,8 +63,7 @@ class ItemSelectionTableViewController: UITableViewController {
     
     func initializeRequest() {
         currentRequest = CoffeeRequest()
-        
-        let defaults = UserDefaults.standard
+
         currentRequest!.requesterId = defaults.object(forKey: "userId") as! String
         currentRequest!.status = "Searching for Helper"
     }

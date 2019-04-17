@@ -72,6 +72,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        //testing send notification to user
+        sendToSelf(message: "Hello, human. I am a simulator.")
+
         // initialize location manager
         locationManager = CLLocationManager()
 
@@ -116,17 +120,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        print("USER ID: ", UserDefaults.standard.object(forKey: "userId") as Any)
         //If user not logged in, transition to login page
-        if UserDefaults.standard.object(forKey: "userId") == nil {
+        let userID = defaults.object(forKey: "userId")
+        if userID == nil {
             performSegue(withIdentifier: "loginSegue", sender: nil)
+        } else {
+            print("User with ID ", userID as! String)
         }
         loadData()
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
-        
+
         let latitude = Double(locToSave.coordinate.latitude)
         let longitude = Double(locToSave.coordinate.longitude)
         let speed = Double(locToSave.speed)
@@ -134,7 +140,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
 
-        let defaults = UserDefaults.standard
         guard let requesterId = defaults.object(forKey: "userId") as? String else {
             print("Helper ID not in defaults")
             return
@@ -145,7 +150,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
 
     func removeCachedGeofenceLocation() {
-        let defaults = UserDefaults.standard
         defaults.removeObject(forKey:"currentGeofenceLocation")
     }
 
@@ -223,7 +227,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 let splitStatus = request.status.components(separatedBy: "(")
                 cell.statusDetailsLabel.text = splitStatus[0]
                 cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
-                
+
                 // Meeting point label
                 cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
                 cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
@@ -244,16 +248,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactHelperButton.addTarget(self, action: #selector(contactUser),
                                                   for: .touchUpInside)
             return cell
-
         }
-
         return UITableViewCell()
     }
 
     @objc func contactUser(sender: UIButton) {
         print("In contact requester")
-        //let phoneNumber = String(sender.tag)
-        let phoneNumber = "3033623343"
+        let phoneNumber = String(sender.tag)
+        //let phoneNumber = "7324563380"
         let messageVC = MFMessageComposeViewController()
 
         // Request has not been accepted
@@ -319,51 +321,45 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Launch request editor on click
             let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
 
-            let action = UIAlertAction(title: "OK", style: .default, handler: { [weak editAlert] (_) in
+            let action = UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 self.currentActionType = .Edit
                 self.activeEditingRequest = self.myRequests[indexPath.row]
                 self.performSegue(withIdentifier: "orderFormSegue", sender: self)
             })
-            
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
-                
-            })
-            
+
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
             editAlert.addAction(action)
             editAlert.addAction(cancel)
             present(editAlert, animated: true, completion: nil)
-            
         }
-        
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 
-    
     func sendFeedback(feedbackText: String?){
-        
         //In case the input doesn't exist
         guard let feedbackText = feedbackText else {
             print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
             return
         }
-        
-         let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
-        //let apiUrl: String = "http://localhost:8080/feedback"
+
+        //let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
+        let apiUrl: String = "http://localhost:8080/feedback"
         
         let url = URL(string: apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
-        
+
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("Feedback post: Data post successful.")
         }
-        
+
         task.resume()
-        
+
     }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
@@ -382,7 +378,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             break;
         }
     }
-    
+
     func checkDeliveryAvailabilityTimeframe() -> Bool {
         let now = NSDate()
         let nowDateValue = now as Date
@@ -390,6 +386,24 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
         
         return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
+    }
+
+    func sendToSelf(message: String) {
+        let apiUrl: String = "http://localhost:8080/users/sendToMe"
+
+        let url = URL(string: apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        requestURL.httpBody = "message=\(message)".data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("Feedback post: Data post successful.")
+        }
+
+        task.resume()
     }
 }
 

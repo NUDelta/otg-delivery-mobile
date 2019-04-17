@@ -107,6 +107,7 @@ class MeetingPointTableViewController: UITableViewController {
 
     func loadData() {
         MeetingPoint.getAll(completionHandler: { meetingPoints in
+            print(meetingPoints)
             self.meetingPoints = meetingPoints
             DispatchQueue.main.async {
                 self.meetingPointTableView.reloadData()

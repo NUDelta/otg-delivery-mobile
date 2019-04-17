@@ -19,13 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("Registering categories for local notifications")
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge], completionHandler: { (granted, error) in
             if (granted) {
-                
                 // setup notification categories
                 let acceptAction = UNNotificationAction(identifier: "acceptNotification", title: "I'm interested! Show me the details.", options: [.foreground])
                 let rejectActionTime = UNNotificationAction(identifier: "rejectNotification", title: "No - I'm in a hurry.", options: [.destructive])
                 let rejectActionInterest = UNNotificationAction(identifier: "rejectNotification", title: "No - I don't feel like it.", options: [.destructive])
                 let rejectActionOther = UNNotificationAction(identifier: "rejectNotification", title: "No - other.", options: [.destructive])
-                
                 let category = UNNotificationCategory(identifier: "requestNotification", actions: [acceptAction, rejectActionTime, rejectActionInterest, rejectActionOther], intentIdentifiers: [], options: [])
 
                 // setup notification categories
@@ -52,23 +50,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Restart terminated app if receives a location update
         if (launchOptions?[UIApplication.LaunchOptionsKey.location]) != nil {
             let locationManager = CLLocationManager()
-            
+
             locationManager.allowsBackgroundLocationUpdates = true
             locationManager.delegate = self
             // Accuracy of location data
             locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             // The minimum distance before an update event is generated
             locationManager.distanceFilter = 50.0
-            
+
             // Enable location tracking when app sleeps
             locationManager.pausesLocationUpdatesAutomatically = false
             locationManager.startMonitoringSignificantLocationChanges()
-            
+
             if CLLocationManager.authorizationStatus() == .notDetermined {
                 locationManager.requestAlwaysAuthorization()
                 locationManager.requestWhenInUseAuthorization()
             }
-            
+
             locationManager.startUpdatingLocation()
         }
         //iOS 10 and up support
@@ -91,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
-        
+
         let latitude = Double(locToSave.coordinate.latitude)
         let longitude = Double(locToSave.coordinate.longitude)
         let speed = Double(locToSave.speed)
@@ -165,10 +163,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
         print(deviceTokenString)
         defaults.set(deviceTokenString, forKey: "tokenId")
-        
+
         defaults.set(0, forKey: "lastNotified")
     }
-    
+
     // Handle silent push notifications
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -184,12 +182,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             completionHandler(UIBackgroundFetchResult.noData)
         }
     }
-    
+
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: Error) {
         // The token is not currently available.
         print("Remote notification support is unavailable due to error: \(error.localizedDescription)")
     }
-
 }
-

@@ -93,11 +93,9 @@ class RequestConfirmationViewController: UIViewController {
         })
     }
 
-    
     func setTimeProbabilities(request: CoffeeRequest) -> CoffeeRequest {
-        let defaults = UserDefaults.standard
         let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int
-        
+
         if (requestsPlaced < 1) {
             request.timeProbabilities[1] = "30%"
             request.timeProbabilities[3] = "60%"
@@ -105,10 +103,10 @@ class RequestConfirmationViewController: UIViewController {
             request.timeProbabilities[1] = "60%"
             request.timeProbabilities[3] = "30%"
         }
-        
+
         return request
     }
-    
+
     /*
     // MARK: - Navigation
 

@@ -31,7 +31,7 @@
 		39C13EF321F769B0005833B8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF221F769B0005833B8 /* Constants.swift */; };
 		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
 		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
-		39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */; };
+		CDBAAEED2266C2B5003EB76A /* RequestStatusTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +64,7 @@
 		39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeEvanstonDowntown.gpx; sourceTree = "<group>"; };
 		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
-		39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableViewController.swift; sourceTree = "<group>"; };
+		CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +103,7 @@
 				3987A3012234371F001132AF /* DataModels */,
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
 				39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */,
-				39FE213E2097BEFF0019AE3A /* RequestStatusTableViewController.swift */,
+				CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */,
 				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				22BD7F162045E741008A877B /* image-resources */,
@@ -236,7 +236,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C13EF321F769B0005833B8 /* Constants.swift in Sources */,
-				39FE213F2097BEFF0019AE3A /* RequestStatusTableViewController.swift in Sources */,
 				22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */,
 				39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
@@ -253,6 +252,7 @@
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
+				CDBAAEED2266C2B5003EB76A /* RequestStatusTableView.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

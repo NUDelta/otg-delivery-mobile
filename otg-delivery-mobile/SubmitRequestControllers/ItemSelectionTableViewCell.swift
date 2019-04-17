@@ -1,17 +1,17 @@
 //
-//  DeliveryTimeframeTableViewCell.swift
+//  ItemSelectionTableViewCell.swift
 //  otg-delivery-mobile
 //
-//  Created by Maggie Lou on 1/30/19.
+//  Created by Maggie Lou on 3/8/19.
 //  Copyright © 2019 Sam Naser. All rights reserved.
 //
 
 import UIKit
 
-class DeliveryTimeframeTableViewCell: UITableViewCell {
+class ItemSelectionTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var timeframeLabel: UILabel!
-    
+    @IBOutlet weak var nameLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

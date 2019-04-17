@@ -54,14 +54,14 @@ extension LocationUpdate {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            let httpResponse = response as? HTTPURLResponse
+            //let httpResponse = response as? HTTPURLResponse
             
             // Keep retrying if unsuccessful
             //print(httpResponse?.statusCode)
-            if(httpResponse?.statusCode != 200){
-                print("Retry")
-                self.post(locUpdate: locUpdate)
-            }
+//            if(httpResponse?.statusCode != 200){
+//                print("Retry")
+//                self.post(locUpdate: locUpdate)
+//            }
         }
         
         task.resume()

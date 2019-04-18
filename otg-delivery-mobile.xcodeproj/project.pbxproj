@@ -24,13 +24,13 @@
 		394DD8072225ECC7002504E9 /* RequestTimeframeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */; };
 		394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */; };
 		394DD8122232DA1E002504E9 /* ItemSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8112232DA1E002504E9 /* ItemSelectionTableViewCell.swift */; };
-		394DD8142232DA34002504E9 /* ItemSelectionTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8132232DA34002504E9 /* ItemSelectionTableViewController.swift */; };
+		394DD8142232DA34002504E9 /* ItemSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8132232DA34002504E9 /* ItemSelectionViewController.swift */; };
 		3987A3002234370C001132AF /* MeetingPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3987A2FF2234370C001132AF /* MeetingPoint.swift */; };
 		39C13EEF21ED2A06005833B8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEE21ED2A06005833B8 /* Location.swift */; };
 		39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF021F695B0005833B8 /* LocationUpdate.swift */; };
 		39C13EF321F769B0005833B8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF221F769B0005833B8 /* Constants.swift */; };
-		39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */; };
 		39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */; };
+		CD8630322268372F0024FCA2 /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */; };
 		CDBAAEED2266C2B5003EB76A /* RequestStatusTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */; };
 /* End PBXBuildFile section */
 
@@ -56,14 +56,14 @@
 		394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTimeframeViewController.swift; sourceTree = "<group>"; };
 		394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestConfirmationViewController.swift; sourceTree = "<group>"; };
 		394DD8112232DA1E002504E9 /* ItemSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectionTableViewCell.swift; sourceTree = "<group>"; };
-		394DD8132232DA34002504E9 /* ItemSelectionTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectionTableViewController.swift; sourceTree = "<group>"; };
+		394DD8132232DA34002504E9 /* ItemSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSelectionViewController.swift; sourceTree = "<group>"; };
 		3987A2FF2234370C001132AF /* MeetingPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPoint.swift; sourceTree = "<group>"; };
 		39C13EEE21ED2A06005833B8 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		39C13EF021F695B0005833B8 /* LocationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdate.swift; sourceTree = "<group>"; };
 		39C13EF221F769B0005833B8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = routeEvanstonDowntown.gpx; sourceTree = "<group>"; };
-		39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewController.swift; sourceTree = "<group>"; };
+		CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStatusTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -98,21 +98,16 @@
 			isa = PBXGroup;
 			children = (
 				22AD278C20129CCE005BA4B9 /* Main.storyboard */,
-				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
-				394DD8082225EECB002504E9 /* SubmitRequestControllers */,
+				CD86302F226836720024FCA2 /* OrderViewController */,
+				394DD8082225EECB002504E9 /* SubmitRequestViewControllers */,
 				3987A3012234371F001132AF /* DataModels */,
-				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
-				39C932C3219DB176001CC47D /* MeetingPointTableViewCell.swift */,
-				CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */,
-				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				22BD7F162045E741008A877B /* image-resources */,
-				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
+				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				39C13EF221F769B0005833B8 /* Constants.swift */,
 				22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */,
-				2238817E203F55370012707C /* route1.gpx */,
-				393DF994219F44590096E765 /* routeTechExpress.gpx */,
-				39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */,
+				22AD278F20129CCE005BA4B9 /* Assets.xcassets */,
+				CD86302E22682C390024FCA2 /* Routes */,
 				22AD279420129CCE005BA4B9 /* Info.plist */,
 				3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */,
 			);
@@ -128,16 +123,16 @@
 			path = "image-resources";
 			sourceTree = "<group>";
 		};
-		394DD8082225EECB002504E9 /* SubmitRequestControllers */ = {
+		394DD8082225EECB002504E9 /* SubmitRequestViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				394DD8132232DA34002504E9 /* ItemSelectionTableViewController.swift */,
+				CD8630302268370E0024FCA2 /* MeetingPointTableViewController */,
+				394DD8132232DA34002504E9 /* ItemSelectionViewController.swift */,
 				394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */,
-				39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */,
 				394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */,
 				394DD8112232DA1E002504E9 /* ItemSelectionTableViewCell.swift */,
 			);
-			path = SubmitRequestControllers;
+			path = SubmitRequestViewControllers;
 			sourceTree = "<group>";
 		};
 		3987A3012234371F001132AF /* DataModels */ = {
@@ -152,6 +147,35 @@
 				391F3844218659BD00F1C91B /* Logging.swift */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		CD86302E22682C390024FCA2 /* Routes */ = {
+			isa = PBXGroup;
+			children = (
+				2238817E203F55370012707C /* route1.gpx */,
+				393DF994219F44590096E765 /* routeTechExpress.gpx */,
+				39C13EF421FF5DF4005833B8 /* routeEvanstonDowntown.gpx */,
+			);
+			path = Routes;
+			sourceTree = "<group>";
+		};
+		CD86302F226836720024FCA2 /* OrderViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CDBAAEEC2266C2B5003EB76A /* RequestStatusTableView.swift */,
+				22D797F820BE860E00AC6AAE /* RequestStatusTableViewCell.swift */,
+				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
+			);
+			path = OrderViewController;
+			sourceTree = "<group>";
+		};
+		CD8630302268370E0024FCA2 /* MeetingPointTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				39C932C5219DB2BA001CC47D /* MeetingPointTableViewController.swift */,
+				CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */,
+			);
+			path = MeetingPointTableViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,16 +263,16 @@
 				22D797F920BE860E00AC6AAE /* RequestStatusTableViewCell.swift in Sources */,
 				39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
-				39C932C4219DB176001CC47D /* MeetingPointTableViewCell.swift in Sources */,
 				228907D920756C6800072961 /* Item.swift in Sources */,
 				394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				3987A3002234370C001132AF /* MeetingPoint.swift in Sources */,
 				394DD8122232DA1E002504E9 /* ItemSelectionTableViewCell.swift in Sources */,
+				CD8630322268372F0024FCA2 /* MeetingPointTableViewCell.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				394DD8072225ECC7002504E9 /* RequestTimeframeViewController.swift in Sources */,
 				39C13EEF21ED2A06005833B8 /* Location.swift in Sources */,
-				394DD8142232DA34002504E9 /* ItemSelectionTableViewController.swift in Sources */,
+				394DD8142232DA34002504E9 /* ItemSelectionViewController.swift in Sources */,
 				226180DD20997DE2007D92A0 /* User.swift in Sources */,
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,

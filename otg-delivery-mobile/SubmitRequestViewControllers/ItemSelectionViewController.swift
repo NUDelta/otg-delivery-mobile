@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ItemSelectionTableViewController: UITableViewController {
+class ItemSelectionViewController: UITableViewController {
     
     var currentRequest: CoffeeRequest?
     var items = [Item]()

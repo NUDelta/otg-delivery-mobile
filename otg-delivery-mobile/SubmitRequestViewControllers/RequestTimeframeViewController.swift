@@ -33,20 +33,19 @@ class RequestTimeframeViewController: UIViewController {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func cancelButton(_ sender: Any) {
         let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
         
         self.present(mainPage, animated: true, completion: nil)
     }
-    
+
     @IBAction func backButton(_ sender: Any) {
-        let prevPage: ItemSelectionTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemSelectionTableViewController") as! ItemSelectionTableViewController
+        let prevPage: ItemSelectionViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemSelectionTableViewController") as! ItemSelectionViewController
         prevPage.currentRequest = currentRequest
         self.present(prevPage, animated: true, completion: nil)
     }
-    
-    
+
     @IBAction func nextPageButton(_ sender: Any) {
         setTimeOnRequestObject()
         
@@ -55,20 +54,20 @@ class RequestTimeframeViewController: UIViewController {
         self.present(nextPage, animated: true, completion: nil)
         
     }
-    
+
     @IBAction func timeChanged(_ sender: UIDatePicker) {
         getTimeFromTimePicker()
     }
-    
+
     func getTimeFromTimePicker() {
         timePicker.datePickerMode = UIDatePicker.Mode.time
         let timeSelected = timePicker.date
-        
+
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         formatter.timeZone = NSTimeZone.local
         let startTime = formatter.string(from: timeSelected)
-        
+
         let calendar = Calendar.current
         let endTimeDate = calendar.date(byAdding: .hour, value: 2, to: timeSelected)
         let endTime = formatter.string(from: endTimeDate!)

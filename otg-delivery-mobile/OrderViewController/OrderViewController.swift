@@ -12,98 +12,43 @@ import MessageUI
 
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
 
-    var myRequests = [CoffeeRequest]()
-
     @IBOutlet weak var myRequestTableView: UITableView!
+    public static let sharedManager = OrderViewController()
+
+    var myRequests = [CoffeeRequest]()
+    var acceptedRequests = [CoffeeRequest]()
 
     var currentActionType: OrderActionType?
     var activeEditingRequest: CoffeeRequest?
 
-    //On schedule delivery button pressed
-    @IBAction func createNewOrder() {
-        self.currentActionType = .Order
-        self.performSegue(withIdentifier: "orderFormSegue", sender: self)
-
-        //TODO: REIMPLEMENT THIS WHILE TESTING
-        /*
-        // Check time - only open 11AM - 5PM
-        if (checkDeliveryAvailabilityTimeframe()) {
-            self.currentActionType = .Order
-            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
-        } else {
-            let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
-
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            }))
-
-            self.present(alert, animated: true, completion: nil)
-        }
-        */
-    }
-
-    public static let sharedManager = OrderViewController()
-
     var locationManager: CLLocationManager?
-    let pickupLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
-//        ("Norbucks", CLLocationCoordinate2D(latitude: 42.053343, longitude: -87.672956)),
-//        ("Sherbucks", CLLocationCoordinate2D(latitude: 42.04971, longitude: -87.682014)),
-//        ("Kresge Starbucks", CLLocationCoordinate2D(latitude: 42.051725, longitude: -87.675103)),
-//        ("Fran's", CLLocationCoordinate2D(latitude: 42.051717, longitude: -87.681063)),
-//        ("Coffee Lab", CLLocationCoordinate2D(latitude: 42.058518, longitude: -87.683645)),
-//        ("Kaffein", CLLocationCoordinate2D(latitude: 42.046968, longitude: -87.679088)),
-        ("Noyes", CLLocationCoordinate2D(latitude: 42.058345, longitude: -87.683724)),
-        ("Tech Express", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
-        ("Tech Express", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
-        ("Downtown Evanston", CLLocationCoordinate2D(latitude: 42.048555, longitude: -87.681854)),
-    ]
-
-    let meetingPointLocations: [(locationName: String, location: CLLocationCoordinate2D)] = [
-        ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057816, longitude: -87.677123)), // On Sheridan
-        ("Tech Lobby", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)), // By Mudd
-        ("Bridge between Tech and Mudd", CLLocationCoordinate2D(latitude: 42.057958, longitude: -87.674735)),
-        ("Main Library Sign-In Desk", CLLocationCoordinate2D(latitude: 42.053166, longitude: -87.674774)),
-        ("Kresge, By Entrance", CLLocationCoordinate2D(latitude: 42.051352, longitude: -87.675254)),
-        ("SPAC, By Entrance", CLLocationCoordinate2D(latitude: 42.059135, longitude: -87.672755)),
-        ("Norris, By Front Entrance", CLLocationCoordinate2D(latitude: 42.053328,  longitude: -87.673141)),
-        ("Plex Lobby", CLLocationCoordinate2D(latitude: 42.053822, longitude: -87.678237)),
-        ("Willard Lobby", CLLocationCoordinate2D(latitude: 42.051655,
-        longitude:  -87.681316)),
-        ]
+    let geofenceRadius: CLLocationDistance = 100
+    let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyNearestTenMeters
+    let updateDistance: CLLocationDistance = 10
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //testing send notification to user
-        sendToSelf(message: "Hello, human. I am a simulator.")
-
         // initialize location manager
         locationManager = CLLocationManager()
-
-        locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.delegate = self
-        // Accuracy of location data
-        locationManager?.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        // The minimum distance before an update event is generated
-        locationManager?.distanceFilter = 50.0
 
         // Enable location tracking when app sleeps
-        locationManager!.pausesLocationUpdatesAutomatically = false
-        locationManager!.startMonitoringSignificantLocationChanges()
+        locationManager?.allowsBackgroundLocationUpdates = true
+        locationManager?.pausesLocationUpdatesAutomatically = false
 
         if CLLocationManager.authorizationStatus() == .notDetermined {
             locationManager?.requestAlwaysAuthorization()
             locationManager?.requestWhenInUseAuthorization()
         }
 
-        locationManager?.startUpdatingLocation()
-        // use our predefined locations to setup the geo-fences
-        for coffeeLocation in (pickupLocations + meetingPointLocations) {
-            let region = CLCircularRegion(center: coffeeLocation.1, radius: 200, identifier: coffeeLocation.0)
-            region.notifyOnEntry = true
-            region.notifyOnExit = true
+        // Accuracy of location data
+        locationManager?.desiredAccuracy = desiredAccuracy
 
-            locationManager?.startMonitoring(for: region)
-        }
+        // The minimum distance before an update event is generated
+        locationManager?.distanceFilter = updateDistance
+        locationManager?.startUpdatingLocation()
+        locationManager?.startMonitoringSignificantLocationChanges()
 
         // Initialize My Requests table
         myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
@@ -130,8 +75,54 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         loadData()
     }
 
+
+
+
+
+
+
+
+    //On schedule delivery button pressed
+    @IBAction func createNewOrder() {
+        self.currentActionType = .Order
+        self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+
+        /*// Check time - only open 11AM - 5PM
+        if (checkDeliveryAvailabilityTimeframe()) {
+            self.currentActionType = .Order
+            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+        } else {
+            let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }*/
+    }
+
+    func checkDeliveryAvailabilityTimeframe() -> Bool {
+        let now = NSDate()
+        let nowDateValue = now as Date
+        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
+        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
+
+        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
+    }
+
+
+
+
+
+
+
+
+
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
+
+        let loc = manager.location?.coordinate
+        print("\nUser is at (\(loc!.latitude), \(loc!.longitude))")
+        print(CLLocation(latitude: loc!.latitude, longitude: loc!.longitude).distance(from: CLLocation(latitude: 42.060271, longitude: -87.675804)), "meters from Lisa's Cafe")
 
         let latitude = Double(locToSave.coordinate.latitude)
         let longitude = Double(locToSave.coordinate.longitude)
@@ -153,6 +144,64 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         defaults.removeObject(forKey:"currentGeofenceLocation")
     }
 
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if (status == CLAuthorizationStatus.authorizedAlways) {
+            for coffeeLocation in (pickupLocations + meetingPointLocations) {
+                setUpGeofence(geofenceRegionCenter: coffeeLocation.1, radius: geofenceRadius, identifier: coffeeLocation.0)
+            }
+        }
+    }
+
+    func setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
+        //CLLocationCoordinate2D(latitude: 42.060171, longitude: -87.675804) -> Lisa's
+        let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter,
+                                              radius: radius,
+                                              identifier: identifier)
+        geofenceRegion.notifyOnEntry = true
+        geofenceRegion.notifyOnExit = true
+
+        locationManager?.startMonitoring(for: geofenceRegion)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion){
+        locationManager?.requestState(for: region)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        if (region.identifier == "Lisa's") {
+            print("\nThe user is " + (state.rawValue == 1 ? "inside" : "outside") + " the " + region.identifier + " Geofence.")
+            print(region)
+        }
+    }
+
+    // called when user enters a monitored region
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("Entered Geofence")
+        User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Welcome to Lisa's Cafe!")
+    }
+
+    // called when user leaves a monitored region
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
+        print("Exited Geofence")
+        User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "So long, Lisa's")
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "loginSegue" {
             let navController = segue.destination as? UINavigationController
@@ -173,7 +222,32 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.myRequestTableView.reloadData()
             }
         })
+
+        User.getMyTasks(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.acceptedRequests = coffeeRequests
+                //self.acceptedRequestTableView.reloadData()
+            }
+        })
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // MARK: Table View Configuration
 
@@ -184,18 +258,27 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     // Return number of rows in table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myRequests.count
+        var rowCount = 0
+
+        if(tableView == myRequestTableView){
+            rowCount = self.myRequests.count
+        }
+
+        /*else if(tableView == acceptedRequestTableView){
+            rowCount = self.acceptedRequests.count
+        }*/
+
+        return rowCount
     }
 
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Render label data
         if tableView == myRequestTableView {
-            let cell = RequestStatusTableViewCell()
-
             // Grab request to render
             let request = myRequests[indexPath.row]
 
+            let cell = RequestStatusTableViewCell()
             cell.statusDetailsLabel.text = request.status
             cell.itemDetailsLabel.text = request.item
             cell.contactHelperButton.tag = 0
@@ -248,31 +331,56 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactHelperButton.addTarget(self, action: #selector(contactUser),
                                                   for: .touchUpInside)
             return cell
-        }
+        } /*else if tableView == acceptedRequestTableView {
+            let cell = TaskTableViewCell()
+
+            // Grab request to render
+            let request = acceptedRequests[indexPath.row]
+            cell.orderLabel.text = request.item?.name ?? "Item not loading"
+
+            let requesterName = request.requester?.username ?? "Requester not loading"
+            let status = "Requested by \(requesterName)"
+            cell.statusDetailsLabel.text = status
+            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
+            cell.expirationDetailsLabel.text = endTime
+            cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
+            cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
+            cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
+
+            // Text wraps
+            cell.orderLabel.numberOfLines = 0
+            cell.statusDetailsLabel.numberOfLines = 0
+            cell.expirationDetailsLabel.numberOfLines = 0
+            cell.deliveryLocationDetailsLabel.numberOfLines = 0
+            cell.specialRequestsDetailsLabel.numberOfLines = 0
+
+            // Initialize buttons
+            cell.contentView.isUserInteractionEnabled = true;
+
+            cell.pickedUpButton.tag = indexPath.row
+            cell.pickedUpButton.addTarget(self, action: #selector(pickedUpOrder), for: .touchUpInside)
+
+            cell.completeOrderButton.tag = indexPath.row
+            cell.completeOrderButton.addTarget(self, action: #selector(completeOrder), for: .touchUpInside)
+
+            let phoneNumber = request.requester?.phoneNumber ?? "0"
+            cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
+            cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
+            
+            // Alert user if task is expired
+            let currentTime = NSDate()
+            if (currentTime.compare(CoffeeRequest.stringToDate(s:request.endTime!)) == .orderedDescending) {
+                let alert = UIAlertController(title: "One of your tasks has expired.", message: "Please mark it as complete or delete it from your table by swiping left if you weren't able to complete it.", preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+                })
+
+                alert.addAction(cancel)
+                present(alert, animated: true, completion: nil)
+            }
+
+            return cell
+        }*/
         return UITableViewCell()
-    }
-
-    @objc func contactUser(sender: UIButton) {
-        print("In contact requester")
-        let phoneNumber = String(sender.tag)
-        //let phoneNumber = "7324563380"
-        let messageVC = MFMessageComposeViewController()
-
-        // Request has not been accepted
-//        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
-//            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
-//            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
-//            })
-//
-//            alert.addAction(cancel)
-//            present(alert, animated: true, completion: nil)
-//        } else { // Request has been accepted, message helper
-            messageVC.body = "";
-            messageVC.recipients = [phoneNumber]
-            messageVC.messageComposeDelegate = self
-
-            self.present(messageVC, animated: false, completion: nil)
-        //}
     }
 
      // Support conditional editing of the table view.
@@ -344,8 +452,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
 
         //let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
-        let apiUrl: String = "http://localhost:8080/feedback"
-        
+        let apiUrl: String = "\(Constants.apiUrl)feedback"
+
         let url = URL(string: apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
@@ -360,6 +468,40 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         task.resume()
 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    @objc func contactUser(sender: UIButton) {
+        print("In contact requester")
+        //let phoneNumber = String(sender.tag)
+        let phoneNumber = Constants.researcherNumber
+        let messageVC = MFMessageComposeViewController()
+        
+        // Request has not been accepted
+        //        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
+        //            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
+        //            let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
+        //            })
+        //
+        //            alert.addAction(cancel)
+        //            present(alert, animated: true, completion: nil)
+        //        } else { // Request has been accepted, message helper
+        messageVC.body = "";
+        messageVC.recipients = [phoneNumber]
+        messageVC.messageComposeDelegate = self
+        
+        self.present(messageVC, animated: false, completion: nil)
+        //}
     }
     
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
@@ -378,32 +520,4 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             break;
         }
     }
-
-    func checkDeliveryAvailabilityTimeframe() -> Bool {
-        let now = NSDate()
-        let nowDateValue = now as Date
-        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
-        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
-        
-        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
-    }
-
-    func sendToSelf(message: String) {
-        let apiUrl: String = "http://localhost:8080/users/sendToMe"
-
-        let url = URL(string: apiUrl)
-        let session: URLSession = URLSession.shared
-        var requestURL = URLRequest(url: url!)
-
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        requestURL.httpBody = "message=\(message)".data(using: .utf8)
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("Feedback post: Data post successful.")
-        }
-
-        task.resume()
-    }
 }
-

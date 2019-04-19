@@ -42,13 +42,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
 
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
         registerForNotifications()
 
         // Restart terminated app if receives a location update
-        if (launchOptions?[UIApplication.LaunchOptionsKey.location]) != nil {
+        /*if (launchOptions?[UIApplication.LaunchOptionsKey.location]) != nil {
             let locationManager = CLLocationManager()
 
             locationManager.allowsBackgroundLocationUpdates = true
@@ -56,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Accuracy of location data
             locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
             // The minimum distance before an update event is generated
-            locationManager.distanceFilter = 50.0
+            locationManager.distanceFilter = 10.0
 
             // Enable location tracking when app sleeps
             locationManager.pausesLocationUpdatesAutomatically = false
@@ -68,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
 
             locationManager.startUpdatingLocation()
-        }
+        }*/
         //iOS 10 and up support
         if #available(iOS 10, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[.badge, .alert, .sound]){ (granted, error) in }
@@ -156,12 +160,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             application.registerForRemoteNotifications()
         }
     }
-    
+
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let defaults = UserDefaults.standard
 
         let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
-        print(deviceTokenString)
+        print("DeviceTokenString: " + deviceTokenString)
         defaults.set(deviceTokenString, forKey: "tokenId")
 
         defaults.set(0, forKey: "lastNotified")

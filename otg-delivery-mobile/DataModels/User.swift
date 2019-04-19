@@ -202,8 +202,7 @@ extension User {
         let session: URLSession = URLSession.shared
         let url = URL(string: ("\(User.apiUrl)/\(userId)/tasks"))
         let requestURL = URLRequest(url: url!)
-        
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             guard let data = data else {
                 return
@@ -228,19 +227,19 @@ extension User {
         task.resume()
         
     }
-    
+
     static func removeHelperFromTask(withId taskId: String) {
         let defaults = UserDefaults.standard
         guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
-        
+
         let session: URLSession = URLSession.shared
         let url = URL(string: User.apiUrl + "/\(userId)/removeHelper/\(taskId)")
         var requestURL = URLRequest(url: url!)
-        
+
         requestURL.httpMethod = "PATCH"
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             if((error) != nil) {
                 print("USER MODEL: Error removing helper from request \(taskId)")
@@ -248,17 +247,17 @@ extension User {
             }
             print("USER MODEL: Removed helper from request \(taskId).")
         }
-        
+
         task.resume()
     }
-    
+
     static func sendNotification(deviceId: String, message: String) {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "deviceId", value: deviceId),
             URLQueryItem(name: "message", value: message),
         ]
-        
+
         let url = URL(string: User.apiUrl + "/sendNotification")
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
@@ -271,7 +270,7 @@ extension User {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
         
         let task = session.dataTask(with: requestURL){ data, response, error in
-            
+
             guard data != nil else {
                 return
             }

@@ -18,7 +18,6 @@ enum OrderActionType {
 class CoffeeRequest : Codable{
     private static let apiUrl: String = Constants.apiUrl + "requests"
 
-
     // Used to map JSON responses and their properties to properties of our struct
     enum CodingKeys : String, CodingKey {
         case requestId = "_id"
@@ -34,6 +33,7 @@ class CoffeeRequest : Codable{
         case requesterTextRespondTime
         case timeProbabilities
         case planningNotes
+        case pickupLocation
     }
 
     // Instance variables of the object in Swift
@@ -45,6 +45,7 @@ class CoffeeRequest : Codable{
     var item: String
     var status: String
     var deliveryLocationOptions: [String]
+    var pickupLocation: String
 
     // Will be set later
     var deliveryLocation = ""
@@ -64,7 +65,8 @@ class CoffeeRequest : Codable{
         item = try container.decode(String.self, forKey: .item)
         status = try container.decode(String.self, forKey: .status)
         deliveryLocation = try container.decode(String.self, forKey: .deliveryLocation)
-        
+        pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
+
         let unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocationOptions) ?? ""
         deliveryLocationOptions = CoffeeRequest.JSONStringToArray(json: unparsedDeliveryLocation)
 
@@ -78,8 +80,8 @@ class CoffeeRequest : Codable{
             requesterId = "No ID"
         }
     }
-    
-    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String]) {
+
+    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String) {
         self.requesterId = requester
         self.orderStartTime = orderStartTime
         self.orderEndTime = orderEndTime
@@ -87,6 +89,7 @@ class CoffeeRequest : Codable{
         self.item = item
         self.deliveryLocationOptions = deliveryLocationOptions
         self.requestId = ""
+        self.pickupLocation = pickupLocation
     }
     
     init() {
@@ -98,19 +101,9 @@ class CoffeeRequest : Codable{
         self.deliveryLocationOptions = []
         self.deliveryLocation = ""
         self.requestId = ""
+        self.pickupLocation = ""
     }
-    
-    init(mockValues: Bool) {
-        // Populate with test data
-        self.requesterId = ""
-        self.orderStartTime = "2019-02-11T19:43:24.940Z"
-        self.orderEndTime = "2019-02-11T21:43:24.940Z"
-        self.item = "Food"
-        self.status = "Test Status"
-        self.deliveryLocationOptions = ["Test Location A", "Test Location B"]
-        self.requestId = ""
-    }
-    
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(requestId, forKey: .requestId)
@@ -120,14 +113,13 @@ class CoffeeRequest : Codable{
         try container.encode(status, forKey: .status)
         try container.encode(item, forKey: .item)
         try container.encode(deliveryLocationOptions, forKey: .deliveryLocationOptions)
+        try container.encode(pickupLocation, forKey: .pickupLocation)
     }
 }
 extension CoffeeRequest {
-
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
         Logging.sendEvent(location: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions), eventType: Logging.eventTypes.requestMade.rawValue, details: "")
-        
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
@@ -138,6 +130,7 @@ extension CoffeeRequest {
             URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
             URLQueryItem(name: "deliveryLocationOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions)),
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
+            URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)

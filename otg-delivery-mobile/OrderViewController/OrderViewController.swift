@@ -12,8 +12,9 @@ import MessageUI
 
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
 
-    @IBOutlet weak var myRequestTableView: RequesterTableView!
     public static let sharedManager = OrderViewController()
+    @IBOutlet weak var myRequestTableView: RequesterTableView!
+    @IBOutlet weak var helperTableView: HelperTableView!
 
     var myRequests = [CoffeeRequest]()
     var acceptedRequests = [CoffeeRequest]()
@@ -226,7 +227,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         User.getMyTasks(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.acceptedRequests = coffeeRequests
-                //self.acceptedRequestTableView.reloadData()
+                self.helperTableView.reloadData()
             }
         })
     }
@@ -262,11 +263,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         if(tableView == myRequestTableView){
             rowCount = self.myRequests.count
-        }
-
-        /*else if(tableView == acceptedRequestTableView){
+        } else if(tableView == helperTableView){
             rowCount = self.acceptedRequests.count
-        }*/
+        }
 
         return rowCount
     }
@@ -284,94 +283,28 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.locationDetailsLabel.text = "From: \(request.deliveryLocationOptions[0])"
             cell.contactHelperButton.tag = 0
 
-/*
-            // Populate time probabilities
-            let calendar = Calendar.current
-            let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm a"
-            formatter.timeZone = NSTimeZone.local
-
-            let startTime = CoffeeRequest.stringToDate(s: request.orderStartTime)
-
-            let timeframe1 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 30, to: startTime)!)
-            let timeframe2 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 60, to: startTime)!)
-            let timeframe3 = CoffeeRequest.dateToString(d: calendar.date(byAdding: .minute, value: 90, to: startTime)!)
-
-            cell.timeFrame1Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 30))"
-            cell.timeFrame2Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe1, timeframeMins: 30))"
-            cell.timeFrame3Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe2, timeframeMins: 30))"
-            cell.timeFrame4Label.text = "\(CoffeeRequest.generateTimeframeString(startTime: timeframe3, timeframeMins: 30))"
-
-            cell.probability1Label.text = request.timeProbabilities[0]
-            cell.probability2Label.text = request.timeProbabilities[1]
-            cell.probability3Label.text = request.timeProbabilities[2]
-            cell.probability4Label.text = request.timeProbabilities[3]
-
-            if (request.status != "Searching for Helper") {
-                // Delivery minute estimate
-                let splitStatus = request.status.components(separatedBy: "(")
-                cell.statusDetailsLabel.text = splitStatus[0]
-                cell.expirationDetailsLabel.text = String(splitStatus[1].dropLast())
-
-                // Meeting point label
-                cell.deliveryLocationTitleLabel.text = "Meet Helper At:"
-                cell.deliveryLocationDetailsLabel.text = request.deliveryLocation
-            } else {
-                cell.expirationDetailsLabel.text = CoffeeRequest.generateTimeframeString(startTime: request.orderStartTime, timeframeMins: 120)
-                cell.deliveryLocationTitleLabel.text = "Potential Meeting Points:"
-                cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocationOptions)
-            }
-
-            // Text wraps
-            cell.statusDetailsLabel.numberOfLines = 0
-            cell.expirationDetailsLabel.numberOfLines = 0
-            cell.deliveryLocationDetailsLabel.numberOfLines = 0
-*/
             // Contact helper button
             cell.contentView.isUserInteractionEnabled = true;
             cell.contactHelperButton.tag = indexPath.row
             cell.contactHelperButton.addTarget(self, action: #selector(contactUser),
                                                   for: .touchUpInside)
             return cell
-        } /*else if tableView == acceptedRequestTableView {
-            let cell = TaskTableViewCell()
+        } else if tableView == helperTableView {
+            let cell = HelperTableViewCell()
 
             // Grab request to render
             let request = acceptedRequests[indexPath.row]
-            cell.orderLabel.text = request.item?.name ?? "Item not loading"
-
-            let requesterName = request.requester?.username ?? "Requester not loading"
-            let status = "Requested by \(requesterName)"
-            cell.statusDetailsLabel.text = status
-            let endTime = CoffeeRequest.parseTime(dateAsString: request.endTime!)
-            cell.expirationDetailsLabel.text = endTime
-            cell.pickupLocationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
-            cell.deliveryLocationDetailsLabel.text = CoffeeRequest.prettyParseArray(arr: request.deliveryLocation)
-            cell.specialRequestsDetailsLabel.text = request.deliveryLocationDetails
-
-            // Text wraps
-            cell.orderLabel.numberOfLines = 0
-            cell.statusDetailsLabel.numberOfLines = 0
-            cell.expirationDetailsLabel.numberOfLines = 0
-            cell.deliveryLocationDetailsLabel.numberOfLines = 0
-            cell.specialRequestsDetailsLabel.numberOfLines = 0
-
-            // Initialize buttons
-            cell.contentView.isUserInteractionEnabled = true;
-
-            cell.pickedUpButton.tag = indexPath.row
-            cell.pickedUpButton.addTarget(self, action: #selector(pickedUpOrder), for: .touchUpInside)
-
-            cell.completeOrderButton.tag = indexPath.row
-            cell.completeOrderButton.addTarget(self, action: #selector(completeOrder), for: .touchUpInside)
+            cell.itemDetailsLabel.text = request.item
+            cell.statusLabel.text = "Requested by \(String(describing: request.requester?.username))"
+            cell.locationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
 
             let phoneNumber = request.requester?.phoneNumber ?? "0"
             cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
             cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
-            
+
             // Alert user if task is expired
             let currentTime = NSDate()
-            if (currentTime.compare(CoffeeRequest.stringToDate(s:request.endTime!)) == .orderedDescending) {
+            if (currentTime.compare(CoffeeRequest.stringToDate(s:request.orderEndTime)) == .orderedDescending) {
                 let alert = UIAlertController(title: "One of your tasks has expired.", message: "Please mark it as complete or delete it from your table by swiping left if you weren't able to complete it.", preferredStyle: .alert)
                 let cancel = UIAlertAction(title: "OK", style: .cancel, handler: { (_) in
                 })
@@ -381,7 +314,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
 
             return cell
-        }*/
+        }
         return UITableViewCell()
     }
 

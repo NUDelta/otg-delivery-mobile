@@ -30,7 +30,7 @@ extension Item {
     func getPriceString() -> String {
         return String.init(format: "$%.2f", self.price)
     }
-    
+
     static func get(withId id: String, completionHandler: @escaping (Item?) -> Void) {
         print("Get item with id \(id)")
         

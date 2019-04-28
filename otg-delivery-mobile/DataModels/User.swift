@@ -157,15 +157,15 @@ extension User {
     static func getMyRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard
-        
+
         guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
-        
+
         let session: URLSession = URLSession.shared
         let url = URL(string: ("\(User.apiUrl)/\(userId)/requests"))
         let requestURL = URLRequest(url: url!)
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             guard let data = data else {
                 return
@@ -186,12 +186,9 @@ extension User {
             }
             completionHandler(coffeeRequests)
         }
-        
         task.resume()
-        
     }
-    
-    
+
     static func getMyTasks(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
         let defaults = UserDefaults.standard

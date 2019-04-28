@@ -17,7 +17,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     @IBOutlet weak var helperTableView: HelperTableView!
 
     var myRequests = [CoffeeRequest]()
-    var acceptedRequests = [CoffeeRequest]()
+    var openRequests = [CoffeeRequest]()
 
     var currentActionType: OrderActionType?
     var activeEditingRequest: CoffeeRequest?
@@ -53,8 +53,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         // Initialize My Requests table
         myRequestTableView.register(RequesterTableViewCell.self, forCellReuseIdentifier: RequesterTableViewCell.reuseIdentifier)
-        self.myRequestTableView.delegate = self
-        self.myRequestTableView.dataSource = self
+        myRequestTableView.delegate = self
+        myRequestTableView.dataSource = self
+
+        helperTableView.register(HelperTableViewCell.self, forCellReuseIdentifier: HelperTableViewCell.reuseIdentifier)
+        helperTableView.delegate = self
+        helperTableView.dataSource = self
 
         loadData()
 
@@ -178,13 +182,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered Geofence")
-        User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Welcome to Lisa's Cafe!")
+        if (region.identifier == "Lisa's") {
+            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Welcome to Lisa's Cafe!")
+        }
     }
 
     // called when user leaves a monitored region
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Exited Geofence")
-        User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "So long, Lisa's")
+        if (region.identifier == "Lisa's") {
+            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "So long, Lisa's")
+        }
     }
 
 
@@ -223,13 +231,22 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.myRequestTableView.reloadData()
             }
         })
-
-        User.getMyTasks(completionHandler: { coffeeRequests in
+        
+        CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
-                self.acceptedRequests = coffeeRequests
+                self.openRequests = coffeeRequests
                 self.helperTableView.reloadData()
             }
         })
+
+/*
+        User.getMyTasks(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.openRequests = coffeeRequests
+                self.helperTableView.reloadData()
+            }
+        })
+ */
     }
 
 
@@ -262,9 +279,11 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         var rowCount = 0
 
         if(tableView == myRequestTableView){
-            rowCount = self.myRequests.count
-        } else if(tableView == helperTableView){
-            rowCount = self.acceptedRequests.count
+            rowCount = myRequests.count
+        }
+
+        if (tableView == helperTableView){
+            rowCount = openRequests.count
         }
 
         return rowCount
@@ -284,24 +303,27 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactHelperButton.tag = 0
 
             // Contact helper button
-            cell.contentView.isUserInteractionEnabled = true;
+            cell.contentView.isUserInteractionEnabled = true
             cell.contactHelperButton.tag = indexPath.row
             cell.contactHelperButton.addTarget(self, action: #selector(contactUser),
                                                   for: .touchUpInside)
             return cell
         } else if tableView == helperTableView {
-            let cell = HelperTableViewCell()
-
             // Grab request to render
-            let request = acceptedRequests[indexPath.row]
+            let request = openRequests[indexPath.row]
+
+            let cell = HelperTableViewCell()
+            print(request.item)
             cell.itemDetailsLabel.text = request.item
-            cell.statusLabel.text = "Requested by \(String(describing: request.requester?.username))"
+            cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
             cell.locationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
 
+            cell.contentView.isUserInteractionEnabled = true
             let phoneNumber = request.requester?.phoneNumber ?? "0"
             cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
             cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
 
+/*
             // Alert user if task is expired
             let currentTime = NSDate()
             if (currentTime.compare(CoffeeRequest.stringToDate(s:request.orderEndTime)) == .orderedDescending) {
@@ -312,6 +334,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 alert.addAction(cancel)
                 present(alert, animated: true, completion: nil)
             }
+ */
 
             return cell
         }
@@ -359,7 +382,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         if tableView == myRequestTableView {
             // Launch request editor on click
             let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
@@ -375,6 +397,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             editAlert.addAction(action)
             editAlert.addAction(cancel)
             present(editAlert, animated: true, completion: nil)
+        } else if tableView == helperTableView {
+            let acceptAlert = UIAlertController(title: "Accept Request", message: "Are you sure you would like to accept this request?", preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: {(_) in
+                print("Order Accepted")
+                //segue here
+            })
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            acceptAlert.addAction(action)
+            acceptAlert.addAction(cancel)
+            present(acceptAlert, animated: true, completion: nil)
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }

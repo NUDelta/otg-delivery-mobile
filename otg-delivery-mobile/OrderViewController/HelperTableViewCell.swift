@@ -9,7 +9,7 @@
 import UIKit
 
 class HelperTableViewCell: UITableViewCell {
-    static let reuseIdentifier = "requestStatusReuseIdentifier"
+    static let reuseIdentifier = "helperStatusReuseIdentifier"
 
     let statusLabel = UILabel()
     let itemDetailsLabel = UILabel()
@@ -38,8 +38,8 @@ class HelperTableViewCell: UITableViewCell {
             label.numberOfLines = 0
             addSubview(label)
         }
-
         addContactRequesterButton()
+        addConstraints()
     }
 
     func addContactRequesterButton() {
@@ -48,6 +48,46 @@ class HelperTableViewCell: UITableViewCell {
         contactRequesterButton.setTitle("Contact Helper", for: .normal)
         contactRequesterButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactRequesterButton)
+    }
+    
+    func addConstraints() {
+        let topMarginConstraint = NSLayoutConstraint(item: statusLabel,
+                                                     attribute: .top,
+                                                     relatedBy: .equal,
+                                                     toItem: self,
+                                                     attribute: .topMargin,
+                                                     multiplier: 1.0,
+                                                     constant: 0.0)
+        let leftMarginConstraint = NSLayoutConstraint(item: statusLabel,
+                                                      attribute: .left,
+                                                      relatedBy: .equal,
+                                                      toItem: self,
+                                                      attribute: .leftMargin,
+                                                      multiplier: 1.0,
+                                                      constant: 0.0)
+        let bottomMarginConstraint = NSLayoutConstraint(item: contactRequesterButton,
+                                                        attribute: .bottom,
+                                                        relatedBy: .equal,
+                                                        toItem: self,
+                                                        attribute: .bottomMargin,
+                                                        multiplier: 1.0,
+                                                        constant: 0.0)
+
+        let constraints = [
+            topMarginConstraint,
+            leftMarginConstraint,
+            bottomMarginConstraint,
+
+            itemDetailsLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor),
+            itemDetailsLabel.leftAnchor.constraint(equalTo: statusLabel.leftAnchor),
+
+            locationDetailsLabel.topAnchor.constraint(equalTo: itemDetailsLabel.bottomAnchor),
+            locationDetailsLabel.leftAnchor.constraint(equalTo: itemDetailsLabel.leftAnchor),
+
+            contactRequesterButton.topAnchor.constraint(equalTo: locationDetailsLabel.bottomAnchor),
+            contactRequesterButton.leftAnchor.constraint(equalTo: locationDetailsLabel.leftAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
 
     required init?(coder aDecoder: NSCoder) {

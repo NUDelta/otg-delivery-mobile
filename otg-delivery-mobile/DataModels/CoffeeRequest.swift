@@ -253,44 +253,43 @@ extension CoffeeRequest {
 //        task.resume()
 //    }
 //
-//    static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
-//        let defaults = UserDefaults.standard
-//        guard let userId = defaults.object(forKey: "userId") as? String else {
-//            print("User ID not in defaults")
-//            return
-//        }
-//
-//        let session: URLSession = URLSession.shared
-//        let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending?&excluding=\(userId)")
-//        var requestURL = URLRequest(url: url!)
-//        requestURL.httpMethod = "GET"
-//
-//        let task = session.dataTask(with: requestURL){ data, response, error in
-//            if let data = data {
-//                print("COFFEE REQUEST: Get all open requests.")
-//
-//                var coffeeRequests: [CoffeeRequest] = []
-//                let httpResponse = response as? HTTPURLResponse
-//
-//                if(httpResponse?.statusCode != 400){
-//                    do {
-//                        let decoder = JSONDecoder()
-//                        coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
-//                    } catch {
-//                        print("COFFEE REQUEST.getAllOpen: error trying to convert data to JSON...")
-//                        print(error)
-//                    }
-//                }
-//
-//                completionHandler(coffeeRequests)
-//            }
-//        }
-//
-//        task.resume()
-//    }
+    static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
+        let defaults = UserDefaults.standard
+        guard let userId = defaults.object(forKey: "userId") as? String else {
+            print("User ID not in defaults")
+            return
+        }
+
+        let session: URLSession = URLSession.shared
+        let url = URL(string: "\(CoffeeRequest.apiUrl)?&excluding=\(userId)")
+        //let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending?&excluding=\(userId)")
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "GET"
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            if let data = data {
+                print("COFFEE REQUEST: Get all open requests.")
+
+                var coffeeRequests: [CoffeeRequest] = []
+                let httpResponse = response as? HTTPURLResponse
+
+                if(httpResponse?.statusCode != 400) {
+                    do {
+                        let decoder = JSONDecoder()
+                        coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
+                    } catch {
+                        print("COFFEE REQUEST.getAllOpen: error trying to convert data to JSON...")
+                        print(error)
+                    }
+                }
+                completionHandler(coffeeRequests)
+            }
+        }
+
+        task.resume()
+    }
 
     static func parseTime(dateAsString: String) -> String {
-
         let formatter = DateFormatter()
         let dateAsDate = stringToDate(s: dateAsString)
 
@@ -300,7 +299,7 @@ extension CoffeeRequest {
         let formattedDate = formatter.string(from: dateAsDate)
         return formattedDate
     }
-    
+
     static func stringToDate(s: String) -> Date {
         //Remove milliseconds for parsing ease
         var parsedDateString = s.components(separatedBy: ".")[0]
@@ -363,7 +362,7 @@ extension CoffeeRequest {
         let formatter = DateFormatter()
         formatter.dateFormat = "h:mm a"
         formatter.timeZone = NSTimeZone.local
-        
+
         return calendar.date(byAdding: .minute, value: numMin, to: date)!
     }
 }

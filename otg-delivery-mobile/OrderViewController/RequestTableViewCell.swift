@@ -40,8 +40,18 @@ class RequesterTableViewCell: UITableViewCell {
             addSubview(label)
         }
         addContactHelperButton()
+        addConstraints()
+    }
 
-        // Layout Constraints
+    func addContactHelperButton() {
+        contactHelperButton.backgroundColor = UIColor.clear
+        contactHelperButton.setTitleColor(self.tintColor, for: .normal)
+        contactHelperButton.setTitle("Contact Helper", for: .normal)
+        contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(contactHelperButton)
+    }
+    
+    func addConstraints() {
         let topMarginConstraint = NSLayoutConstraint(item: itemDetailsLabel,
                                                      attribute: .top,
                                                      relatedBy: .equal,
@@ -74,16 +84,8 @@ class RequesterTableViewCell: UITableViewCell {
 
             contactHelperButton.topAnchor.constraint(equalTo: locationDetailsLabel.bottomAnchor),
             contactHelperButton.leftAnchor.constraint(equalTo: locationDetailsLabel.leftAnchor),
-            ]
+        ]
         NSLayoutConstraint.activate(constraints)
-    }
-
-    func addContactHelperButton() {
-        contactHelperButton.backgroundColor = UIColor.clear
-        contactHelperButton.setTitleColor(self.tintColor, for: .normal)
-        contactHelperButton.setTitle("Contact Helper", for: .normal)
-        contactHelperButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contactHelperButton)
     }
 
     required init?(coder aDecoder: NSCoder) {

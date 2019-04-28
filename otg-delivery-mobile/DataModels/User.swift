@@ -171,10 +171,10 @@ extension User {
                 return
             }
             print("USER MODEL: Getting current user's requests")
-            
+
             var coffeeRequests: [CoffeeRequest] = []
             let httpResponse = response as? HTTPURLResponse
-            
+
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
@@ -195,7 +195,7 @@ extension User {
         guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
-        
+
         let session: URLSession = URLSession.shared
         let url = URL(string: ("\(User.apiUrl)/\(userId)/tasks"))
         let requestURL = URLRequest(url: url!)

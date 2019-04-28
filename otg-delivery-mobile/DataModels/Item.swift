@@ -18,7 +18,7 @@ struct Item : Codable {
         case price
         case location
     }
-    
+
     let id: String
     let name: String
     let description: String

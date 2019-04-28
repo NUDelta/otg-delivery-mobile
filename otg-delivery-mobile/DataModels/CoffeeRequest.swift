@@ -45,7 +45,7 @@ class CoffeeRequest : Codable{
     var item: String
     var status: String
     var deliveryLocationOptions: [String]
-    
+
     // Will be set later
     var deliveryLocation = ""
     var diffHelperRequesterArrivalTime = ""
@@ -53,7 +53,7 @@ class CoffeeRequest : Codable{
     var requesterTextRespondTime = ""
     var planningNotes = ""
     var timeProbabilities = ["5%", "0%", "5%", "0%"]
-    
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 

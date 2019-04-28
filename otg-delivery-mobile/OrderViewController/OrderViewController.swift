@@ -12,7 +12,7 @@ import MessageUI
 
 class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
 
-    @IBOutlet weak var myRequestTableView: UITableView!
+    @IBOutlet weak var myRequestTableView: RequesterTableView!
     public static let sharedManager = OrderViewController()
 
     var myRequests = [CoffeeRequest]()
@@ -51,7 +51,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationManager?.startMonitoringSignificantLocationChanges()
 
         // Initialize My Requests table
-        myRequestTableView.register(RequestStatusTableViewCell.self, forCellReuseIdentifier: RequestStatusTableViewCell.reuseIdentifier)
+        myRequestTableView.register(RequesterTableViewCell.self, forCellReuseIdentifier: RequesterTableViewCell.reuseIdentifier)
         self.myRequestTableView.delegate = self
         self.myRequestTableView.dataSource = self
 
@@ -278,11 +278,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             // Grab request to render
             let request = myRequests[indexPath.row]
 
-            let cell = RequestStatusTableViewCell()
-            cell.statusDetailsLabel.text = request.status
-            cell.itemDetailsLabel.text = request.item
+            let cell = RequesterTableViewCell()
+            //cell.statusDetailsLabel.text = request.status
+            cell.itemDetailsLabel.text = "Item: \(request.item)"
+            cell.locationDetailsLabel.text = "From: \(request.deliveryLocationOptions[0])"
             cell.contactHelperButton.tag = 0
 
+/*
             // Populate time probabilities
             let calendar = Calendar.current
             let formatter = DateFormatter()
@@ -324,7 +326,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.statusDetailsLabel.numberOfLines = 0
             cell.expirationDetailsLabel.numberOfLines = 0
             cell.deliveryLocationDetailsLabel.numberOfLines = 0
-
+*/
             // Contact helper button
             cell.contentView.isUserInteractionEnabled = true;
             cell.contactHelperButton.tag = indexPath.row

@@ -1,20 +1,19 @@
 //
-//  ItemSelectionTableViewController.swift
+//  LocationSelectionViewController.swift
 //  otg-delivery-mobile
 //
-//  Created by Maggie Lou on 3/8/19.
+//  Created by Cooper Barth on 4/28/19.
 //  Copyright © 2019 Sam Naser. All rights reserved.
 //
 
 import UIKit
 
-class ItemSelectionViewController: UITableViewController {
-    
+class LocationSelectionViewController: UITableViewController {
     var currentRequest: CoffeeRequest?
-    var items = [Item]()
+    var locations = [Location]()
 
-    @IBOutlet var menuItemTable: UITableView!
-    
+    @IBOutlet var locationTable: UITableView!
+
     override func viewDidLoad() {
         loadData()
         super.viewDidLoad()
@@ -24,43 +23,39 @@ class ItemSelectionViewController: UITableViewController {
         }
     }
 
-
-    @IBAction func cancelButton(_ sender: UIButton) {
+    @IBAction func cancelButton(_ sender: Any) {
         let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-        
+
         self.present(mainPage, animated: true, completion: nil)
     }
-
-    
-    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return locations.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemSelectionTableViewCell", for: indexPath) as! ItemSelectionTableViewCell
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LocationSelectionTableViewCell", for: indexPath) as! LocationSelectionTableViewCell
+
         //Configure cell
-        let item = items[indexPath.row]
-        cell.nameLabel.text = item.name
-        
+        let location = locations[indexPath.row]
+        cell.LocationLabel.text = location.name
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedItem = items[indexPath.row]
-        currentRequest!.item = selectedItem.name
-        
-        let nextPage: RequestTimeframeViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestTimeframeViewController") as! RequestTimeframeViewController
+        let selectedLocation = locations[indexPath.row]
+        currentRequest!.pickupLocation = selectedLocation.name
+
+        let nextPage: ItemSelectionViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ItemSelectionTableViewController") as! ItemSelectionViewController
         nextPage.currentRequest = currentRequest
         self.present(nextPage, animated: true, completion: nil)
     }
-    
+
     func initializeRequest() {
         currentRequest = CoffeeRequest()
 
@@ -69,10 +64,9 @@ class ItemSelectionViewController: UITableViewController {
     }
 
     func loadData() {
-        Item.getAll(forLocation: "Study", completionHandler: { items in
-            self.items = items
+        Location.getAll(completionHandler: {locations in self.locations = locations
             DispatchQueue.main.async {
-                self.menuItemTable.reloadData()
+                self.locationTable.reloadData()
             }
         })
     }

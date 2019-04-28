@@ -68,13 +68,12 @@
                                             <constraint firstAttribute="height" constant="70" id="vuU-l6-KvL"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Schedule a Delivery">
+                                        <state key="normal" title="Make a Request">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" red="0.52269905809999995" green="0.75433188679999996" blue="0.63135844470000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
                                         <connections>
                                             <action selector="createNewOrder" destination="BYZ-38-t0r" eventType="touchUpInside" id="K8F-Sc-aKF"/>
-                                            <segue destination="3bA-oZ-i0R" kind="presentation" identifier="orderFormSegue" id="39a-wJ-Sll"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -105,6 +104,7 @@
                         <outlet property="helperTableView" destination="WNl-P1-zh6" id="oQ5-aT-qHg"/>
                         <outlet property="myRequestTableView" destination="iwM-qX-XSm" id="YMp-5N-qge"/>
                         <segue destination="nOO-Ni-irR" kind="presentation" identifier="loginSegue" id="der-fs-K6I"/>
+                        <segue destination="bY6-iV-ULI" kind="presentation" identifier="orderFormSegue" id="8tg-LY-YmZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -275,7 +275,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gbc-b6-00O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="51" y="695"/>
+            <point key="canvasLocation" x="2017" y="1529"/>
         </scene>
         <!--Request Confirmation View Controller-->
         <scene sceneID="m26-43-SlY">
@@ -445,7 +445,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubf-g8-rSN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1629" y="695"/>
+            <point key="canvasLocation" x="1222" y="694"/>
         </scene>
         <!--Meeting Point Table View Controller-->
         <scene sceneID="oSw-Cz-MgN">
@@ -562,7 +562,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z8a-4q-eDo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="833" y="695"/>
+            <point key="canvasLocation" x="2732" y="1529"/>
         </scene>
         <!--Helper Location Form View Controller-->
         <scene sceneID="NCB-tm-jNc">
@@ -1143,7 +1143,7 @@
         <scene sceneID="xjq-Il-z0Q">
             <objects>
                 <tableViewController storyboardIdentifier="ItemSelectionTableViewController" id="3bA-oZ-i0R" customClass="ItemSelectionViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cvg-Lr-Idz">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cvg-Lr-Idz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1151,14 +1151,14 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a snack to be delivered!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="023-lK-Byb">
-                                    <rect key="frame" x="35" y="33.666666666666664" width="249" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select an item to be delivered." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="023-lK-Byb">
+                                    <rect key="frame" x="35" y="33.666666666666664" width="247" height="21"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bTD-br-XuM">
-                                    <rect key="frame" x="361" y="0.0" width="48" height="30"/>
+                                    <rect key="frame" x="350" y="8" width="48" height="30"/>
                                     <state key="normal" title="Cancel"/>
                                     <connections>
                                         <action selector="cancelButton:" destination="3bA-oZ-i0R" eventType="touchUpInside" id="doY-vg-ZDJ"/>
@@ -1167,8 +1167,8 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="bTD-br-XuM" secondAttribute="trailing" constant="5" id="6EY-jC-z6a"/>
-                                <constraint firstItem="bTD-br-XuM" firstAttribute="top" secondItem="8PR-UQ-vhY" secondAttribute="top" id="Bk3-YW-Cse"/>
+                                <constraint firstAttribute="trailing" secondItem="bTD-br-XuM" secondAttribute="trailing" constant="16" id="6EY-jC-z6a"/>
+                                <constraint firstItem="bTD-br-XuM" firstAttribute="top" secondItem="8PR-UQ-vhY" secondAttribute="top" constant="8" id="Bk3-YW-Cse"/>
                                 <constraint firstItem="023-lK-Byb" firstAttribute="centerY" secondItem="8PR-UQ-vhY" secondAttribute="centerY" id="hsY-rM-XCO"/>
                                 <constraint firstItem="023-lK-Byb" firstAttribute="leading" secondItem="8PR-UQ-vhY" secondAttribute="leading" constant="35" id="tOs-FX-UWB"/>
                             </constraints>
@@ -1217,7 +1217,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wYr-LU-ghV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-686" y="694"/>
+            <point key="canvasLocation" x="449" y="695"/>
         </scene>
         <!--LoginViewController-->
         <scene sceneID="hQK-jQ-VMl">
@@ -1343,6 +1343,76 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JWa-n0-lYf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2552" y="695"/>
+        </scene>
+        <!--Pick drink-->
+        <scene sceneID="inM-5k-q88">
+            <objects>
+                <tableViewController storyboardIdentifier="LocationSelectionTableViewController" id="bY6-iV-ULI" customClass="LocationSelectionViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="f6W-2Q-JfR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="ARH-QC-w7f">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a delivery location." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooN-AA-0Z2">
+                                    <rect key="frame" x="35" y="33.666666666666664" width="210" height="21"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qhn-n4-0VR">
+                                    <rect key="frame" x="350" y="8" width="48" height="30"/>
+                                    <state key="normal" title="Cancel"/>
+                                    <connections>
+                                        <action selector="cancelButton:" destination="bY6-iV-ULI" eventType="touchUpInside" id="0vx-9s-NVw"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="ooN-AA-0Z2" firstAttribute="leading" secondItem="ARH-QC-w7f" secondAttribute="leading" constant="35" id="LRG-Ud-wMx"/>
+                                <constraint firstAttribute="trailing" secondItem="Qhn-n4-0VR" secondAttribute="trailing" constant="16" id="gwL-EI-WaK"/>
+                                <constraint firstItem="Qhn-n4-0VR" firstAttribute="top" secondItem="ARH-QC-w7f" secondAttribute="top" constant="8" id="kLE-WK-hAw"/>
+                                <constraint firstItem="ooN-AA-0Z2" firstAttribute="centerY" secondItem="ARH-QC-w7f" secondAttribute="centerY" id="x8v-oe-PdS"/>
+                            </constraints>
+                        </view>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationSelectionTableViewCell" id="MDA-SY-cPm" customClass="LocationSelectionTableViewCell" customModule="otg_delivery_mobile" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="116" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MDA-SY-cPm" id="vpP-3e-qMc">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="[Location Name]" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xG4-BZ-x3J">
+                                            <rect key="frame" x="29" y="11" width="127" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="LocationLabel" destination="xG4-BZ-x3J" id="8t0-7H-RZh"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="bY6-iV-ULI" id="T6S-05-nzb"/>
+                            <outlet property="delegate" destination="bY6-iV-ULI" id="OfH-9D-qTn"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Pick drink" id="6Hh-TP-QaU"/>
+                    <connections>
+                        <outlet property="locationTable" destination="f6W-2Q-JfR" id="S3b-mW-Jt3"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MTN-d5-qMM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-323" y="694"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

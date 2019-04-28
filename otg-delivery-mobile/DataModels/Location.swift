@@ -22,7 +22,6 @@ struct Location : Codable {
 }
 
 extension Location {
-
     static func getAll(completionHandler: @escaping ([Location]) -> Void) {
         let url = URL(string: "\(Location.apiUrl)")
         let session: URLSession = URLSession.shared

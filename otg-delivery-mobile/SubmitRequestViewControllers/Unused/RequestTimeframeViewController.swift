@@ -9,7 +9,7 @@
 import UIKit
 
 class RequestTimeframeViewController: UIViewController {
-    
+    /*
     var currentRequest: CoffeeRequest?
 
     @IBOutlet weak var startTimeLabel: UILabel!
@@ -48,7 +48,7 @@ class RequestTimeframeViewController: UIViewController {
 
     @IBAction func nextPageButton(_ sender: Any) {
         setTimeOnRequestObject()
-        
+
         let nextPage: MeetingPointTableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MeetingPointTableViewController") as! MeetingPointTableViewController
         nextPage.currentRequest = currentRequest
         self.present(nextPage, animated: true, completion: nil)
@@ -76,7 +76,8 @@ class RequestTimeframeViewController: UIViewController {
         startTimeLabel.text = startTime
         endTimeLabel.text = endTime
     }
-    
+
+
     func setTimeOnRequestObject() {
         let RFC3339DateFormatter = DateFormatter()
         RFC3339DateFormatter.locale = Locale(identifier: "en_US_POSIX")
@@ -88,10 +89,11 @@ class RequestTimeframeViewController: UIViewController {
         let calendar = Calendar.current
         let requestEndTimeDate = calendar.date(byAdding: .hour, value: 2, to: timePicker.date)
         let requestEndTime = RFC3339DateFormatter.string(from: requestEndTimeDate!)
-        
+
         currentRequest?.orderStartTime = requestStartTime
         currentRequest?.orderEndTime = requestEndTime
     }
+
     
     
     /*
@@ -103,5 +105,5 @@ class RequestTimeframeViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+*/
 }

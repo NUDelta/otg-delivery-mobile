@@ -9,7 +9,7 @@
 import UIKit
 
 class MeetingPointTableViewController: UITableViewController {
-    
+    /*
     var currentRequest: CoffeeRequest?
     var meetingPoints = [MeetingPoint]()
 
@@ -114,4 +114,5 @@ class MeetingPointTableViewController: UITableViewController {
             }
         })
     }
+ */
 }

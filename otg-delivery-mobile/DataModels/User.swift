@@ -205,24 +205,24 @@ extension User {
                 return
             }
             print("USER MODEL: Getting current user's tasks")
-            
+
             var itemRequests: [CoffeeRequest] = []
             let httpResponse = response as? HTTPURLResponse
-            
+
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
                     itemRequests = try decoder.decode([CoffeeRequest].self, from: data)
                 } catch {
+                    print("1")
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)
                 }
             }
             completionHandler(itemRequests)
         }
-        
+
         task.resume()
-        
     }
 
     static func removeHelperFromTask(withId taskId: String) {

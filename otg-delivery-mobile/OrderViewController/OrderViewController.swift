@@ -299,7 +299,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let cell = RequesterTableViewCell()
             //cell.statusDetailsLabel.text = request.status
             cell.itemDetailsLabel.text = "Item: \(request.item)"
-            cell.locationDetailsLabel.text = "From: \(request.deliveryLocationOptions[0])"
+            cell.locationDetailsLabel.text = "From: \(request.pickupLocation)"
             cell.contactHelperButton.tag = 0
 
             // Contact helper button
@@ -314,9 +314,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             let cell = HelperTableViewCell()
             print(request.item)
-            cell.itemDetailsLabel.text = request.item
             cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
-            cell.locationDetailsLabel.text = Location.camelCaseToWords(camelCaseString: request.pickupLocation)
+            cell.itemDetailsLabel.text = "Item: \(request.item)"
+            cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
             cell.contentView.isUserInteractionEnabled = true
             let phoneNumber = request.requester?.phoneNumber ?? "0"

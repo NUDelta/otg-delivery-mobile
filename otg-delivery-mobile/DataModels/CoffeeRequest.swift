@@ -72,7 +72,7 @@ class CoffeeRequest : Codable{
 
         let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
         timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
-        
+
         requestId = try container.decode(String.self, forKey: .requestId)
         if (requester != nil) {
             requesterId = requester!.userId!
@@ -152,31 +152,27 @@ extension CoffeeRequest {
 
     }
 
-//    //Method that takes an ID and changes the status of the request
-//    //Method that grabs a CoffeeRequest from server and parses into object
-//    static func updateStatus(requestId: String, status: String, completionHandler: @escaping () -> Void) {
-//
-//        let session: URLSession = URLSession.shared
-//        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/status"))
-//        var requestURL = URLRequest(url: url!)
-//
-//        requestURL.httpMethod = "PATCH"
-//        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//
-//        var components = URLComponents(string: "")
-//        components?.queryItems = [URLQueryItem(name: "status", value: status)]
-//        let httpBodyString: String? = components?.url?.absoluteString
-//        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-//
-//        let task = session.dataTask(with: requestURL){ data, response, error in
-//            print("COFFEE REQUEST: Update")
-//            completionHandler()
-//
-//        }
-//
-//        task.resume()
-//
-//    }
+    //Method that takes an ID and changes the status of the request
+    //Method that grabs a CoffeeRequest from server and parses into object
+    static func updateStatus(requestId: String, status: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/status"))
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        var components = URLComponents(string: "")
+        components?.queryItems = [URLQueryItem(name: "status", value: status)]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Update")
+        }
+
+        task.resume()
+    }
 //
 //    static func updateRequest(with_id id: String, withRequest coffeeRequest: CoffeeRequest, completionHandler: @escaping () -> Void) {
 //        print("In update request ")

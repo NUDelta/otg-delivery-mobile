@@ -10,7 +10,6 @@ import UIKit
 import UserNotifications
 
 class RequestConfirmationViewController: UIViewController {
-
     var currentRequest: CoffeeRequest?
 
     @IBOutlet weak var itemLabel: UILabel!
@@ -33,7 +32,6 @@ class RequestConfirmationViewController: UIViewController {
 
         itemLabel.text = currentRequest!.item
         pickupLocationLabel.text = currentRequest!.pickupLocation
-
     }
 
     @IBAction func cancelButton(_ sender: Any) {
@@ -44,9 +42,9 @@ class RequestConfirmationViewController: UIViewController {
 
     @IBAction func submitButton(_ sender: Any) {
         currentRequest = setTimeProbabilities(request: currentRequest!)
+        currentRequest?.status = "Searching for Helper"
         CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!)
 
-        let defaults = UserDefaults.standard
         let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
         defaults.set(requestsPlaced, forKey: "requestsPlaced")
 

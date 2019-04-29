@@ -529,7 +529,6 @@
                                         </state>
                                         <connections>
                                             <action selector="AcceptOrder:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="L1C-xi-Nfr"/>
-                                            <action selector="acceptButton:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="2os-zq-xXE"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z63-ZO-aWQ">

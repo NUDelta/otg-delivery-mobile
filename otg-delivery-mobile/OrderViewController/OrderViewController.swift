@@ -297,7 +297,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = myRequests[indexPath.row]
 
             let cell = RequesterTableViewCell()
-            //cell.statusDetailsLabel.text = request.status
+            cell.statusLabel.text = "Status: \(request.status)"
             cell.itemDetailsLabel.text = "Item: \(request.item)"
             cell.locationDetailsLabel.text = "From: \(request.pickupLocation)"
             cell.contactHelperButton.tag = 0
@@ -313,7 +313,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = openRequests[indexPath.row]
 
             let cell = HelperTableViewCell()
-            cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
+            if (request.status == "Accepted") {
+                cell.statusLabel.text = "Accepted"
+                cell.contentView.isUserInteractionEnabled = false
+            } else {
+                cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
+                cell.contentView.isUserInteractionEnabled = true
+            }
             cell.itemDetailsLabel.text = "Item: \(request.item)"
             cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
@@ -376,7 +382,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
          }
      }
-
 
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
@@ -446,7 +451,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //let phoneNumber = String(sender.tag)
         let phoneNumber = Constants.researcherNumber
         let messageVC = MFMessageComposeViewController()
-        
+
         // Request has not been accepted
         //        if (Int(phoneNumber) == 0 || !MFMessageComposeViewController.canSendText()) {
         //            let alert = UIAlertController(title: "Your request has not been accepted yet.", message: "", preferredStyle: .alert)
@@ -463,7 +468,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         self.present(messageVC, animated: false, completion: nil)
         //}
     }
-    
+
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         print("in message compose view controller")
         switch (result.rawValue) {

@@ -186,6 +186,15 @@
 			path = AcceptRequestViewControllers;
 			sourceTree = "<group>";
 		};
+		CD58E18422769E9000317EDE /* HelperTableView */ = {
+			isa = PBXGroup;
+			children = (
+				CD32831722756A1E00BCA4B9 /* HelperTableView.swift */,
+				CDF6586622756BE200AED274 /* HelperTableViewCell.swift */,
+			);
+			path = HelperTableView;
+			sourceTree = "<group>";
+		};
 		CD86302E22682C390024FCA2 /* Routes */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,10 +210,8 @@
 			isa = PBXGroup;
 			children = (
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
-				CDBAAEEC2266C2B5003EB76A /* RequesterTableView.swift */,
-				22D797F820BE860E00AC6AAE /* RequestTableViewCell.swift */,
-				CD32831722756A1E00BCA4B9 /* HelperTableView.swift */,
-				CDF6586622756BE200AED274 /* HelperTableViewCell.swift */,
+				CDAAA7EA22769E6700C3DE44 /* RequesterTableView */,
+				CD58E18422769E9000317EDE /* HelperTableView */,
 			);
 			path = OrderViewController;
 			sourceTree = "<group>";
@@ -227,6 +234,15 @@
 				22BD7F162045E741008A877B /* image-resources */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CDAAA7EA22769E6700C3DE44 /* RequesterTableView */ = {
+			isa = PBXGroup;
+			children = (
+				CDBAAEEC2266C2B5003EB76A /* RequesterTableView.swift */,
+				22D797F820BE860E00AC6AAE /* RequestTableViewCell.swift */,
+			);
+			path = RequesterTableView;
 			sourceTree = "<group>";
 		};
 		CDF658682276624500AED274 /* Unused */ = {

@@ -13,6 +13,7 @@ class RequesterTableViewCell: UITableViewCell {
     // MARK: - Properties
     static let reuseIdentifier = "requestStatusReuseIdentifier"
 
+    let statusLabel = UILabel()
     let itemDetailsLabel = UILabel()
     let locationDetailsLabel = UILabel()
     let contactHelperButton = UIButton.init(type: .system)
@@ -21,13 +22,13 @@ class RequesterTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        self.contentView.isUserInteractionEnabled = false
         self.clipsToBounds = true
 
         let subtitleTitleColor = UIColor.darkGray
         let subtitleTitleFont = UIFont.systemFont(ofSize: 12, weight: .semibold)
 
         let labels = [
+            statusLabel,
             itemDetailsLabel,
             locationDetailsLabel
         ]
@@ -52,14 +53,14 @@ class RequesterTableViewCell: UITableViewCell {
     }
     
     func addConstraints() {
-        let topMarginConstraint = NSLayoutConstraint(item: itemDetailsLabel,
+        let topMarginConstraint = NSLayoutConstraint(item: statusLabel,
                                                      attribute: .top,
                                                      relatedBy: .equal,
                                                      toItem: self,
                                                      attribute: .topMargin,
                                                      multiplier: 1.0,
                                                      constant: 0.0)
-        let leftMarginConstraint = NSLayoutConstraint(item: itemDetailsLabel,
+        let leftMarginConstraint = NSLayoutConstraint(item: statusLabel,
                                                       attribute: .left,
                                                       relatedBy: .equal,
                                                       toItem: self,
@@ -78,6 +79,9 @@ class RequesterTableViewCell: UITableViewCell {
             topMarginConstraint,
             leftMarginConstraint,
             bottomMarginConstraint,
+
+            itemDetailsLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor),
+            itemDetailsLabel.leftAnchor.constraint(equalTo: statusLabel.leftAnchor),
 
             locationDetailsLabel.topAnchor.constraint(equalTo: itemDetailsLabel.bottomAnchor),
             locationDetailsLabel.leftAnchor.constraint(equalTo: itemDetailsLabel.leftAnchor),

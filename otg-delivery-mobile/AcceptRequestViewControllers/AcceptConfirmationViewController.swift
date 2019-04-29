@@ -22,22 +22,28 @@ class AcceptConfirmationViewController: UIViewController {
     }
 
     @IBAction func AcceptOrder(_ sender: Any) {
-        
+        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your order has been accepted. Prepare to meet your helper at the designated meeting location.")
+        CoffeeRequest.updateStatus(requestId: request!.requestId, status: "Accepted")
+        backToMain()
     }
 
     @IBAction func DeclineOutOfWay(_ sender: Any) {
-        
+        backToMain()
     }
 
     @IBAction func DeclineNotEnoughTime(_ sender: Any) {
-        
+        backToMain()
     }
 
     @IBAction func DeclineOther(_ sender: Any) {
-        
+        backToMain()
     }
 
     @IBAction func Cancel(_ sender: Any) {
+        backToMain()
+    }
+    
+    func backToMain() {
         let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
         self.present(mainPage, animated: true, completion: nil)
     }

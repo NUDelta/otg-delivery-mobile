@@ -25,14 +25,12 @@ struct User : Codable{
     let phoneNumber: String
 }
 
-
 //Define HTTP requests
 extension User {
-    
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func create(user: User, completionHandler: @escaping(User?) -> Void) {
         print("Creating User")
-        
+
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "deviceId", value: user.deviceId),
@@ -58,10 +56,10 @@ extension User {
                 return
             }
             print("USER DATA: user data returned.")
-            
+
             var userData: User?
             let httpResponse = response as? HTTPURLResponse
-            
+
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
@@ -72,15 +70,12 @@ extension User {
                     print(error)
                 }
             }
-            
             completionHandler(userData)
-        
         }
-        
+
         task.resume()
     }
-    
-    
+
     // Method that takes a user ID and grabs the user model
     static func get(with_id id: String, completionHandler: @escaping (User?) -> Void) {
         let session: URLSession = URLSession.shared
@@ -153,11 +148,9 @@ extension User {
 //        
 //        task.resume()
 //    }
-    
+
     static func getMyRequests(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         // Get current user's username for api route
-        let defaults = UserDefaults.standard
-
         guard let userId = defaults.object(forKey: "userId") as? String else {
             return
         }
@@ -214,7 +207,6 @@ extension User {
                     let decoder = JSONDecoder()
                     itemRequests = try decoder.decode([CoffeeRequest].self, from: data)
                 } catch {
-                    print("1")
                     print("COFFEE REQUEST: error trying to convert data to JSON...")
                     print(error)
                 }
@@ -274,7 +266,6 @@ extension User {
             print("Sent notification to user with device ID \(deviceId)")
             
         }
-        
         task.resume()
     }
 }

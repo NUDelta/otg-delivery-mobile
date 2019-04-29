@@ -182,16 +182,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered Geofence")
-        if (region.identifier == "Lisa's") {
-            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Welcome to Lisa's Cafe!")
+        if (defaults.string(forKey: "tokenId") != nil) {
+            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Welcome to \(region.identifier)!")
         }
     }
 
     // called when user leaves a monitored region
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Exited Geofence")
-        if (region.identifier == "Lisa's") {
-            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "So long, Lisa's")
+        if (defaults.string(forKey: "tokenId") != nil) {
+            User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Leaving \(region.identifier)!")
         }
     }
 
@@ -231,7 +231,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.myRequestTableView.reloadData()
             }
         })
-        
+
         CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
             DispatchQueue.main.async {
                 self.openRequests = coffeeRequests

@@ -45,11 +45,11 @@ class HelperTableViewCell: UITableViewCell {
     func addContactRequesterButton() {
         contactRequesterButton.backgroundColor = UIColor.clear
         contactRequesterButton.setTitleColor(self.tintColor, for: .normal)
-        contactRequesterButton.setTitle("Contact Helper", for: .normal)
+        contactRequesterButton.setTitle("Contact Requester", for: .normal)
         contactRequesterButton.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(contactRequesterButton)
     }
-    
+
     func addConstraints() {
         let topMarginConstraint = NSLayoutConstraint(item: statusLabel,
                                                      attribute: .top,

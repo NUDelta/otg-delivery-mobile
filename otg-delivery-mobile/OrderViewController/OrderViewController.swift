@@ -313,7 +313,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             let request = openRequests[indexPath.row]
 
             let cell = HelperTableViewCell()
-            print(request.item)
             cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
             cell.itemDetailsLabel.text = "Item: \(request.item)"
             cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
@@ -398,15 +397,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             editAlert.addAction(cancel)
             present(editAlert, animated: true, completion: nil)
         } else if tableView == helperTableView {
-            let acceptAlert = UIAlertController(title: "Accept Request", message: "Are you sure you would like to accept this request?", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: {(_) in
-                print("Order Accepted")
-                //segue here
-            })
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            acceptAlert.addAction(action)
-            acceptAlert.addAction(cancel)
-            present(acceptAlert, animated: true, completion: nil)
+            let acceptPage: AcceptConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "acceptConfirmationViewController") as! AcceptConfirmationViewController
+            acceptPage.request = self.openRequests[indexPath.row]
+            self.present(acceptPage, animated: true, completion: nil)
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }

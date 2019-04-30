@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HelperTableViewCell: UITableViewCell {
+class RequestTableViewCell: UITableViewCell {
     static let reuseIdentifier = "helperStatusReuseIdentifier"
 
     let statusLabel = UILabel()

@@ -41,21 +41,21 @@ extension LocationUpdate {
             URLQueryItem(name: "uncertainty", value: String(locUpdate.uncertainty)),
             URLQueryItem(name: "timestamp", value: dateToString(d: locUpdate.timestamp)),
         ]
-        
+
         let url = URL(string: LocationUpdate.apiUrl)
         let session: URLSession = URLSession.shared
         var requestURL = URLRequest(url: url!)
-        
+
         requestURL.httpMethod = "POST"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
+
         //These two lines are cancerous :: something severly wrong with my hack with URLComponents
         let httpBodyString: String? = components?.url?.absoluteString
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             //let httpResponse = response as? HTTPURLResponse
-            
+
             // Keep retrying if unsuccessful
             //print(httpResponse?.statusCode)
 //            if(httpResponse?.statusCode != 200){
@@ -63,10 +63,10 @@ extension LocationUpdate {
 //                self.post(locUpdate: locUpdate)
 //            }
         }
-        
+
         task.resume()
     }
-    
+
     static func dateToString(d: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

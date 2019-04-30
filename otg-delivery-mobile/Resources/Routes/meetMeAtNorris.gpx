@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<gpx version="1.1" creator="Xcode">
+    <name>Meet Me at Norris</name>
+
+    <wpt lat="42.062271" lon="-87.677804">
+        <name>Start</name>
+        <time>2014-09-24T14:55:37Z</time>
+    </wpt>
+
+    <wpt lat="42.053328" lon="-87.673141">
+        <name>Norris</name>
+        <time>2014-09-24T14:55:50Z</time>
+    </wpt>
+    
+</gpx>

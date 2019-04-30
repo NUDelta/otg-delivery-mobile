@@ -73,17 +73,17 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         loadData()
     }
 
-
-
-
-
-
-
-
     //On schedule delivery button pressed
     @IBAction func createNewOrder() {
-        self.currentActionType = .Order
-        self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+        if (openRequests.count > 0 && isMyRequest(indexPath: IndexPath(item: 0, section: 0))) {
+            let alertController = UIAlertController(title: "You can only have one open request at a time.", message: "", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true, completion: nil)
+        } else {
+            self.currentActionType = .Order
+            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+        }
 
         /*// Check time - only open 11AM - 5PM
         if (checkDeliveryAvailabilityTimeframe()) {
@@ -97,13 +97,39 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }*/
     }
 
-    func checkDeliveryAvailabilityTimeframe() -> Bool {
-        let now = NSDate()
-        let nowDateValue = now as Date
-        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
-        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "loginSegue" {
+            let navController = segue.destination as? UINavigationController
+            let controller = navController?.viewControllers.first as? LoginViewController
+            
+            controller?.didLogIn = { [weak self] in
+                DispatchQueue.main.async {
+                    self?.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+    }
+    
+    @objc func loadData() {
+        User.getMyRequests(completionHandler: { myRequests in
+            DispatchQueue.main.async {
+                CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
+                    DispatchQueue.main.async {
+                        self.openRequests = myRequests + coffeeRequests
+                        self.requestTableView.reloadData()
+                    }
+                })
+            }
+        })
 
-        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
+/*
+        User.getMyTasks(completionHandler: { coffeeRequests in
+            DispatchQueue.main.async {
+                self.openRequests = coffeeRequests
+                self.requestTableView.reloadData()
+            }
+        })
+*/
     }
 
 
@@ -201,66 +227,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
 
 
-
-
-
-
-
-
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "loginSegue" {
-            let navController = segue.destination as? UINavigationController
-            let controller = navController?.viewControllers.first as? LoginViewController
-
-            controller?.didLogIn = { [weak self] in
-                DispatchQueue.main.async {
-                    self?.dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-    }
-
-    @objc func loadData() {
-        User.getMyRequests(completionHandler: { myRequests in
-            DispatchQueue.main.async {
-                CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
-                    DispatchQueue.main.async {
-                        self.openRequests = myRequests + coffeeRequests
-                        self.requestTableView.reloadData()
-                    }
-                })
-            }
-        })
-
-/*
-        User.getMyTasks(completionHandler: { coffeeRequests in
-            DispatchQueue.main.async {
-                self.openRequests = coffeeRequests
-                self.requestTableView.reloadData()
-            }
-        })
- */
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // MARK: Table View Configuration
 
     //Return number of sections in table view
@@ -275,7 +241,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
     // Configure and display cells in table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Render label data
         let request = openRequests[indexPath.row]
         let cell = RequestTableViewCell()
 
@@ -286,6 +251,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         if (isMyRequest(indexPath: indexPath)) {
             if (request.status == "Accepted") {
+                //let phoneNumber = helper's phone number
+                //cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
                 cell.statusLabel.text = "Accepted by Helper. Please Stand By."
                 cell.contactRequesterButton.setTitle("Contact Helper", for: .normal)
             } else {
@@ -369,31 +336,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 
-    func sendFeedback(feedbackText: String?){
-        //In case the input doesn't exist
-        guard let feedbackText = feedbackText else {
-            print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
-            return
-        }
-
-        //let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
-        let apiUrl: String = "\(Constants.apiUrl)feedback"
-
-        let url = URL(string: apiUrl)
-        let session: URLSession = URLSession.shared
-        var requestURL = URLRequest(url: url!)
-
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
-
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("Feedback post: Data post successful.")
-        }
-
-        task.resume()
-
-    }
 
 
 
@@ -404,8 +346,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
 
 
-
-    //TODO: Reqrite to actually contact user rather than researcher
+    //TODO: Rewrite to actually contact user rather than researcher
     @objc func contactUser(sender: UIButton) {
         print("In contact user")
         //let phoneNumber = String(sender.tag)
@@ -448,5 +389,39 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     func isMyRequest(indexPath: IndexPath) -> Bool {
         return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
+    }
+
+    func sendFeedback(feedbackText: String?){
+        //In case the input doesn't exist
+        guard let feedbackText = feedbackText else {
+            print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
+            return
+        }
+        
+        //let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
+        let apiUrl: String = "\(Constants.apiUrl)feedback"
+        
+        let url = URL(string: apiUrl)
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("Feedback post: Data post successful.")
+        }
+        
+        task.resume()
+    }
+
+    func checkDeliveryAvailabilityTimeframe() -> Bool {
+        let now = NSDate()
+        let nowDateValue = now as Date
+        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
+        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
+        
+        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
     }
 }

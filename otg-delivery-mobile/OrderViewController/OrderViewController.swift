@@ -280,19 +280,16 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let cell = RequestTableViewCell()
 
         cell.contentView.isUserInteractionEnabled = true
-        if (request.status == "Accepted") {
-            cell.statusLabel.text = "Accepted by Helper. Please Stand By."
-        } else {
-            cell.statusLabel.text = "Your request is pending acceptance."
-        }
 
         cell.itemDetailsLabel.text = "Item: \(request.item)"
         cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
         if (isMyRequest(indexPath: indexPath)) {
             if (request.status == "Accepted") {
+                cell.statusLabel.text = "Accepted by Helper. Please Stand By."
                 cell.contactRequesterButton.setTitle("Contact Helper", for: .normal)
             } else {
+                cell.statusLabel.text = "Your request is pending acceptance."
                 cell.contactRequesterButton.isHidden = true
             }
             cell.statusLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
@@ -300,6 +297,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.locationDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
             cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
         } else {
+            if (request.status == "Accepted") {
+                cell.statusLabel.text = "Accepted by helper."
+                cell.contactRequesterButton.isHidden = true
+            } else {
+                cell.statusLabel.text = ""
+            }
             let phoneNumber = request.requester?.phoneNumber ?? "0"
             cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
             cell.contactRequesterButton.setTitle("Contact Requester", for: .normal)

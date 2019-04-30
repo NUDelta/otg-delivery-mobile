@@ -15,7 +15,7 @@ enum OrderActionType {
 
 //Define the original data members
 //Codable allows for simple JSON serialization/ deserialization
-class CoffeeRequest : Codable{
+class CoffeeRequest : Codable {
     private static let apiUrl: String = Constants.apiUrl + "requests"
 
     // Used to map JSON responses and their properties to properties of our struct

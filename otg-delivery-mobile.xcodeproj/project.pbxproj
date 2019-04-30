@@ -19,7 +19,6 @@
 		22AD279320129CCE005BA4B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22AD279120129CCE005BA4B9 /* LaunchScreen.storyboard */; };
 		22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BD7F122043D308008A877B /* CoffeeRequest.swift */; };
 		22BD7F152045E733008A877B /* coffee-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 22BD7F142045E733008A877B /* coffee-icon.png */; };
-		22D797F920BE860E00AC6AAE /* RequesterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D797F820BE860E00AC6AAE /* RequesterTableViewCell.swift */; };
 		391F3845218659BD00F1C91B /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391F3844218659BD00F1C91B /* Logging.swift */; };
 		394DD8072225ECC7002504E9 /* RequestTimeframeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD8062225ECC7002504E9 /* RequestTimeframeViewController.swift */; };
 		394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */; };
@@ -36,7 +35,6 @@
 		CD8630322268372F0024FCA2 /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
-		CDBAAEED2266C2B5003EB76A /* RequesterTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDBAAEEC2266C2B5003EB76A /* RequesterTableView.swift */; };
 		CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6586622756BE200AED274 /* RequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +53,6 @@
 		22AD279420129CCE005BA4B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22BD7F122043D308008A877B /* CoffeeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeRequest.swift; sourceTree = "<group>"; };
 		22BD7F142045E733008A877B /* coffee-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "coffee-icon.png"; sourceTree = "<group>"; };
-		22D797F820BE860E00AC6AAE /* RequesterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequesterTableViewCell.swift; sourceTree = "<group>"; };
 		391F3844218659BD00F1C91B /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		3933B2D82098C28700404BA3 /* otg-delivery-mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "otg-delivery-mobile.entitlements"; sourceTree = "<group>"; };
 		393DF994219F44590096E765 /* illJustStopAtTechExpress.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = illJustStopAtTechExpress.gpx; sourceTree = "<group>"; };
@@ -77,7 +74,6 @@
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
 		CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptConfirmationViewController.swift; sourceTree = "<group>"; };
-		CDBAAEEC2266C2B5003EB76A /* RequesterTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequesterTableView.swift; sourceTree = "<group>"; };
 		CDF6586622756BE200AED274 /* RequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -212,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				22AD278A20129CCE005BA4B9 /* OrderViewController.swift */,
-				CDAAA7EA22769E6700C3DE44 /* RequesterTableView */,
 				CD58E18422769E9000317EDE /* RequestTableView */,
 			);
 			path = OrderViewController;
@@ -236,15 +231,6 @@
 				22BD7F162045E741008A877B /* image-resources */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		CDAAA7EA22769E6700C3DE44 /* RequesterTableView */ = {
-			isa = PBXGroup;
-			children = (
-				CDBAAEEC2266C2B5003EB76A /* RequesterTableView.swift */,
-				22D797F820BE860E00AC6AAE /* RequesterTableViewCell.swift */,
-			);
-			path = RequesterTableView;
 			sourceTree = "<group>";
 		};
 		CDF658682276624500AED274 /* Unused */ = {
@@ -338,7 +324,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				39C13EF321F769B0005833B8 /* Constants.swift in Sources */,
-				22D797F920BE860E00AC6AAE /* RequesterTableViewCell.swift in Sources */,
 				39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
 				228907D920756C6800072961 /* Item.swift in Sources */,
@@ -357,7 +342,6 @@
 				39C932C6219DB2BA001CC47D /* MeetingPointTableViewController.swift in Sources */,
 				CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
-				CDBAAEED2266C2B5003EB76A /* RequesterTableView.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,
 				CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */,

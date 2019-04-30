@@ -14,7 +14,7 @@ class RequestTableViewCell: UITableViewCell {
     let statusLabel = UILabel()
     let itemDetailsLabel = UILabel()
     let locationDetailsLabel = UILabel()
-    let contactRequesterButton = UIButton.init(type: .system)
+    var contactRequesterButton = UIButton.init(type: .system)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -58,6 +58,7 @@ class RequestTableViewCell: UITableViewCell {
                                                      attribute: .topMargin,
                                                      multiplier: 1.0,
                                                      constant: 0.0)
+
         let leftMarginConstraint = NSLayoutConstraint(item: statusLabel,
                                                       attribute: .left,
                                                       relatedBy: .equal,
@@ -65,6 +66,7 @@ class RequestTableViewCell: UITableViewCell {
                                                       attribute: .leftMargin,
                                                       multiplier: 1.0,
                                                       constant: 0.0)
+
         let bottomMarginConstraint = NSLayoutConstraint(item: contactRequesterButton,
                                                         attribute: .bottom,
                                                         relatedBy: .equal,
@@ -87,6 +89,7 @@ class RequestTableViewCell: UITableViewCell {
             contactRequesterButton.topAnchor.constraint(equalTo: locationDetailsLabel.bottomAnchor),
             contactRequesterButton.leftAnchor.constraint(equalTo: locationDetailsLabel.leftAnchor)
         ]
+
         NSLayoutConstraint.activate(constraints)
     }
 

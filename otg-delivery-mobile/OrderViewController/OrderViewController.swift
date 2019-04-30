@@ -277,64 +277,73 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Render label data
         let request = openRequests[indexPath.row]
-
         let cell = RequestTableViewCell()
+
+        cell.contentView.isUserInteractionEnabled = true
         if (request.status == "Accepted") {
-            cell.statusLabel.text = "Accepted"
-            cell.contentView.isUserInteractionEnabled = false
+            cell.statusLabel.text = "Accepted by Helper. Please Stand By."
         } else {
-            cell.statusLabel.text = "Requested by \(String(describing: request.requester!.username))"
-            cell.contentView.isUserInteractionEnabled = true
+            cell.statusLabel.text = "Your request is pending acceptance."
         }
+
         cell.itemDetailsLabel.text = "Item: \(request.item)"
         cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
-        cell.contentView.isUserInteractionEnabled = true
-        let phoneNumber = request.requester?.phoneNumber ?? "0"
-        cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
-        cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
-
+        if (isMyRequest(indexPath: indexPath)) {
+            if (request.status == "Accepted") {
+                cell.contactRequesterButton.setTitle("Contact Helper", for: .normal)
+            } else {
+                cell.contactRequesterButton.isHidden = true
+            }
+            cell.statusLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
+            cell.itemDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+            cell.locationDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+            cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+        } else {
+            let phoneNumber = request.requester?.phoneNumber ?? "0"
+            cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
+            cell.contactRequesterButton.setTitle("Contact Requester", for: .normal)
+            cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
+        }
         return cell
     }
 
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-         // Return false if you do not want the specified item to be editable.
-         return true
+         // Return false if you do not want the specified item to be deletable.
+         return isMyRequest(indexPath: indexPath)
      }
 
      // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-         if editingStyle == .delete {
-            if (openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")) {
-                let deleteConfirmation = UIAlertController(title: "Are you sure you would like to delete this request?", message: "", preferredStyle: .alert)
-                
-                let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: {(action: UIAlertAction!) in
-                    // Delete the row from the table view
-                    let deletedRequest = self.openRequests.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                    
-                    // Delete request from database
-                    let deleteID = deletedRequest.requestId
-                    CoffeeRequest.deleteRequest(with_id: deleteID)
-                    self.requestTableView.reloadData()
-                } )
-                // Do nothing on 'Cancel'
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        if (editingStyle == .delete && isMyRequest(indexPath: indexPath)) {
+            let deleteConfirmation = UIAlertController(title: "Are you sure you would like to delete this request?", message: "", preferredStyle: .alert)
 
-                // Add actions to editor
-                deleteConfirmation.addAction(cancelAction)
-                deleteConfirmation.addAction(confirmAction)
+            let confirmAction = UIAlertAction(title: "Confirm", style: .destructive, handler: {(action: UIAlertAction!) in
+                // Delete the row from the table view
+                let deletedRequest = self.openRequests.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .fade)
 
-                present(deleteConfirmation, animated: true, completion: nil)
-            }
+                // Delete request from database
+                let deleteID = deletedRequest.requestId
+                CoffeeRequest.deleteRequest(with_id: deleteID)
+                self.requestTableView.reloadData()
+            } )
+            // Do nothing on 'Cancel'
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+
+            // Add actions to editor
+            deleteConfirmation.addAction(cancelAction)
+            deleteConfirmation.addAction(confirmAction)
+
+            present(deleteConfirmation, animated: true, completion: nil)
         }
      }
 
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")) {
+        if (isMyRequest(indexPath: indexPath)) {
             // Launch request editor on click
             let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
 
@@ -432,5 +441,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         default:
             break;
         }
+    }
+    
+    func isMyRequest(indexPath: IndexPath) -> Bool {
+        return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
     }
 }

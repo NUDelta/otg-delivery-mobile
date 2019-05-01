@@ -95,7 +95,7 @@ extension User {
                         let decoder = JSONDecoder()
                         userModel = try decoder.decode(User.self, from: data)
                     } catch {
-                        print("COFFEE REQUEST: error trying to convert data to JSON...")
+                        print("USER: error trying to convert data to JSON...")
                         print(error)
                     }
                 }
@@ -173,7 +173,7 @@ extension User {
                     let decoder = JSONDecoder()
                     coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
                 } catch {
-                    print("COFFEE REQUEST: error trying to convert data to JSON...")
+                    print("COFFEE REQUEST: error trying to convert data to JSON")
                     print(error)
                 }
             }

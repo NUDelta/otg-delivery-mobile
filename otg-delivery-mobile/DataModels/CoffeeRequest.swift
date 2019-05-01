@@ -22,6 +22,7 @@ class CoffeeRequest : Codable {
     enum CodingKeys : String, CodingKey {
         case requestId = "_id"
         case requester
+        case helper
         //case orderStartTime
         //case orderEndTime
         case item
@@ -40,6 +41,8 @@ class CoffeeRequest : Codable {
     var requestId: String
     var requesterId: String
     var requester: User? = nil
+    var helperId: String
+    var helper: User? = nil
     //var orderStartTime: String
     //var orderEndTime: String
     var item: String
@@ -60,6 +63,7 @@ class CoffeeRequest : Codable {
 
         // Decode data from JSON
         requester = try container.decode(User.self, forKey: .requester)
+        helper = try container.decode(User.self, forKey: .helper)
         //orderStartTime = try container.decode(String.self, forKey: .orderStartTime)
         //orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
         item = try container.decode(String.self, forKey: .item)
@@ -79,10 +83,17 @@ class CoffeeRequest : Codable {
         } else {
             requesterId = "No ID"
         }
+        
+        if (helper != nil) {
+            helperId = helper!.userId!
+        } else {
+            helperId = "No ID"
+        }
     }
 
-    init(requester: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String) {
+    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String) {
         self.requesterId = requester
+        self.helperId = helper
         //self.orderStartTime = orderStartTime
         //self.orderEndTime = orderEndTime
         self.status = status
@@ -91,9 +102,10 @@ class CoffeeRequest : Codable {
         self.requestId = ""
         self.pickupLocation = pickupLocation
     }
-    
+
     init() {
         self.requesterId = ""
+        self.helperId = ""
         //self.orderStartTime = ""
         //self.orderEndTime = ""
         self.item = ""
@@ -108,6 +120,7 @@ class CoffeeRequest : Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(requestId, forKey: .requestId)
         try container.encode(requesterId, forKey: .requester)
+        try container.encode(helperId, forKey: .helper)
         //try container.encode(orderStartTime, forKey: .orderStartTime)
         //try container.encode(orderEndTime, forKey: .orderEndTime)
         try container.encode(status, forKey: .status)
@@ -123,6 +136,7 @@ extension CoffeeRequest {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
+            URLQueryItem(name: "helper", value: coffeeRequest.helperId),
             //URLQueryItem(name: "orderStartTime", value: coffeeRequest.orderStartTime),
             //URLQueryItem(name: "orderEndTime", value: coffeeRequest.orderEndTime),
             URLQueryItem(name: "item", value: coffeeRequest.item),
@@ -281,7 +295,6 @@ extension CoffeeRequest {
                 completionHandler(coffeeRequests)
             }
         }
-
         task.resume()
     }
 

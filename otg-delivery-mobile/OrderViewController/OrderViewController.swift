@@ -101,7 +101,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if segue.identifier == "loginSegue" {
             let navController = segue.destination as? UINavigationController
             let controller = navController?.viewControllers.first as? LoginViewController
-            
+
             controller?.didLogIn = { [weak self] in
                 DispatchQueue.main.async {
                     self?.dismiss(animated: true, completion: nil)
@@ -191,7 +191,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
 
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        print("\nThe user is " + (state.rawValue == 1 ? "inside" : "outside") + " the '" + region.identifier + "' Geofence.")
+        //print("\nThe user is " + (state.rawValue == 1 ? "inside" : "outside") + " the '" + region.identifier + "' Geofence.")
     }
 
     // called when user enters a monitored region

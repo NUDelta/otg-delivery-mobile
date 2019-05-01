@@ -22,8 +22,8 @@ class AcceptConfirmationViewController: UIViewController {
     }
 
     @IBAction func AcceptOrder(_ sender: Any) {
-        //User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your order has been accepted. Prepare to meet your helper at the designated meeting location.")
         User.accept(requestId: request!.requestId, userId: defaults.string(forKey: "userId")!)
+        User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
         backToMain()
     }
 

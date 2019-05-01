@@ -253,7 +253,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             if (request.status == "Accepted") {
                 //let phoneNumber = helper's phone number
                 //cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
-                cell.statusLabel.text = "Accepted by Helper. Please Stand By."
+                cell.statusLabel.text = "Accepted by \(String(describing: request.helper!.username)). Please Stand By."
                 cell.contactRequesterButton.setTitle("Contact Helper", for: .normal)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
@@ -265,7 +265,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
         } else {
             if (request.status == "Accepted") {
-                cell.statusLabel.text = "Accepted by helper."
+                cell.statusLabel.text = "Accepted by someone else."
                 cell.contactRequesterButton.isHidden = true
             } else {
                 cell.statusLabel.text = ""

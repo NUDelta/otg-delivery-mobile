@@ -14,8 +14,8 @@
 	<string>iOS Distribution</string>
 	<key>provisioningProfiles</key>
 	<dict>
-		<key>edu.northwestern.delta.J</key>
-		<string>Delta Lab J</string>
+		<key>edu.northwestern.delta.B</key>
+		<string>Delta Lab B</string>
 	</dict>
 </dict>
 </plist>

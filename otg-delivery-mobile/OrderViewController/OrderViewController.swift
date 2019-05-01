@@ -250,7 +250,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
         if (isMyRequest(indexPath: indexPath)) {
-            if (request.status == "Accepted") {
+            if (request.status ==  "Accepted") {
                 //let phoneNumber = helper's phone number
                 //cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
                 cell.statusLabel.text = "Accepted by \(String(describing: request.helper!.username)). Please Stand By."

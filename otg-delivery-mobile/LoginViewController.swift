@@ -14,6 +14,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var usernameField: UITextField?
     @IBOutlet weak var phoneNumberField: UITextField!
+    @IBOutlet weak var LoginButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             return
         }
 
+        LoginButton.isEnabled = false //prevent double clicking
         var tokenValue: String = "Default token value"
 
         //If we're on a real device, this token id should be set

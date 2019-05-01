@@ -842,6 +842,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Login" id="q7Y-aR-z2F"/>
                     <connections>
+                        <outlet property="LoginButton" destination="agN-Ts-Wp7" id="hZv-JY-uLJ"/>
                         <outlet property="phoneNumberField" destination="gmz-wH-f4Y" id="id6-lP-yeY"/>
                         <outlet property="usernameField" destination="Fc2-cj-wxV" id="QyP-lB-HMe"/>
                     </connections>

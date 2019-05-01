@@ -32,6 +32,7 @@
 		CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B18FD2276642A00A262C7 /* LocationSelectionViewController.swift */; };
 		CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */; };
 		CD32831822756A1E00BCA4B9 /* RequestTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD32831722756A1E00BCA4B9 /* RequestTableView.swift */; };
+		CD676CAA227A48DF00ECE78E /* InitialHelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CA9227A48DF00ECE78E /* InitialHelperViewController.swift */; };
 		CD8630322268372F0024FCA2 /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
@@ -70,6 +71,7 @@
 		CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		CD305E4D22775E950088732A /* meetMeAtNorris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = meetMeAtNorris.gpx; sourceTree = "<group>"; };
 		CD32831722756A1E00BCA4B9 /* RequestTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableView.swift; sourceTree = "<group>"; };
+		CD676CA9227A48DF00ECE78E /* InitialHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialHelperViewController.swift; sourceTree = "<group>"; };
 		CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				CD86302F226836720024FCA2 /* OrderViewController */,
 				394DD8082225EECB002504E9 /* SubmitRequestViewControllers */,
 				CD2B19012276789700A262C7 /* AcceptRequestViewControllers */,
+				CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */,
 				3987A3012234371F001132AF /* DataModels */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				CD863033226838F00024FCA2 /* Resources */,
@@ -190,6 +193,14 @@
 				CDF6586622756BE200AED274 /* RequestTableViewCell.swift */,
 			);
 			path = RequestTableView;
+			sourceTree = "<group>";
+		};
+		CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CD676CA9227A48DF00ECE78E /* InitialHelperViewController.swift */,
+			);
+			path = ActiveRequestViewControllers;
 			sourceTree = "<group>";
 		};
 		CD86302E22682C390024FCA2 /* Routes */ = {
@@ -343,6 +354,7 @@
 				CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
+				CD676CAA227A48DF00ECE78E /* InitialHelperViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,
 				CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,

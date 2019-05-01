@@ -265,8 +265,13 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
         } else {
             if (request.status == "Accepted") {
-                cell.statusLabel.text = "Accepted by someone else."
-                cell.contactRequesterButton.isHidden = true
+                if (request.helper?.username == defaults.string(forKey: "username")!) { //already checked if not user's request
+                    defaults.set(request.requestId, forKey: "ActiveRequestId")
+                    performSegue(withIdentifier: "HelperAccepted", sender: nil)
+                } else {
+                    cell.statusLabel.text = "Accepted by someone else."
+                    cell.contactRequesterButton.isHidden = true
+                }
             } else {
                 cell.statusLabel.text = ""
             }

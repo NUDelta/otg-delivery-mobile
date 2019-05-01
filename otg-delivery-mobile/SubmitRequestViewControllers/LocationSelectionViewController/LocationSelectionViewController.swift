@@ -61,6 +61,7 @@ class LocationSelectionViewController: UITableViewController {
         currentRequest!.requesterId = defaults.object(forKey: "userId") as! String
         currentRequest!.helperId = defaults.object(forKey: "userId") as! String //hacky but whatever
         currentRequest!.status = "Searching for Helper"
+        currentRequest!.price = "0.00"
     }
 
     func loadData() {

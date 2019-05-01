@@ -35,6 +35,7 @@ class CoffeeRequest : Codable {
         case timeProbabilities
         case planningNotes
         case pickupLocation
+        case price
     }
 
     // Instance variables of the object in Swift
@@ -57,6 +58,7 @@ class CoffeeRequest : Codable {
     var requesterTextRespondTime = ""
     var planningNotes = ""
     var timeProbabilities = ["5%", "0%", "5%", "0%"]
+    var price: String
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -89,9 +91,10 @@ class CoffeeRequest : Codable {
         } else {
             helperId = "No ID"
         }
+        price = try container.decode(String.self, forKey: .price)
     }
 
-    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String) {
+    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String, price:String) {
         self.requesterId = requester
         self.helperId = helper
         //self.orderStartTime = orderStartTime
@@ -101,6 +104,7 @@ class CoffeeRequest : Codable {
         self.deliveryLocationOptions = deliveryLocationOptions
         self.requestId = ""
         self.pickupLocation = pickupLocation
+        self.price = price
     }
 
     init() {
@@ -114,6 +118,7 @@ class CoffeeRequest : Codable {
         self.deliveryLocation = ""
         self.requestId = ""
         self.pickupLocation = ""
+        self.price = ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -127,6 +132,7 @@ class CoffeeRequest : Codable {
         try container.encode(item, forKey: .item)
         try container.encode(deliveryLocationOptions, forKey: .deliveryLocationOptions)
         try container.encode(pickupLocation, forKey: .pickupLocation)
+        try container.encode(price, forKey: .price)
     }
 }
 extension CoffeeRequest {
@@ -144,7 +150,8 @@ extension CoffeeRequest {
             URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
             URLQueryItem(name: "deliveryLocationOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions)),
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
-            URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation)
+            URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation),
+            URLQueryItem(name: "price", value: coffeeRequest.price)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)
@@ -182,7 +189,26 @@ extension CoffeeRequest {
         requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
 
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("COFFEE REQUEST: Update")
+            print("COFFEE REQUEST: Update Status")
+        }
+        task.resume()
+    }
+
+    static func updatePrice(requestId: String, price: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/price"))
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        var components = URLComponents(string: "")
+        components?.queryItems = [URLQueryItem(name: "price", value: price)]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Update Price")
         }
         task.resume()
     }

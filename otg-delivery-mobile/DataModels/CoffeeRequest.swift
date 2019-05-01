@@ -184,7 +184,6 @@ extension CoffeeRequest {
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Update")
         }
-
         task.resume()
     }
 //

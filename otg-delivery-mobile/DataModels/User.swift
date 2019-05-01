@@ -217,6 +217,20 @@ extension User {
         task.resume()
     }
 
+    static func accept(requestId: String, userId: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (User.apiUrl + "/\(userId)/accept/\(requestId)"))
+        var requestURL = URLRequest(url: url!)
+        
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Accept")
+        }
+        task.resume()
+    }
+
     static func removeHelperFromTask(withId taskId: String) {
         let defaults = UserDefaults.standard
         guard let userId = defaults.object(forKey: "userId") as? String else {

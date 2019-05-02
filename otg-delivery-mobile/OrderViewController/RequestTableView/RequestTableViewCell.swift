@@ -75,10 +75,19 @@ class RequestTableViewCell: UITableViewCell {
                                                         multiplier: 1.0,
                                                         constant: 0.0)
 
+        let rightMarginConstraint = NSLayoutConstraint(item: statusLabel,
+                                                       attribute: .right,
+                                                       relatedBy: .lessThanOrEqual,
+                                                       toItem: self,
+                                                       attribute: .rightMargin,
+                                                       multiplier: 1.0,
+                                                       constant: 1.0)
+
         let constraints = [
             topMarginConstraint,
             leftMarginConstraint,
             bottomMarginConstraint,
+            rightMarginConstraint,
 
             itemDetailsLabel.topAnchor.constraint(equalTo: statusLabel.bottomAnchor),
             itemDetailsLabel.leftAnchor.constraint(equalTo: statusLabel.leftAnchor),

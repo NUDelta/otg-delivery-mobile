@@ -1,5 +1,5 @@
 //
-//  ActiveRequestViewControllers.swift
+//  InitialRequesterViewControllwe.swift
 //  otg-delivery-mobile
 //
 //  Created by Cooper Barth on 5/1/19.
@@ -9,32 +9,30 @@
 import UIKit
 import MessageUI
 
-class InitialHelperViewController: UIViewController, MFMessageComposeViewControllerDelegate {
-    @IBOutlet weak var PriceTextField: UITextField!
+class InitialRequesterViewController: UIViewController, MFMessageComposeViewControllerDelegate {
     let requestId = defaults.string(forKey: "ActiveRequestId")!
     var request: CoffeeRequest?
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         CoffeeRequest.getRequest(with_id: requestId, completionHandler: {coffeeRequest in
             DispatchQueue.main.async {
                 self.request = coffeeRequest
+                if (self.request?.requester?.deviceId == self.request?.helper?.deviceId) {
+                    self.backToMain()
+                }
             }
         })
+        //transition if picked up
     }
 
-    @IBAction func PickedUpOrder(_ sender: Any) {
-        if (PriceTextField != nil && PriceTextField.text! == "") {return}
-        CoffeeRequest.updatePrice(requestId: requestId, price: PriceTextField.text!)
-        //segue
-    }
-
-    @IBAction func ContactRequester(_ sender: Any) {
-        /*let phoneNumber = request!.requester!.phoneNumber
+    @IBAction func ContactHelper(_ sender: Any) {
+        let phoneNumber = request!.helper!.phoneNumber
         let messageVC = MFMessageComposeViewController()
         messageVC.body = ""
         messageVC.recipients = [phoneNumber]
         messageVC.messageComposeDelegate = self
-        self.present(messageVC, animated: false, completion: nil)*/
+        self.present(messageVC, animated: false, completion: nil)
     }
 
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
@@ -51,13 +49,6 @@ class InitialHelperViewController: UIViewController, MFMessageComposeViewControl
         default:
             break;
         }
-    }
-
-    @IBAction func CancelAcceptance(_ sender: Any) {
-        CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
-        CoffeeRequest.removeHelper(requestId: requestId)
-        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
-        backToMain()
     }
 
     func backToMain() {

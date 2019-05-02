@@ -83,6 +83,7 @@
                         <segue destination="bY6-iV-ULI" kind="presentation" identifier="orderFormSegue" id="8tg-LY-YmZ"/>
                         <segue destination="XvA-Mk-YKD" kind="presentation" identifier="acceptRequest" id="UNd-dW-sgm"/>
                         <segue destination="bcJ-bH-nzi" kind="presentation" identifier="HelperAccepted" id="qBp-5L-dyo"/>
+                        <segue destination="n3y-lJ-EjJ" kind="presentation" identifier="RequesterAccepted" id="MI3-kq-JfB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -942,6 +943,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ras-Pd-GbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2552" y="1449"/>
+        </scene>
+        <!--Initial Requester View Controller-->
+        <scene sceneID="gu4-s6-3Yw">
+            <objects>
+                <viewController id="n3y-lJ-EjJ" customClass="InitialRequesterViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="961-Jf-qMR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOs-lv-8Zy">
+                                <rect key="frame" x="22" y="317.33333333333331" width="370" height="101.66666666666669"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="370" id="cBf-Dh-CoP"/>
+                                </constraints>
+                                <string key="text">Your Request Was Accepted!
+ Please wait for your helper to pick up your order. 
+</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPh-PM-Z5K">
+                                <rect key="frame" x="155" y="666" width="104" height="30"/>
+                                <state key="normal" title="Contact Helper"/>
+                                <connections>
+                                    <action selector="ContactHelper:" destination="n3y-lJ-EjJ" eventType="touchUpInside" id="y03-aO-GCP"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="qOs-lv-8Zy" firstAttribute="centerX" secondItem="961-Jf-qMR" secondAttribute="centerX" id="LjT-VB-Qjh"/>
+                            <constraint firstItem="YPh-PM-Z5K" firstAttribute="centerX" secondItem="961-Jf-qMR" secondAttribute="centerX" id="tVR-qk-TtD"/>
+                            <constraint firstItem="EDP-xP-aqS" firstAttribute="bottom" secondItem="YPh-PM-Z5K" secondAttribute="bottom" constant="40" id="tgv-Dm-S04"/>
+                            <constraint firstItem="qOs-lv-8Zy" firstAttribute="centerY" secondItem="961-Jf-qMR" secondAttribute="centerY" id="wFf-bV-2x7"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="EDP-xP-aqS"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pEP-oV-UJL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1810.144927536232" y="1448.6413043478262"/>
         </scene>
         <!--Pick drink-->
         <scene sceneID="inM-5k-q88">

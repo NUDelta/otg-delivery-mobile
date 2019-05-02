@@ -251,10 +251,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         if (isMyRequest(indexPath: indexPath)) {
             if (request.status ==  "Accepted") {
-                //let phoneNumber = helper's phone number
-                //cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
-                cell.statusLabel.text = "Accepted by \(String(describing: request.helper!.username)). Please Stand By."
-                cell.contactRequesterButton.setTitle("Contact Helper", for: .normal)
+                defaults.set(request.requestId, forKey: "ActiveRequestId")
+                performSegue(withIdentifier: "RequesterAccepted", sender: nil)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
                 cell.contactRequesterButton.isHidden = true

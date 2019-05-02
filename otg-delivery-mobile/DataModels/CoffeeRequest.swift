@@ -194,6 +194,18 @@ extension CoffeeRequest {
         task.resume()
     }
 
+    static func removeHelper(requestId: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/removeHelper"))
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Update Status")
+        }
+        task.resume()
+    }
+
     static func updatePrice(requestId: String, price: String) {
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/price"))
@@ -225,10 +237,8 @@ extension CoffeeRequest {
 //        var components = URLComponents(string: "")
 //        components?.queryItems = [
 //            URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
-//            URLQueryItem(name: "orderDescription", value: coffeeRequest.itemId),
-//            URLQueryItem(name: "endTime", value: coffeeRequest.endTime!),
-//            URLQueryItem(name: "deliveryLocation", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocation)),
-//            URLQueryItem(name: "deliveryLocationDetails", value: coffeeRequest.deliveryLocationDetails)
+//            URLQueryItem(name: "helper", value: coffeeRequest.helperId),
+//            URLQueryItem(name: "status", value: coffeeRequest.status)
 //        ]
 //
 //        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
@@ -242,7 +252,6 @@ extension CoffeeRequest {
 //        task.resume()
 //    }
 
-
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {
         print("Deleting request")
@@ -255,39 +264,38 @@ extension CoffeeRequest {
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Delete request \(id).")
         }
+        task.resume()
+    }
+
+    static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
+        var requestURL = URLRequest(url: url!)
+        requestURL.httpMethod = "GET"
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            if let data = data {
+                print("COFFEE REQUEST: Get request \(id).")
+
+                var coffeeRequest: CoffeeRequest?
+                let httpResponse = response as? HTTPURLResponse
+
+                if(httpResponse?.statusCode != 400){
+                    do {
+                        let decoder = JSONDecoder()
+                        coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
+                    } catch {
+                        print("COFFEE REQUEST.get: error trying to convert data to JSON...")
+                        print(error)
+                    }
+                }
+                completionHandler(coffeeRequest)
+            }
+        }
 
         task.resume()
     }
 
-//    static func getRequest(with_id id: String, completionHandler: @escaping (CoffeeRequest?) -> Void) {
-//        let session: URLSession = URLSession.shared
-//        let url = URL(string: CoffeeRequest.apiUrl + "/\(id)")
-//        var requestURL = URLRequest(url: url!)
-//        requestURL.httpMethod = "GET"
-//
-//        let task = session.dataTask(with: requestURL){ data, response, error in
-//            if let data = data {
-//                print("COFFEE REQUEST: Get request \(id).")
-//
-//                var coffeeRequest: CoffeeRequest?
-//                let httpResponse = response as? HTTPURLResponse
-//
-//                if(httpResponse?.statusCode != 400){
-//                    do {
-//                        let decoder = JSONDecoder()
-//                        coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
-//                    } catch {
-//                        print("COFFEE REQUEST.get: error trying to convert data to JSON...")
-//                        print(error)
-//                    }
-//                }
-//                completionHandler(coffeeRequest)
-//            }
-//        }
-//
-//        task.resume()
-//    }
-//
     static func getAllOpen(completionHandler: @escaping ([CoffeeRequest]) -> Void) {
         let defaults = UserDefaults.standard
         guard let userId = defaults.object(forKey: "userId") as? String else {

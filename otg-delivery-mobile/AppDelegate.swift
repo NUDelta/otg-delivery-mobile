@@ -12,7 +12,6 @@ import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, CLLocationManagerDelegate {
-
     var window: UIWindow?
 
     func registerForNotifications() {

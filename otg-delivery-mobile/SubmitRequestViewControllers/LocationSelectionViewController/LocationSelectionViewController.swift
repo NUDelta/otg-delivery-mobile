@@ -24,9 +24,7 @@ class LocationSelectionViewController: UITableViewController {
     }
 
     @IBAction func cancelButton(_ sender: Any) {
-        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-
-        self.present(mainPage, animated: true, completion: nil)
+        backToMain(currentScreen: self)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -249,27 +249,32 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         cell.itemDetailsLabel.text = "Item: \(request.item)"
         cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
-        if (isMyRequest(indexPath: indexPath)) {
+        if (isMyRequest(indexPath: indexPath)) { //user made request
             if (request.status ==  "Accepted") {
                 defaults.set(request.requestId, forKey: "ActiveRequestId")
                 performSegue(withIdentifier: "RequesterAccepted", sender: nil)
+            } else if (request.status == "Picked Up") {
+                defaults.set(request.requestId, forKey: "ActiveRequestId")
+                performSegue(withIdentifier: "RequesterPickedUp", sender: nil)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
                 cell.contactRequesterButton.isHidden = true
+                cell.statusLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
+                cell.itemDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+                cell.locationDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+                cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
             }
-            cell.statusLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
-            cell.itemDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-            cell.locationDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-            cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
-        } else {
+        } else if (request.helper?.username == defaults.string(forKey: "username")) { //user is helper
+            defaults.set(request.requestId, forKey: "ActiveRequestId")
             if (request.status == "Accepted") {
-                if (request.helper?.username == defaults.string(forKey: "username")!) { //already checked if not user's request
-                    defaults.set(request.requestId, forKey: "ActiveRequestId")
-                    performSegue(withIdentifier: "HelperAccepted", sender: nil)
-                } else {
-                    cell.statusLabel.text = "Accepted by someone else."
-                    cell.contactRequesterButton.isHidden = true
-                }
+                performSegue(withIdentifier: "HelperAccepted", sender: nil)
+            } else if (request.status == "Picked Up") {
+                performSegue(withIdentifier: "HelperPickedUp", sender: nil)
+            }
+        } else { //user not involved
+            if (request.status == "Accepted") {
+                cell.statusLabel.text = "Accepted by someone else."
+                cell.contactRequesterButton.isHidden = true
             } else {
                 cell.statusLabel.text = ""
             }

@@ -24,9 +24,7 @@ class ItemSelectionViewController: UITableViewController {
     }
 
     @IBAction func cancelButton(_ sender: UIButton) {
-        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-
-        self.present(mainPage, animated: true, completion: nil)
+        backToMain(currentScreen: self)
     }
 
     // MARK: - Table view data source

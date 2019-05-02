@@ -22,9 +22,7 @@ class RequestConfirmationViewController: UIViewController {
             let alert = UIAlertController(title: "We apologize. There is some error with your order.", message: "", preferredStyle: .alert)
 
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-
-                self.present(mainPage, animated: true, completion: nil)
+                backToMain(currentScreen: self)
             }))
 
             self.present(alert, animated: true, completion: nil)
@@ -35,9 +33,7 @@ class RequestConfirmationViewController: UIViewController {
     }
 
     @IBAction func cancelButton(_ sender: Any) {
-        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-
-        self.present(mainPage, animated: true, completion: nil)
+        backToMain(currentScreen: self)
     }
 
     @IBAction func submitButton(_ sender: Any) {

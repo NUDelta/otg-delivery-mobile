@@ -9,8 +9,10 @@
 import UIKit
 import MessageUI
 
-class InitialHelperViewController: UIViewController, MFMessageComposeViewControllerDelegate {
+class AcceptedHelperViewController: UIViewController, MFMessageComposeViewControllerDelegate {
     @IBOutlet weak var PriceTextField: UITextField!
+    @IBOutlet weak var detailsLabel: UILabel!
+
     let requestId = defaults.string(forKey: "ActiveRequestId")!
     var request: CoffeeRequest?
 
@@ -18,6 +20,7 @@ class InitialHelperViewController: UIViewController, MFMessageComposeViewControl
         CoffeeRequest.getRequest(with_id: requestId, completionHandler: {coffeeRequest in
             DispatchQueue.main.async {
                 self.request = coffeeRequest
+                self.detailsLabel.text = "Order: \(self.request?.item ?? "item") from \(self.request?.pickupLocation ?? "location")"
             }
         })
     }
@@ -25,7 +28,9 @@ class InitialHelperViewController: UIViewController, MFMessageComposeViewControl
     @IBAction func PickedUpOrder(_ sender: Any) {
         if (PriceTextField != nil && PriceTextField.text! == "") {return}
         CoffeeRequest.updatePrice(requestId: requestId, price: PriceTextField.text!)
-        //segue
+        CoffeeRequest.updateStatus(requestId: requestId, status: "Picked Up")
+        User.sendNotification(deviceId: (request?.requester?.deviceId)!, message: "Your order has been picked up. Meet \(request?.helper?.username ?? "your helper") at the meeting point.")
+        performSegue(withIdentifier: "HelperPickedUp", sender: nil)
     }
 
     @IBAction func ContactRequester(_ sender: Any) {
@@ -38,31 +43,14 @@ class InitialHelperViewController: UIViewController, MFMessageComposeViewControl
     }
 
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        switch (result.rawValue) {
-        case MessageComposeResult.cancelled.rawValue:
-            //            print("Message was cancelled")
-            self.dismiss(animated: true, completion: nil)
-        case MessageComposeResult.failed.rawValue:
-            //            print("Message failed")
-            self.dismiss(animated: true, completion: nil)
-        case MessageComposeResult.sent.rawValue:
-            //            print("Message was sent")
-            self.dismiss(animated: true, completion: nil)
-        default:
-            break;
-        }
+        self.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func CancelAcceptance(_ sender: Any) {
         CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
         CoffeeRequest.removeHelper(requestId: requestId)
         User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
-        backToMain()
-    }
-
-    func backToMain() {
-        let mainPage: OrderViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainOrderViewController") as! OrderViewController
-        self.present(mainPage, animated: true, completion: nil)
         defaults.set("", forKey: "ActiveRequestId")
+        backToMain(currentScreen: self)
     }
 }

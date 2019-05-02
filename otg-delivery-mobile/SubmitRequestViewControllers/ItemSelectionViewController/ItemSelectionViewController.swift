@@ -65,10 +65,17 @@ class ItemSelectionViewController: UITableViewController {
     }
 
     func loadData() {
-        Item.getAll(forLocation: currentRequest!.pickupLocation, completionHandler: { items in
-            self.items = items
-            DispatchQueue.main.async {
-                self.menuItemTable.reloadData()
+        Location.getAll(completionHandler: { locations in
+            for l in locations {
+                if l.name == self.currentRequest!.pickupLocation {
+                    Item.getAll(forLocation: l.id, name: l.name, completionHandler: { items in
+                        self.items = items
+                        DispatchQueue.main.async {
+                            self.menuItemTable.reloadData()
+                        }
+                    })
+                    break
+                }
             }
         })
     }

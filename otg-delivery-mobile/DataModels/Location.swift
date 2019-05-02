@@ -47,10 +47,10 @@ extension Location {
             }
             completionHandler(locations)
         }
-        
+
         task.resume()
     }
-    
+ 
     static func camelCaseToWords(camelCaseString: String) -> String {
         var newString: String = ""
 

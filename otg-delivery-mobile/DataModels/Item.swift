@@ -42,12 +42,12 @@ extension Item {
             guard let data = data else {
                 return
             }
-            
+
             print("ITEM: get with id \(id)")
-            
+
             var item: Item?
             let httpResponse = response as? HTTPURLResponse
-            
+
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
@@ -59,31 +59,26 @@ extension Item {
             }
             completionHandler(item!)
         }
-        
+
         task.resume()
     }
-    
-    static func getAll(forLocation location: String, completionHandler: @escaping ([Item]) -> Void) {
-        print("Get all items for location \(location)")
-        var components = URLComponents(string: "")
-        components?.queryItems = [
-            URLQueryItem(name: "location", value: location)
-        ]
-        
-        let url = URL(string: "\(Item.apiUrl)?location=\(location)")
+
+    static func getAll(forLocation id: String, name: String, completionHandler: @escaping ([Item]) -> Void) {
+        print("Get all items for location \(name)")
+
+        let url = URL(string: "\(Item.apiUrl)/\(id)/\(name)")
         let session: URLSession = URLSession.shared
         let requestURL = URLRequest(url: url!)
 
-        
         let task = session.dataTask(with: requestURL){ data, response, error in
-            print("ITEM MODEL: Getting items for \(location)")
+            print("ITEM MODEL: Getting items for \(name)")
             guard let data = data else {
                 return
             }
-            
+
             var items: [Item] = []
             let httpResponse = response as? HTTPURLResponse
-            
+
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
@@ -95,7 +90,7 @@ extension Item {
             }
             completionHandler(items)
         }
-        
+
         task.resume()
     }
 }

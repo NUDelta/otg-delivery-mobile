@@ -485,10 +485,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="VaU-Xk-oBR">
-                                <rect key="frame" x="93.666666666666686" y="539" width="227" height="181"/>
+                                <rect key="frame" x="82" y="539" width="250" height="181"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PbG-P1-coh">
-                                        <rect key="frame" x="0.0" y="0.0" width="227" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="250" height="40"/>
                                         <color key="backgroundColor" red="0.0" green="0.56284224989999998" blue="0.31881666180000001" alpha="0.5548480308" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="oNJ-KU-Qv7"/>
@@ -502,11 +502,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z63-ZO-aWQ">
-                                        <rect key="frame" x="0.0" y="47" width="227" height="40"/>
+                                        <rect key="frame" x="0.0" y="47" width="250" height="40"/>
                                         <color key="backgroundColor" red="0.86182633175698942" green="0.86044540454586294" blue="0.88456676324404149" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="1X1-VW-7Qe"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="adX-cu-vaw"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                         <state key="normal" title="Decline: Drop-off out of my way">
@@ -515,11 +514,10 @@
                                         </state>
                                         <connections>
                                             <action selector="DeclineOutOfWay:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="x5h-2o-762"/>
-                                            <action selector="declineButton:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="aor-fv-iwH"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gOa-JY-ANn">
-                                        <rect key="frame" x="0.0" y="94" width="227" height="40"/>
+                                        <rect key="frame" x="0.0" y="94" width="250" height="40"/>
                                         <color key="backgroundColor" red="0.86182633180000001" green="0.86044540449999996" blue="0.88456676320000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="8Rl-bS-XyZ"/>
@@ -531,11 +529,10 @@
                                         </state>
                                         <connections>
                                             <action selector="DeclineNotEnoughTime:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="kaF-li-Csy"/>
-                                            <action selector="declineButton:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="JjW-Gy-ker"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y9Z-ht-qLe">
-                                        <rect key="frame" x="0.0" y="141" width="227" height="40"/>
+                                        <rect key="frame" x="0.0" y="141" width="250" height="40"/>
                                         <color key="backgroundColor" red="0.86182633180000001" green="0.86044540449999996" blue="0.88456676320000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="vA3-lA-cMe"/>
@@ -547,13 +544,14 @@
                                         </state>
                                         <connections>
                                             <action selector="DeclineOther:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="mqd-Sv-x89"/>
-                                            <action selector="declineButton:" destination="XvA-Mk-YKD" eventType="touchUpInside" id="2BV-Qz-Kep"/>
                                         </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="y9Z-ht-qLe" firstAttribute="top" secondItem="gOa-JY-ANn" secondAttribute="bottom" constant="7" id="5qP-YO-uxq"/>
                                     <constraint firstItem="y9Z-ht-qLe" firstAttribute="top" secondItem="gOa-JY-ANn" secondAttribute="bottom" constant="7" id="7Sm-UJ-kFo"/>
+                                    <constraint firstAttribute="width" constant="250" id="Aee-Ju-j9k"/>
+                                    <constraint firstItem="z63-ZO-aWQ" firstAttribute="width" secondItem="VaU-Xk-oBR" secondAttribute="width" id="Bal-6c-IkX"/>
                                     <constraint firstItem="y9Z-ht-qLe" firstAttribute="leading" secondItem="VaU-Xk-oBR" secondAttribute="leading" id="Jgz-qj-mdX"/>
                                     <constraint firstAttribute="trailing" secondItem="gOa-JY-ANn" secondAttribute="trailing" id="RFh-Zq-lwm"/>
                                     <constraint firstAttribute="trailing" secondItem="PbG-P1-coh" secondAttribute="trailing" id="WqL-ej-cLm"/>
@@ -564,7 +562,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Would you like to accept this request?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4pZ-z8-vR0">
-                                <rect key="frame" x="49" y="25" width="300" height="77"/>
+                                <rect key="frame" x="49" y="45" width="300" height="77"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="77" id="KJJ-La-iP7"/>
                                 </constraints>
@@ -645,13 +643,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="cK6-st-MDp" firstAttribute="top" secondItem="4pZ-z8-vR0" secondAttribute="top" constant="-5" id="7eK-dp-aWQ"/>
-                            <constraint firstItem="cK6-st-MDp" firstAttribute="trailing" secondItem="FsO-bp-Hyc" secondAttribute="trailing" constant="16" id="Idi-yM-AGk"/>
+                            <constraint firstItem="cK6-st-MDp" firstAttribute="top" secondItem="4pZ-z8-vR0" secondAttribute="top" constant="-25" id="7eK-dp-aWQ"/>
+                            <constraint firstItem="cK6-st-MDp" firstAttribute="trailing" secondItem="FsO-bp-Hyc" secondAttribute="trailing" constant="20" id="Idi-yM-AGk"/>
                             <constraint firstItem="cK6-st-MDp" firstAttribute="trailing" secondItem="4pZ-z8-vR0" secondAttribute="trailing" constant="65" id="J3l-zw-Std"/>
                             <constraint firstItem="4pZ-z8-vR0" firstAttribute="leading" secondItem="cK6-st-MDp" secondAttribute="leading" constant="49" id="W6I-NF-327"/>
                             <constraint firstItem="cK6-st-MDp" firstAttribute="bottom" secondItem="VaU-Xk-oBR" secondAttribute="bottom" constant="16" id="lTN-l6-bDm"/>
                             <constraint firstItem="VaU-Xk-oBR" firstAttribute="centerX" secondItem="cK6-st-MDp" secondAttribute="centerX" id="nGM-S7-DVO"/>
-                            <constraint firstItem="FsO-bp-Hyc" firstAttribute="top" secondItem="cK6-st-MDp" secondAttribute="top" constant="8" id="tQR-ET-DIn"/>
+                            <constraint firstItem="FsO-bp-Hyc" firstAttribute="top" secondItem="cK6-st-MDp" secondAttribute="top" constant="12" id="tQR-ET-DIn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cK6-st-MDp"/>
                     </view>

@@ -27,8 +27,8 @@ class CoffeeRequest : Codable {
         //case orderEndTime
         case item
         case status
-        case deliveryLocationOptions
-        case deliveryLocation
+        case meetingPointOptions
+        case meetingPoint
         case diffHelperRequesterArrivalTime
         case helperTextTime
         case requesterTextRespondTime
@@ -48,11 +48,11 @@ class CoffeeRequest : Codable {
     //var orderEndTime: String
     var item: String
     var status: String
-    var deliveryLocationOptions: [String]
+    var meetingPointOptions: [String]
     var pickupLocation: String
 
     // Will be set later
-    var deliveryLocation = ""
+    var meetingPoint = ""
     var diffHelperRequesterArrivalTime = ""
     var helperTextTime = ""
     var requesterTextRespondTime = ""
@@ -70,11 +70,11 @@ class CoffeeRequest : Codable {
         //orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
         item = try container.decode(String.self, forKey: .item)
         status = try container.decode(String.self, forKey: .status)
-        deliveryLocation = try container.decode(String.self, forKey: .deliveryLocation)
+        meetingPoint = try container.decode(String.self, forKey: .meetingPoint)
         pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
 
-        let unparsedDeliveryLocation = try container.decodeIfPresent(String.self, forKey: .deliveryLocationOptions) ?? ""
-        deliveryLocationOptions = CoffeeRequest.JSONStringToArray(json: unparsedDeliveryLocation)
+        let unparsedmeetingPoint = try container.decodeIfPresent(String.self, forKey: .meetingPointOptions) ?? ""
+        meetingPointOptions = CoffeeRequest.JSONStringToArray(json: unparsedmeetingPoint)
 
         let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
         timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
@@ -94,14 +94,14 @@ class CoffeeRequest : Codable {
         price = try container.decode(String.self, forKey: .price)
     }
 
-    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, deliveryLocationOptions: [String], pickupLocation: String, price:String) {
+    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, meetingPointOptions: [String], pickupLocation: String, price:String) {
         self.requesterId = requester
         self.helperId = helper
         //self.orderStartTime = orderStartTime
         //self.orderEndTime = orderEndTime
         self.status = status
         self.item = item
-        self.deliveryLocationOptions = deliveryLocationOptions
+        self.meetingPointOptions = meetingPointOptions
         self.requestId = ""
         self.pickupLocation = pickupLocation
         self.price = price
@@ -114,8 +114,8 @@ class CoffeeRequest : Codable {
         //self.orderEndTime = ""
         self.item = ""
         self.status = ""
-        self.deliveryLocationOptions = []
-        self.deliveryLocation = ""
+        self.meetingPointOptions = []
+        self.meetingPoint = ""
         self.requestId = ""
         self.pickupLocation = ""
         self.price = ""
@@ -130,7 +130,7 @@ class CoffeeRequest : Codable {
         //try container.encode(orderEndTime, forKey: .orderEndTime)
         try container.encode(status, forKey: .status)
         try container.encode(item, forKey: .item)
-        try container.encode(deliveryLocationOptions, forKey: .deliveryLocationOptions)
+        try container.encode(meetingPointOptions, forKey: .meetingPointOptions)
         try container.encode(pickupLocation, forKey: .pickupLocation)
         try container.encode(price, forKey: .price)
     }
@@ -138,7 +138,7 @@ class CoffeeRequest : Codable {
 extension CoffeeRequest {
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
     static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
-        Logging.sendEvent(location: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions), eventType: Logging.eventTypes.requestMade.rawValue, details: "")
+        Logging.sendEvent(location: CoffeeRequest.arrayToJson(arr: coffeeRequest.meetingPointOptions), eventType: Logging.eventTypes.requestMade.rawValue, details: "")
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
@@ -147,8 +147,8 @@ extension CoffeeRequest {
             //URLQueryItem(name: "orderEndTime", value: coffeeRequest.orderEndTime),
             URLQueryItem(name: "item", value: coffeeRequest.item),
             URLQueryItem(name: "status", value: coffeeRequest.status),
-            URLQueryItem(name: "deliveryLocation", value: coffeeRequest.deliveryLocation),
-            URLQueryItem(name: "deliveryLocationOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.deliveryLocationOptions)),
+            URLQueryItem(name: "meetingPoint", value: coffeeRequest.meetingPoint),
+            URLQueryItem(name: "meetingPointOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.meetingPointOptions)),
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
             URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation),
             URLQueryItem(name: "price", value: coffeeRequest.price)

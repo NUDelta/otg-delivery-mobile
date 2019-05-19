@@ -39,6 +39,7 @@
 		CD676CAD227A9F3B00ECE78E /* AcceptedRequesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CAC227A9F3B00ECE78E /* AcceptedRequesterViewController.swift */; };
 		CD8630322268372F0024FCA2 /* MeetingPointTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
+		CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
 		CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6586622756BE200AED274 /* RequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -83,6 +84,7 @@
 		CD8630312268372F0024FCA2 /* MeetingPointTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingPointTableViewCell.swift; sourceTree = "<group>"; };
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
+		CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialLocationViewController.swift; sourceTree = "<group>"; };
 		CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptConfirmationViewController.swift; sourceTree = "<group>"; };
 		CDF6586622756BE200AED274 /* RequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,9 +148,10 @@
 		394DD8082225EECB002504E9 /* SubmitRequestViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */,
 				CD2B18FA227662A800A262C7 /* LocationSelectionViewController */,
 				CD2B18F92276628C00A262C7 /* ItemSelectionViewController */,
+				CD1AC4A82292026E00BA393C /* PotentialLocationViewController */,
+				394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */,
 				CDF658682276624500AED274 /* Unused */,
 			);
 			path = SubmitRequestViewControllers;
@@ -166,6 +169,14 @@
 				391F3844218659BD00F1C91B /* Logging.swift */,
 			);
 			path = DataModels;
+			sourceTree = "<group>";
+		};
+		CD1AC4A82292026E00BA393C /* PotentialLocationViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */,
+			);
+			path = PotentialLocationViewController;
 			sourceTree = "<group>";
 		};
 		CD2B18F92276628C00A262C7 /* ItemSelectionViewController */ = {
@@ -370,6 +381,7 @@
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
 				CD676CAA227A48DF00ECE78E /* AcceptedHelperViewController.swift in Sources */,
+				CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */,
 				CD212020227B90E900B1206C /* PickedUpHelperViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,
 				CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */,

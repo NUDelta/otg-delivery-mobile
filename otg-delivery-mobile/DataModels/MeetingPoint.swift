@@ -14,14 +14,19 @@ struct MeetingPoint : Codable {
     enum CodingKeys : String, CodingKey {
         case id = "_id"
         case name
+        case latitude
+        case longitude
+        case requestId
     }
 
     let id: String
     let name: String
+    let latitude: Double
+    let longitude: Double
+    let requestId: String
 }
 
 extension MeetingPoint {
-
     static func getAll(completionHandler: @escaping ([MeetingPoint]) -> Void) {
         let url = URL(string: "\(MeetingPoint.apiUrl)")
         let session: URLSession = URLSession.shared
@@ -47,7 +52,34 @@ extension MeetingPoint {
             }
             completionHandler(meetingPoints)
         }
-        
+        task.resume()
+    }
+
+    static func getByRequest(with_id requestId: String, completionHandler: @escaping ([MeetingPoint]) -> Void) {
+        let url = URL(string: "\(MeetingPoint.apiUrl)/\(requestId)")
+        let session: URLSession = URLSession.shared
+        let requestURL = URLRequest(url: url!)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("MEETING POINT MODEL: Getting all potential locations for request \(requestId)")
+            guard let data = data else {
+                return
+            }
+
+            var meetingPoints: [MeetingPoint] = []
+            let httpResponse = response as? HTTPURLResponse
+
+            if (httpResponse?.statusCode != 400) {
+                do {
+                    let decoder = JSONDecoder()
+                    meetingPoints = try decoder.decode([MeetingPoint].self, from: data)
+                } catch {
+                    print("MEETING POINT: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+            completionHandler(meetingPoints)
+        }
         task.resume()
     }
 }

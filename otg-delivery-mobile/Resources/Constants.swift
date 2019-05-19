@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 let defaults = UserDefaults.standard
 

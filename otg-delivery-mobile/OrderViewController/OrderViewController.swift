@@ -286,6 +286,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         return cell
     }
 
+    /*
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be deletable.
@@ -317,6 +318,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             present(deleteConfirmation, animated: true, completion: nil)
         }
      }
+    */
 
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database

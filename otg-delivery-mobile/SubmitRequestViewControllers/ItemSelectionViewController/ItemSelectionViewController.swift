@@ -51,7 +51,7 @@ class ItemSelectionViewController: UITableViewController {
         let selectedItem = items[indexPath.row]
         currentRequest!.item = selectedItem.name
 
-        let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
+        let nextPage: PotentialLocationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PotentialLocation") as! PotentialLocationViewController
         nextPage.currentRequest = currentRequest
         self.present(nextPage, animated: true, completion: nil)
     }

@@ -10,7 +10,7 @@ import Foundation
 
 struct LocationUpdate : Codable {
     private static let apiUrl: String = Constants.apiUrl + "locupdates"    
-    
+
     enum CodingKeys : String, CodingKey {
         case latitude
         case longitude
@@ -20,7 +20,7 @@ struct LocationUpdate : Codable {
         case timestamp
         case userId
     }
-    
+
     let latitude: Double
     let longitude: Double
     let speed: Double
@@ -66,11 +66,40 @@ extension LocationUpdate {
 
         task.resume()
     }
+    
+    static func getRecent(withId userId: String, completionHandler: @escaping (LocationUpdate?) -> Void) {
+        let url = URL(string: "\(LocationUpdate.apiUrl)/\(userId)/recent")
+        let session: URLSession = URLSession.shared
+        let requestURL = URLRequest(url: url!)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("MEETING POINT MODEL: Getting all potential locations for request \(userId)")
+            guard let data = data else {
+                return
+            }
+
+            var recentLocation: LocationUpdate?
+            let httpResponse = response as? HTTPURLResponse
+
+            if (httpResponse?.statusCode != 400) {
+                do {
+                    let decoder = JSONDecoder()
+                    recentLocation = try decoder.decode(LocationUpdate.self, from: data)
+                } catch {
+                    print("MEETING POINT: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+
+            completionHandler(recentLocation)
+        }
+        task.resume()
+    }
 
     static func dateToString(d: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
+
         let s = formatter.string(from: d)
         return s
     }

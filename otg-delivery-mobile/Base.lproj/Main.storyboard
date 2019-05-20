@@ -283,20 +283,31 @@
                                     <action selector="ConfirmButton:" destination="GES-2d-jtR" eventType="touchUpInside" id="b3J-YE-QIK"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RUc-9b-kwp">
+                                <rect key="frame" x="23" y="609" width="368" height="31"/>
+                                <connections>
+                                    <action selector="CircleSlide:" destination="GES-2d-jtR" eventType="valueChanged" id="Jbm-eI-nsY"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0Q1-lg-hjO" firstAttribute="top" secondItem="9n3-2A-oNU" secondAttribute="top" id="184-Tt-osH"/>
                             <constraint firstItem="6ST-Jx-ZDA" firstAttribute="leading" secondItem="5Me-TB-p7m" secondAttribute="leading" id="FNs-XE-mya"/>
-                            <constraint firstItem="6ST-Jx-ZDA" firstAttribute="top" secondItem="0Q1-lg-hjO" secondAttribute="bottom" id="GQS-bq-0ED"/>
+                            <constraint firstItem="5Me-TB-p7m" firstAttribute="trailing" secondItem="RUc-9b-kwp" secondAttribute="trailing" constant="25" id="Msf-in-AEB"/>
+                            <constraint firstItem="6ST-Jx-ZDA" firstAttribute="top" secondItem="RUc-9b-kwp" secondAttribute="bottom" constant="15" id="QPk-7O-ye2"/>
                             <constraint firstItem="5Me-TB-p7m" firstAttribute="trailing" secondItem="0Q1-lg-hjO" secondAttribute="trailing" id="Qwf-4q-M2x"/>
+                            <constraint firstItem="RUc-9b-kwp" firstAttribute="leading" secondItem="5Me-TB-p7m" secondAttribute="leading" constant="25" id="rnt-uT-QNf"/>
                             <constraint firstItem="5Me-TB-p7m" firstAttribute="trailing" secondItem="6ST-Jx-ZDA" secondAttribute="trailing" id="tuC-ai-jwd"/>
                             <constraint firstItem="5Me-TB-p7m" firstAttribute="bottom" secondItem="6ST-Jx-ZDA" secondAttribute="bottom" id="w7X-CN-y0d"/>
+                            <constraint firstItem="6ST-Jx-ZDA" firstAttribute="top" secondItem="0Q1-lg-hjO" secondAttribute="bottom" id="x9f-4x-apK"/>
                             <constraint firstItem="0Q1-lg-hjO" firstAttribute="leading" secondItem="5Me-TB-p7m" secondAttribute="leading" id="zhH-4L-qAD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="5Me-TB-p7m"/>
                     </view>
                     <connections>
+                        <outlet property="CircleSlider" destination="RUc-9b-kwp" id="Pk4-pC-2yK"/>
+                        <outlet property="ConfirmOutlet" destination="6ST-Jx-ZDA" id="0T0-LQ-gm4"/>
                         <outlet property="mapView" destination="0Q1-lg-hjO" id="xGe-xq-1t3"/>
                     </connections>
                 </viewController>
@@ -338,7 +349,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="01h-Gk-3qx">
-                                <rect key="frame" x="34.999999999999986" y="151" width="211.66666666666663" height="111.33333333333331"/>
+                                <rect key="frame" x="35" y="151" width="137.66666666666666" height="111.33333333333331"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHq-rP-MUJ">
                                         <rect key="frame" x="0.0" y="0.0" width="41" height="20.333333333333332"/>
@@ -358,8 +369,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[ Potential Meeting Points ]" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gm2-va-Zoa">
-                                        <rect key="frame" x="0.0" y="91" width="211.66666666666666" height="20.333333333333329"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Pickup Location]" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gm2-va-Zoa">
+                                        <rect key="frame" x="0.0" y="91" width="137.66666666666666" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>

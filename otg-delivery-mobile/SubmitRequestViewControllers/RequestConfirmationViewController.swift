@@ -11,6 +11,7 @@ import UserNotifications
 
 class RequestConfirmationViewController: UIViewController {
     var currentRequest: CoffeeRequest?
+    var meetingPoints: [MeetingPoint] = []
 
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var pickupLocationLabel: UILabel!
@@ -39,7 +40,16 @@ class RequestConfirmationViewController: UIViewController {
     @IBAction func submitButton(_ sender: Any) {
         currentRequest = setTimeProbabilities(request: currentRequest!)
         currentRequest?.status = "Searching for Helper"
-        CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!)
+
+        CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!, completionHandler: { requestId in
+            DispatchQueue.main.async {
+                for var point in self.meetingPoints {
+                    point.requestId = requestId!
+                    print(requestId!)
+                    MeetingPoint.post(point: point)
+                }
+            }
+        })
 
         let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
         defaults.set(requestsPlaced, forKey: "requestsPlaced")

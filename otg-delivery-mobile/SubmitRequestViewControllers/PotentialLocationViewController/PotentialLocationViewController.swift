@@ -22,6 +22,9 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     var recentAnnotation: MKPointAnnotation?
     var recentCircle: MKCircle?
 
+    var currentPoint: MeetingPoint?
+    var meetingPoints: [MeetingPoint] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
@@ -99,6 +102,8 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
         CircleSlider.isHidden = false
         CircleSlider.isEnabled = true
+
+        currentPoint = MeetingPoint(latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude, requestId: currentRequest!.requestId)
     }
 
     @IBAction func CircleSlide(_ sender: Any) {
@@ -128,7 +133,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     @IBOutlet weak var ConfirmOutlet: UIButton!
-    @IBAction func ConfirmButton(_ sender: Any) {
+    @IBAction func ConfirmButton(_ sender: Any) { //god this is awful
         if (ConfirmOutlet.titleLabel?.text == "Select Timeframe") {
             ConfirmOutlet.setTitle("Select End Time", for: .normal)
             DescriptionText.text = "Select Start Time"
@@ -137,6 +142,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             mapView.isUserInteractionEnabled = false
             DatePicker.isHidden = false
         } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
+            currentPoint?.startTime = LocationUpdate.dateToString(d: DatePicker.date)
             DescriptionText.text = "Select End Time"
             ConfirmOutlet.setTitle("Add Point", for: .normal)
         } else if (ConfirmOutlet.titleLabel?.text == "Add Point") {
@@ -145,10 +151,15 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             recentCircle = nil
             DescriptionText.isHidden = true
             mapView.isUserInteractionEnabled = true
+            currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
             DatePicker.isHidden = true
+            meetingPoints.append(currentPoint!)
+            currentPoint = nil
         } else if (ConfirmOutlet.titleLabel?.text == "Confirm") {
+            if (meetingPoints.count == 0) {return}
             let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
             nextPage.currentRequest = currentRequest
+            nextPage.meetingPoints = meetingPoints
             self.present(nextPage, animated: true, completion: nil)
         }
     }

@@ -137,7 +137,7 @@ class CoffeeRequest : Codable {
 }
 extension CoffeeRequest {
     //Method that takes an existing CoffeeRequest, serializes it, and sends it to server
-    static func postCoffeeRequest(coffeeRequest: CoffeeRequest) {
+    static func postCoffeeRequest(coffeeRequest: CoffeeRequest, completionHandler: @escaping (String?) -> Void) {
         Logging.sendEvent(location: CoffeeRequest.arrayToJson(arr: coffeeRequest.meetingPointOptions), eventType: Logging.eventTypes.requestMade.rawValue, details: "")
         var components = URLComponents(string: "")
         components?.queryItems = [
@@ -167,10 +167,14 @@ extension CoffeeRequest {
 
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Data post successful.")
+            if let data = data {
+                var requestId = String(decoding: data, as: UTF8.self)
+                requestId.remove(at: requestId.startIndex) //decoding leaves in quotation marks
+                requestId.remove(at: requestId.index(before: requestId.endIndex))
+                completionHandler(requestId)
+            }
         }
-
         task.resume()
-
     }
 
     //Method that takes an ID and changes the status of the request

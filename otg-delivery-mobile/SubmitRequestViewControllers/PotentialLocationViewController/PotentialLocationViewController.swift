@@ -13,6 +13,8 @@ import CoreLocation
 class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var CircleSlider: UISlider!
+    @IBOutlet weak var DescriptionText: UILabel!
+    @IBOutlet weak var DatePicker: UIDatePicker!
 
     var currentRequest: CoffeeRequest?
     let locationManager = CLLocationManager()
@@ -26,9 +28,21 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         if (currentRequest == nil) {
             initializeRequest()
         }
+        setUpHiddenFields()
+        addTapRecognizer()
+    }
+
+    func setUpHiddenFields() {
         CircleSlider.isHidden = true
         CircleSlider.isEnabled = false
-        addTapRecognizer()
+        DescriptionText.isHidden = true
+        DescriptionText.layer.cornerRadius = 5.0
+        DescriptionText.clipsToBounds = true
+        DatePicker.backgroundColor = .white
+        DatePicker.clipsToBounds = true
+        DatePicker.layer.cornerRadius = 5.0
+        DatePicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
+        DatePicker.isHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -66,8 +80,9 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         let touchPoint = gestureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
 
-        ConfirmOutlet.setTitle("Add Point", for: .normal)
-        mapView.isZoomEnabled = false
+        ConfirmOutlet.setTitle("Select Timeframe", for: .normal)
+        DescriptionText.text = "Select Radius"
+        DescriptionText.isHidden = false
 
         let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         let region = MKCoordinateRegion(center: touchMapCoordinate, span: span)
@@ -78,7 +93,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         mapView.addAnnotation(annotation)
         recentAnnotation = annotation
 
-        let circle = MKCircle(center: touchMapCoordinate, radius: CLLocationDistance(CircleSlider.value * 100.0 + 25.0))
+        let circle = MKCircle(center: touchMapCoordinate, radius: CLLocationDistance(CircleSlider.value * 200.0 + 50.0))
         mapView.addOverlay(circle)
         recentCircle = circle
 
@@ -89,7 +104,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     @IBAction func CircleSlide(_ sender: Any) {
         if (recentCircle != nil) {
             mapView.removeOverlay(recentCircle!)
-            recentCircle = MKCircle(center: recentCircle!.coordinate, radius: CLLocationDistance((CircleSlider.value * 100.0) + 25.0))
+            recentCircle = MKCircle(center: recentCircle!.coordinate, radius: CLLocationDistance((CircleSlider.value * 200.0) + 50.0))
             mapView.addOverlay(recentCircle!)
         }
     }
@@ -114,14 +129,24 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
     @IBOutlet weak var ConfirmOutlet: UIButton!
     @IBAction func ConfirmButton(_ sender: Any) {
-        if (ConfirmOutlet.titleLabel?.text == "Add Point") {
-            mapView.isZoomEnabled = true
+        if (ConfirmOutlet.titleLabel?.text == "Select Timeframe") {
+            ConfirmOutlet.setTitle("Select End Time", for: .normal)
+            DescriptionText.text = "Select Start Time"
+            CircleSlider.isEnabled = false
+            CircleSlider.isHidden = true
+            mapView.isUserInteractionEnabled = false
+            DatePicker.isHidden = false
+        } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
+            DescriptionText.text = "Select End Time"
+            ConfirmOutlet.setTitle("Add Point", for: .normal)
+        } else if (ConfirmOutlet.titleLabel?.text == "Add Point") {
             zoomToUser()
             ConfirmOutlet.setTitle("Confirm", for: .normal)
             recentCircle = nil
-            CircleSlider.isEnabled = false
-            CircleSlider.isHidden = true
-        } else {
+            DescriptionText.isHidden = true
+            mapView.isUserInteractionEnabled = true
+            DatePicker.isHidden = true
+        } else if (ConfirmOutlet.titleLabel?.text == "Confirm") {
             let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
             nextPage.currentRequest = currentRequest
             self.present(nextPage, animated: true, completion: nil)

@@ -24,6 +24,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
     var currentPoint: MeetingPoint?
     var meetingPoints: [MeetingPoint] = []
+    var currentStartDate: Date?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,9 +80,13 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     @objc func addMarker(_ gestureRecognizer: UIGestureRecognizer) {
-        if (gestureRecognizer.state != .ended || ConfirmOutlet.titleLabel?.text == "Add Point") {return}
+        if (gestureRecognizer.state != .ended || ConfirmOutlet.titleLabel?.text == "Select Timeframe") {return}
         let touchPoint = gestureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+
+        for annotation in mapView.annotations {
+            self.mapView.deselectAnnotation(annotation, animated: false)
+        }
 
         ConfirmOutlet.setTitle("Select Timeframe", for: .normal)
         DescriptionText.text = "Select Radius"
@@ -124,6 +129,29 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         return MKOverlayRenderer(overlay: overlay)
     }
 
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if (annotation.isEqual(mapView.userLocation)) {return nil}
+        let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
+        annotationView.canShowCallout = true
+        annotationView.pinTintColor = .purple
+
+        //hacky but it works :P
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: nil)
+        tapRecognizer.delegate = self
+        annotationView.addGestureRecognizer(tapRecognizer)
+
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(deleteMarker(_:)))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        doubleTapRecognizer.delegate = self
+        annotationView.addGestureRecognizer(doubleTapRecognizer)
+
+        return annotationView
+    }
+
+    @objc func deleteMarker(_ gestureRecognizer: UIGestureRecognizer) {
+        //delete the tapped marker
+    }
+
     func initializeRequest() {
         currentRequest = CoffeeRequest()
         currentRequest!.requesterId = defaults.object(forKey: "userId") as! String
@@ -142,25 +170,53 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             mapView.isUserInteractionEnabled = false
             DatePicker.isHidden = false
         } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
-            currentPoint?.startTime = LocationUpdate.dateToString(d: DatePicker.date)
+            currentStartDate = DatePicker.date
+            DatePicker.setDate(DatePicker.date.addingTimeInterval(TimeInterval(3600.0)), animated: true)
             DescriptionText.text = "Select End Time"
             ConfirmOutlet.setTitle("Add Point", for: .normal)
         } else if (ConfirmOutlet.titleLabel?.text == "Add Point") {
+            if (DatePicker.date <= currentStartDate!) {return}
+            currentPoint?.startTime = LocationUpdate.dateToString(d: currentStartDate!)
+            currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
+            recentAnnotation?.title = "\(currentPoint?.startTime ?? "00:00") -"
+            recentAnnotation?.subtitle = currentPoint?.endTime
+            zoomToUser()
+            ConfirmOutlet.setTitle("Confirm", for: .normal)
+            DescriptionText.isHidden = true
+            mapView.isUserInteractionEnabled = true
+            DatePicker.isHidden = true
+            meetingPoints.append(currentPoint!)
+            recentCircle = nil
+            currentPoint = nil
+        } else if (ConfirmOutlet.titleLabel?.text == "Confirm") {
+            if (meetingPoints.count == 0) {
+                let alert = UIAlertController(title: "No meeting points selected.", message: "You must select at least one potential location.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
+                nextPage.currentRequest = currentRequest
+                nextPage.meetingPoints = meetingPoints
+                self.present(nextPage, animated: true, completion: nil)
+            }
+        }
+    }
+
+    @IBAction func CancelButton(_ sender: Any) {
+        if (DescriptionText.isHidden) {
+            backToMain(currentScreen: self)
+        } else {
+            if (recentAnnotation != nil) {mapView.removeAnnotation(recentAnnotation!)}
+            if (recentCircle != nil) {mapView.removeOverlay(recentCircle!)}
             zoomToUser()
             ConfirmOutlet.setTitle("Confirm", for: .normal)
             recentCircle = nil
             DescriptionText.isHidden = true
             mapView.isUserInteractionEnabled = true
-            currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
             DatePicker.isHidden = true
-            meetingPoints.append(currentPoint!)
             currentPoint = nil
-        } else if (ConfirmOutlet.titleLabel?.text == "Confirm") {
-            if (meetingPoints.count == 0) {return}
-            let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
-            nextPage.currentRequest = currentRequest
-            nextPage.meetingPoints = meetingPoints
-            self.present(nextPage, animated: true, completion: nil)
+            CircleSlider.isEnabled = false
+            CircleSlider.isHidden = true
         }
     }
 }

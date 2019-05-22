@@ -1,10 +1,3 @@
-//
-//  OrderViewController.swift
-//
-//  Created by Sam Naser on 1/19/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import UIKit
 import UserNotifications
 import CoreLocation
@@ -319,13 +312,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
      }
 
-/*
     // Support editing of rows in the table view when you click on a row
     // Updates corresponding request in database
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (isMyRequest(indexPath: indexPath)) {
             // Launch request editor on click
-            let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
+            /*let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
 
             let action = UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 self.currentActionType = .Edit
@@ -337,7 +329,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             editAlert.addAction(action)
             editAlert.addAction(cancel)
-            present(editAlert, animated: true, completion: nil)
+            present(editAlert, animated: true, completion: nil)*/
         } else {
             let acceptPage: AcceptConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "acceptConfirmationViewController") as! AcceptConfirmationViewController
             acceptPage.request = self.openRequests[indexPath.row]
@@ -345,7 +337,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
- */
 
 
 

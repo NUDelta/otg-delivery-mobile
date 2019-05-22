@@ -1,11 +1,3 @@
-//
-//  RequestConfirmationViewController.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 2/26/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import UIKit
 import UserNotifications
 

@@ -144,7 +144,7 @@
 			children = (
 				CD2B18FA227662A800A262C7 /* LocationSelectionViewController */,
 				CD2B18F92276628C00A262C7 /* ItemSelectionViewController */,
-				CD1AC4A82292026E00BA393C /* PotentialLocationViewController */,
+				CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */,
 				394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */,
 			);
 			path = SubmitRequestViewControllers;
@@ -162,14 +162,6 @@
 				391F3844218659BD00F1C91B /* Logging.swift */,
 			);
 			path = DataModels;
-			sourceTree = "<group>";
-		};
-		CD1AC4A82292026E00BA393C /* PotentialLocationViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */,
-			);
-			path = PotentialLocationViewController;
 			sourceTree = "<group>";
 		};
 		CD2B18F92276628C00A262C7 /* ItemSelectionViewController */ = {
@@ -279,7 +271,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 1020;
-				ORGANIZATIONNAME = "Sam Naser";
+				ORGANIZATIONNAME = "Cooper Barth";
 				TargetAttributes = {
 					22AD278420129CCE005BA4B9 = {
 						CreatedOnToolsVersion = 9.2;

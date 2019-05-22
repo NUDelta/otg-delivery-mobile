@@ -1,11 +1,3 @@
-//
-//  PotentialLocationViewController.swift
-//  otg-delivery-mobile
-//
-//  Created by Cooper Barth on 5/19/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import UIKit
 import MapKit
 import CoreLocation
@@ -25,6 +17,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     var currentPoint: MeetingPoint?
     var meetingPoints: [MeetingPoint] = []
     var currentStartDate: Date?
+    var currentAnnotation: MKAnnotation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,10 +60,12 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     func zoomToUser() {
-        let userLocation = (locationManager.location?.coordinate)!
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        let region = MKCoordinateRegion(center: userLocation, span: span)
-        mapView.setRegion(region, animated: true)
+        if (locationManager.location != nil) {
+            let userLocation = (locationManager.location?.coordinate)!
+            let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            let region = MKCoordinateRegion(center: userLocation, span: span)
+            mapView.setRegion(region, animated: true)
+        }
     }
 
     func addTapRecognizer() {
@@ -132,24 +127,29 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if (annotation.isEqual(mapView.userLocation)) {return nil}
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        annotationView.canShowCallout = true
+        //annotationView.canShowCallout = true
         annotationView.pinTintColor = .purple
+        currentAnnotation = annotation
+
+        /*let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(deleteMarker(_:)))
+        longPressRecognizer.minimumPressDuration = 0.5
+        longPressRecognizer.numberOfTouchesRequired = 1
+        longPressRecognizer.delegate = self
+        annotationView.addGestureRecognizer(longPressRecognizer)*/
 
         //hacky but it works :P
         let tapRecognizer = UITapGestureRecognizer(target: self, action: nil)
         tapRecognizer.delegate = self
         annotationView.addGestureRecognizer(tapRecognizer)
 
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(deleteMarker(_:)))
-        doubleTapRecognizer.numberOfTapsRequired = 2
-        doubleTapRecognizer.delegate = self
-        annotationView.addGestureRecognizer(doubleTapRecognizer)
-
         return annotationView
     }
 
     @objc func deleteMarker(_ gestureRecognizer: UIGestureRecognizer) {
-        //delete the tapped marker
+        if (gestureRecognizer.state == .began) {
+            print("long press")
+            //delete the tapped marker
+        }
     }
 
     func initializeRequest() {
@@ -204,7 +204,14 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
     @IBAction func CancelButton(_ sender: Any) {
         if (DescriptionText.isHidden) {
-            backToMain(currentScreen: self)
+            if (meetingPoints.count > 0) {
+                let alert = UIAlertController(title: "Cancel Request.", message: "Are you sure you want to cancel your request?", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Yes", style: .default) {action in backToMain(currentScreen: self)})
+                alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                backToMain(currentScreen: self)
+            }
         } else {
             if (recentAnnotation != nil) {mapView.removeAnnotation(recentAnnotation!)}
             if (recentCircle != nil) {mapView.removeOverlay(recentCircle!)}

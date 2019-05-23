@@ -1,11 +1,3 @@
-//
-//  LocationUpdate.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 1/21/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct LocationUpdate : Codable {

@@ -1,10 +1,3 @@
-//  RequestManager.swift
-//  otg-delivery-mobile
-//
-//  Created by Sam Naser on 2/25/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct User : Codable{

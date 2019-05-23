@@ -64,7 +64,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             let userLocation = (locationManager.location?.coordinate)!
             let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
             let region = MKCoordinateRegion(center: userLocation, span: span)
-            mapView.setRegion(region, animated: true)
+            mapView.setRegion(region, animated: false)
         }
     }
 
@@ -99,11 +99,9 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         let circle = MKCircle(center: touchMapCoordinate, radius: CLLocationDistance(CircleSlider.value * 200.0 + 50.0))
         mapView.addOverlay(circle)
         recentCircle = circle
-
         CircleSlider.isHidden = false
         CircleSlider.isEnabled = true
-
-        currentPoint = MeetingPoint(latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude, requestId: currentRequest!.requestId)
+        currentPoint = MeetingPoint(latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude, radius: 0.0, requestId: currentRequest!.requestId)
     }
 
     @IBAction func CircleSlide(_ sender: Any) {
@@ -127,7 +125,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if (annotation.isEqual(mapView.userLocation)) {return nil}
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        //annotationView.canShowCallout = true
+        annotationView.canShowCallout = true
         annotationView.pinTintColor = .purple
         currentAnnotation = annotation
 
@@ -161,7 +159,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     @IBOutlet weak var ConfirmOutlet: UIButton!
-    @IBAction func ConfirmButton(_ sender: Any) { //god this is awful
+    @IBAction func ConfirmButton(_ sender: Any) {
         if (ConfirmOutlet.titleLabel?.text == "Select Timeframe") {
             ConfirmOutlet.setTitle("Select End Time", for: .normal)
             DescriptionText.text = "Select Start Time"
@@ -169,6 +167,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             CircleSlider.isHidden = true
             mapView.isUserInteractionEnabled = false
             DatePicker.isHidden = false
+            currentPoint?.radius = recentCircle!.radius
         } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
             currentStartDate = DatePicker.date
             DatePicker.setDate(DatePicker.date.addingTimeInterval(TimeInterval(3600.0)), animated: true)

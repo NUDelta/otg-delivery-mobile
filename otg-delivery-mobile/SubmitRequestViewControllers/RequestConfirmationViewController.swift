@@ -7,7 +7,8 @@ class RequestConfirmationViewController: UIViewController {
 
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var pickupLocationLabel: UILabel!
-
+    @IBOutlet weak var TextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,8 +31,9 @@ class RequestConfirmationViewController: UIViewController {
     }
 
     @IBAction func submitButton(_ sender: Any) {
-        currentRequest = setTimeProbabilities(request: currentRequest!)
+        //currentRequest = setTimeProbabilities(request: currentRequest!)
         currentRequest?.status = "Searching for Helper"
+        currentRequest?.description = TextField.text!
 
         CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!, completionHandler: { requestId in
             DispatchQueue.main.async {

@@ -1,11 +1,3 @@
-//
-//  Logging.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 10/28/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct Logging {

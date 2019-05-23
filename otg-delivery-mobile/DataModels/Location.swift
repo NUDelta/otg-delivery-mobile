@@ -1,11 +1,3 @@
-//
-//  Location.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 1/14/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct Location : Codable {

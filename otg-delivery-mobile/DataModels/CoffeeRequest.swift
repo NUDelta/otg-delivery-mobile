@@ -1,11 +1,3 @@
-//
-//  RequestManager.swift
-//  otg-delivery-mobile
-//
-//  Created by Sam Naser on 2/25/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 enum OrderActionType {
@@ -36,6 +28,7 @@ class CoffeeRequest : Codable {
         case planningNotes
         case pickupLocation
         case price
+        case description
     }
 
     // Instance variables of the object in Swift
@@ -59,6 +52,7 @@ class CoffeeRequest : Codable {
     var planningNotes = ""
     var timeProbabilities = ["5%", "0%", "5%", "0%"]
     var price: String
+    var description = ""
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -92,9 +86,10 @@ class CoffeeRequest : Codable {
             helperId = "No ID"
         }
         price = try container.decode(String.self, forKey: .price)
+        description = try container.decode(String.self, forKey: .description)
     }
 
-    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, meetingPointOptions: [String], pickupLocation: String, price:String) {
+    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, meetingPointOptions: [String], pickupLocation: String, price:String, description: String) {
         self.requesterId = requester
         self.helperId = helper
         //self.orderStartTime = orderStartTime
@@ -105,6 +100,7 @@ class CoffeeRequest : Codable {
         self.requestId = ""
         self.pickupLocation = pickupLocation
         self.price = price
+        self.description = description
     }
 
     init() {
@@ -119,6 +115,7 @@ class CoffeeRequest : Codable {
         self.requestId = ""
         self.pickupLocation = ""
         self.price = ""
+        self.description = ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -133,6 +130,7 @@ class CoffeeRequest : Codable {
         try container.encode(meetingPointOptions, forKey: .meetingPointOptions)
         try container.encode(pickupLocation, forKey: .pickupLocation)
         try container.encode(price, forKey: .price)
+        try container.encode(description, forKey: .description)
     }
 }
 extension CoffeeRequest {
@@ -151,7 +149,8 @@ extension CoffeeRequest {
             URLQueryItem(name: "meetingPointOptions", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.meetingPointOptions)),
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
             URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation),
-            URLQueryItem(name: "price", value: coffeeRequest.price)
+            URLQueryItem(name: "price", value: coffeeRequest.price),
+            URLQueryItem(name: "description", value: coffeeRequest.description)
         ]
 
         let url = URL(string: CoffeeRequest.apiUrl)

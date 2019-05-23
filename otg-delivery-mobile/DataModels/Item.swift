@@ -1,11 +1,3 @@
-//
-//  DrinkData.swift
-//  otg-delivery-mobile
-//
-//  Created by Sam Naser on 4/4/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct Item : Codable {

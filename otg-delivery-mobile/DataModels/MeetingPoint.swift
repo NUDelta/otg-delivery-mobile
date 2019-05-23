@@ -1,11 +1,3 @@
-//
-//  MeetingPoint.swift
-//  otg-delivery-mobile
-//
-//  Created by Maggie Lou on 3/9/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import Foundation
 
 struct MeetingPoint : Codable {
@@ -15,6 +7,7 @@ struct MeetingPoint : Codable {
         case id = "_id"
         case latitude
         case longitude
+        case radius
         case requestId
         case description
         case startTime
@@ -24,15 +17,17 @@ struct MeetingPoint : Codable {
     let id: String
     var latitude: Double
     var longitude: Double
+    var radius: Double
     var requestId: String
     var description: String
     var startTime: String
     var endTime: String
 
-    init(latitude: Double, longitude: Double, requestId: String) {
+    init(latitude: Double, longitude: Double, radius: Double, requestId: String) {
         self.id = "_id"
         self.latitude = latitude
         self.longitude = longitude
+        self.radius = radius
         self.requestId = requestId
         self.description = ""
         self.startTime = ""
@@ -46,6 +41,7 @@ extension MeetingPoint {
         components?.queryItems = [
             URLQueryItem(name: "latitude", value: "\(point.latitude)"),
             URLQueryItem(name: "longitude", value: "\(point.longitude)"),
+            URLQueryItem(name: "radius", value: "\(point.radius)"),
             URLQueryItem(name: "requestId", value: point.requestId),
             URLQueryItem(name: "description", value: point.description),
             URLQueryItem(name: "startTime", value: point.startTime),

@@ -102,7 +102,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         }
     }
-    
+
     @objc func loadData() {
         User.getMyRequests(completionHandler: { myRequests in
             DispatchQueue.main.async {

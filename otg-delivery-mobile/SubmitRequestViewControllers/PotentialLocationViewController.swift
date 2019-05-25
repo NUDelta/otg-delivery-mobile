@@ -123,14 +123,15 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        cancelSetting() //I hate MapKit.
+        cancelSetting() //I hate MapKit
         let annotationCoordinate = view.annotation!.coordinate
         for point in meetingPoints {
             if (annotationCoordinate.latitude == point.latitude && annotationCoordinate.longitude == point.longitude) {
                 MarkerTimes.text = "\(extractTime(date: point.startTime )) - \(extractTime(date: point.endTime))"
                 mapView.isUserInteractionEnabled = false
                 infoHidden = false
-                break
+                recentAnnotation = view.annotation as? MKPointAnnotation
+                return
             }
         }
     }
@@ -195,7 +196,27 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     @IBAction func DeleteMarker(_ sender: Any) {
-        
+        infoHidden = true
+        if (recentAnnotation != nil) {
+            let index = mapView.annotations.firstIndex(where: {coordinateEqual(c1: $0.coordinate, c2: recentAnnotation!.coordinate)})
+            meetingPoints.remove(at: index!)
+            var pointCircle: MKOverlay?
+            for circle in mapView.overlays {
+                if (coordinateEqual(c1: circle.coordinate, c2: recentAnnotation!.coordinate)) {
+                    pointCircle = circle
+                    break
+                }
+            }
+            if (pointCircle != nil) {
+                mapView.removeOverlay(pointCircle!)
+            }
+            mapView.removeAnnotation(recentAnnotation!)
+            mapView.isUserInteractionEnabled = true
+        }
+    }
+
+    func coordinateEqual(c1: CLLocationCoordinate2D, c2: CLLocationCoordinate2D) -> Bool {
+        return c1.latitude == c2.latitude && c1.longitude == c2.longitude
     }
 
     @IBAction func CancelButton(_ sender: Any) {

@@ -15,20 +15,19 @@ class CoffeeRequest : Codable {
         case requestId = "_id"
         case requester
         case helper
-        //case orderStartTime
-        //case orderEndTime
         case item
         case status
-        case meetingPointOptions
+        case meetingPointOptions //not used
         case meetingPoint
-        case diffHelperRequesterArrivalTime
-        case helperTextTime
-        case requesterTextRespondTime
-        case timeProbabilities
-        case planningNotes
+        case diffHelperRequesterArrivalTime //maybe used?
+        case helperTextTime //not used
+        case requesterTextRespondTime //not used
+        case timeProbabilities //not used
+        case planningNotes //not used
         case pickupLocation
         case price
         case description
+        case eta
     }
 
     // Instance variables of the object in Swift
@@ -53,6 +52,7 @@ class CoffeeRequest : Codable {
     var timeProbabilities = ["5%", "0%", "5%", "0%"]
     var price: String
     var description = ""
+    var eta = ""
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -87,9 +87,10 @@ class CoffeeRequest : Codable {
         }
         price = try container.decode(String.self, forKey: .price)
         description = try container.decode(String.self, forKey: .description)
+        eta = try container.decode(String.self, forKey: .eta)
     }
 
-    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, meetingPointOptions: [String], pickupLocation: String, price:String, description: String) {
+    init(requester: String, helper: String, orderStartTime: String, orderEndTime: String, status: String, item: String, meetingPointOptions: [String], pickupLocation: String, price:String, description: String, eta: String) {
         self.requesterId = requester
         self.helperId = helper
         //self.orderStartTime = orderStartTime
@@ -101,6 +102,7 @@ class CoffeeRequest : Codable {
         self.pickupLocation = pickupLocation
         self.price = price
         self.description = description
+        self.eta = eta
     }
 
     init() {
@@ -116,6 +118,7 @@ class CoffeeRequest : Codable {
         self.pickupLocation = ""
         self.price = ""
         self.description = ""
+        self.eta = ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -131,6 +134,7 @@ class CoffeeRequest : Codable {
         try container.encode(pickupLocation, forKey: .pickupLocation)
         try container.encode(price, forKey: .price)
         try container.encode(description, forKey: .description)
+        try container.encode(eta, forKey: .eta)
     }
 }
 extension CoffeeRequest {
@@ -150,8 +154,10 @@ extension CoffeeRequest {
             URLQueryItem(name: "timeProbabilities", value: CoffeeRequest.arrayToJson(arr: coffeeRequest.timeProbabilities)),
             URLQueryItem(name: "pickupLocation", value: coffeeRequest.pickupLocation),
             URLQueryItem(name: "price", value: coffeeRequest.price),
-            URLQueryItem(name: "description", value: coffeeRequest.description)
+            URLQueryItem(name: "description", value: coffeeRequest.description),
+            URLQueryItem(name: "eta", value: coffeeRequest.eta)
         ]
+        print(coffeeRequest.eta)
 
         let url = URL(string: CoffeeRequest.apiUrl)
         let session: URLSession = URLSession.shared

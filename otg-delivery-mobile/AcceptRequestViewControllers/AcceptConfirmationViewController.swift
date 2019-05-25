@@ -7,11 +7,19 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     @IBOutlet weak var PickupLabel: UILabel!
     @IBOutlet weak var RequesterLabel: UILabel!
     @IBOutlet weak var DetailsLabel: UILabel!
+    @IBOutlet weak var ConfirmLabel: UIButton!
+    @IBOutlet weak var DetailsView: UIView!
+    @IBOutlet weak var ETAPicker: UIDatePicker!
+    @IBOutlet weak var AdditionalDetails: UITextField!
     @IBOutlet weak var mapView: MKMapView!
 
     var request: CoffeeRequest? = nil
     let locationManager = CLLocationManager()
     var circles: [MKCircle: MeetingPoint] = [:]
+    var choosingPoint = false
+    var chosenPoint: MeetingPoint?
+    var referencePoint: MeetingPoint?
+    var recentMarker: MKPointAnnotation?
 
     override func viewDidLoad() {
         checkLocationAuthorizationStatus()
@@ -32,13 +40,17 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         mapView.delegate = self
         mapView.showsUserLocation = true
         mapView.isUserInteractionEnabled = true
+        view.sendSubviewToBack(DetailsView)
+        view.sendSubviewToBack(mapView)
+        ETAPicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
 
-        let circleRecognizer = UITapGestureRecognizer(target: self, action: #selector(detectCircleTap(_:)))
+        let circleRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCircleTap(_:)))
         circleRecognizer.delegate = self
         mapView.addGestureRecognizer(circleRecognizer)
     }
 
-    @objc func detectCircleTap(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func handleCircleTap(_ gestureRecognizer: UIGestureRecognizer) {
+        InfoView.isHidden = true
         let tappedPoint = gestureRecognizer.location(in: mapView)
         let tappedCoordinate = mapView.convert(tappedPoint, toCoordinateFrom: mapView)
         let mapPoint = MKMapPoint(tappedCoordinate)
@@ -46,13 +58,31 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
             let renderer = MKCircleRenderer(circle: circle)
             let viewPoint = renderer.point(for: mapPoint)
             if (renderer.path.contains(viewPoint)) {
-                zoomToPoint(point: CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude))
+                if (choosingPoint) {
+                    chosenPoint = MeetingPoint(latitude: tappedCoordinate.latitude, longitude: tappedCoordinate.longitude, radius: 0.0, requestId: request!.requestId)
+                    if (recentMarker != nil) {
+                        mapView.removeAnnotation(recentMarker!)
+                    }
+                    addMarker(coordinate: tappedCoordinate)
+                } else {
+                    zoomToPoint(point: CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude))
+                    referencePoint = point
+                    choosingPoint = true
+                    ConfirmLabel.isHidden = false
+                }
             }
         }
     }
 
+    func addMarker(coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        mapView.addAnnotation(annotation)
+        recentMarker = annotation
+    }
+
     func zoomToPoint(point: CLLocationCoordinate2D) {
-        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         let region = MKCoordinateRegion(center: point, span: span)
         mapView.setRegion(region, animated: true)
     }
@@ -83,13 +113,11 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func addPotentialPoint(point: MeetingPoint) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-        annotation.title = "\(point.startTime) -"
-        annotation.subtitle = point.endTime
-        mapView.addAnnotation(annotation)
+        /*annotation.title = "\(point.startTime) -"
+        annotation.subtitle = point.endTime*/
 
-        let circle = MKCircle(center: annotation.coordinate, radius: point.radius)
+        let circleCoordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+        let circle = MKCircle(center: circleCoordinate, radius: point.radius)
         mapView.addOverlay(circle)
 
         circles[circle] = point
@@ -100,10 +128,6 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
         annotationView.canShowCallout = true
         annotationView.pinTintColor = .purple
-
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: nil)
-        tapRecognizer.delegate = self
-        annotationView.addGestureRecognizer(tapRecognizer)
 
         return annotationView
     }
@@ -123,10 +147,37 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     @IBAction func AcceptOrder(_ sender: Any) {
-        User.accept(requestId: request!.requestId, userId: defaults.string(forKey: "userId")!)
-        User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
-        //add meeting point selection logic
-        backToMain(currentScreen: self)
+        if (ConfirmLabel.title(for: .normal) == "Set Meeting Point") {
+            if (recentMarker == nil) {
+                let alert = UIAlertController(title: "No point selected.", message: "You must select a meeting point.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                mapView.isUserInteractionEnabled = false
+                DetailsView.isHidden = false
+                ETAPicker.minimumDate = Date(timeIntervalSinceNow: 0.0)
+                ETAPicker.maximumDate = LocationUpdate.stringToDate(d: referencePoint!.endTime)
+                ConfirmLabel.setTitle("Accept Order", for: .normal)
+            }
+        } else {
+            saveMeetingPoint(description: AdditionalDetails.text!, eta: LocationUpdate.dateToString(d: ETAPicker.date))
+            User.accept(requestId: request!.requestId, userId: defaults.string(forKey: "userId")!)
+            User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
+            backToMain(currentScreen: self)
+        }
+    }
+
+    func saveMeetingPoint(description: String, eta: String) {
+        request?.meetingPoint = chosenPoint!.id
+        request?.eta = eta
+        chosenPoint?.description = description
+        print(request?.eta)
+
+        //needs start time and end time so we can make sure helper doesn't change time to be outside the window later
+        chosenPoint?.startTime = referencePoint!.startTime
+        chosenPoint?.endTime = referencePoint!.endTime
+
+        MeetingPoint.post(point: chosenPoint!)
     }
 
     /*@IBAction func Cancel(_ sender: Any) {

@@ -31,7 +31,6 @@ class RequestConfirmationViewController: UIViewController {
     }
 
     @IBAction func submitButton(_ sender: Any) {
-        //currentRequest = setTimeProbabilities(request: currentRequest!)
         currentRequest?.status = "Searching for Helper"
         currentRequest?.description = TextField.text!
 

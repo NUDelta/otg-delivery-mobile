@@ -74,6 +74,7 @@
 		CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		CD305E4D22775E950088732A /* meetMeAtNorris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = meetMeAtNorris.gpx; sourceTree = "<group>"; };
 		CD32831722756A1E00BCA4B9 /* RequestTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableView.swift; sourceTree = "<group>"; };
+		CD6704C82298915A00833E27 /* Lisa's Cafe.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Lisa's Cafe.gpx"; sourceTree = "<group>"; };
 		CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedHelperViewController.swift; sourceTree = "<group>"; };
 		CD676CAC227A9F3B00ECE78E /* AcceptedRequesterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedRequesterViewController.swift; sourceTree = "<group>"; };
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
@@ -218,6 +219,7 @@
 				39C13EF421FF5DF4005833B8 /* anyoneNeedAnythingFromTown.gpx */,
 				CD863038226858710024FCA2 /* lisasrun.gpx */,
 				CD305E4D22775E950088732A /* meetMeAtNorris.gpx */,
+				CD6704C82298915A00833E27 /* Lisa's Cafe.gpx */,
 			);
 			path = Routes;
 			sourceTree = "<group>";

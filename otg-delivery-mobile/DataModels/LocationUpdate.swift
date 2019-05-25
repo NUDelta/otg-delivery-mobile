@@ -92,7 +92,13 @@ extension LocationUpdate {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
 
-        let s = formatter.string(from: d)
-        return s
+        return formatter.string(from: d)
+    }
+
+    static func stringToDate(d: String) -> Date {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        return formatter.date(from: d)!
     }
 }

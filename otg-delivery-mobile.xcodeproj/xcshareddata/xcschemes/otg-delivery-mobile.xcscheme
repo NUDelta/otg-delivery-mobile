@@ -64,7 +64,7 @@
       <AdditionalOptions>
       </AdditionalOptions>
       <LocationScenarioReference
-         identifier = "../../otg-delivery-mobile/Routes/lisasrun.gpx"
+         identifier = "../../otg-delivery-mobile/Resources/Routes/Lisa&apos;s Cafe.gpx"
          referenceType = "0">
       </LocationScenarioReference>
    </LaunchAction>

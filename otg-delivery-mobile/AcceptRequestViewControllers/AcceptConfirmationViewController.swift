@@ -13,6 +13,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     @IBOutlet weak var AdditionalDetails: UITextField!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var CancelButton: UIButton!
+    @IBOutlet weak var TimeLabel: UILabel!
 
     var request: CoffeeRequest? = nil
     let locationManager = CLLocationManager()
@@ -21,6 +22,12 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     var chosenPoint: MeetingPoint?
     var referencePoint: MeetingPoint?
     var recentMarker: MKPointAnnotation?
+    var confirmHidden: Bool = true {
+        didSet {
+            ConfirmLabel.isHidden = confirmHidden
+            TimeLabel.isHidden = confirmHidden
+        }
+    }
 
     override func viewDidLoad() {
         checkLocationAuthorizationStatus()
@@ -73,7 +80,8 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                     zoomToPoint(point: CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude))
                     referencePoint = point
                     choosingPoint = true
-                    ConfirmLabel.isHidden = false
+                    confirmHidden = false
+                    TimeLabel.text = "Requester in radius from \(extractTime(date: point.startTime)) - \(extractTime(date: point.endTime))"
                 }
             }
         }
@@ -129,7 +137,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if (annotation.isEqual(mapView.userLocation)) {return nil}
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        annotationView.canShowCallout = true
+        annotationView.canShowCallout = false
         annotationView.pinTintColor = .purple
 
         return annotationView
@@ -194,7 +202,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
 
     func cancelSettingPoint() {
         choosingPoint = false
-        ConfirmLabel.isHidden = true
+        confirmHidden = true
         DetailsView.isHidden = true
         mapView.isUserInteractionEnabled = true
         referencePoint = nil

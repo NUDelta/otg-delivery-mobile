@@ -566,6 +566,16 @@
                                     <action selector="Cancel:" destination="mnl-jJ-IwL" eventType="touchUpInside" id="nlO-GO-2Z5"/>
                                 </connections>
                             </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="[Start Time] - [End Time]" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tF5-gM-LoE">
+                                <rect key="frame" x="0.0" y="611" width="414" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="r3u-Ks-UE1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -574,6 +584,7 @@
                             <constraint firstItem="ZKF-ta-9k1" firstAttribute="top" secondItem="xcd-15-ymt" secondAttribute="bottom" constant="13" id="GIb-x6-eG9"/>
                             <constraint firstItem="ZKF-ta-9k1" firstAttribute="leading" secondItem="O6F-Hc-4JL" secondAttribute="leading" constant="20" id="GL1-ms-Aqo"/>
                             <constraint firstItem="hqA-h6-Xpz" firstAttribute="top" secondItem="xcd-15-ymt" secondAttribute="bottom" constant="123" id="H5M-1r-hdb"/>
+                            <constraint firstItem="tF5-gM-LoE" firstAttribute="leading" secondItem="O6F-Hc-4JL" secondAttribute="leading" id="Ipg-5W-eaD"/>
                             <constraint firstItem="O6F-Hc-4JL" firstAttribute="bottom" secondItem="M3S-rB-dCY" secondAttribute="bottom" id="JUg-Fu-hjg"/>
                             <constraint firstItem="O6F-Hc-4JL" firstAttribute="trailing" secondItem="hqA-h6-Xpz" secondAttribute="trailing" constant="35" id="JZo-Ui-q8m"/>
                             <constraint firstItem="O6F-Hc-4JL" firstAttribute="trailing" secondItem="frd-N8-i1y" secondAttribute="trailing" id="Lxm-eL-SN2"/>
@@ -584,9 +595,11 @@
                             <constraint firstItem="JKf-xP-FAZ" firstAttribute="top" secondItem="xcd-15-ymt" secondAttribute="bottom" id="cbb-9n-Ach"/>
                             <constraint firstItem="O6F-Hc-4JL" firstAttribute="trailing" secondItem="xcd-15-ymt" secondAttribute="trailing" id="giW-Jw-OQD"/>
                             <constraint firstItem="xcd-15-ymt" firstAttribute="leading" secondItem="O6F-Hc-4JL" secondAttribute="leading" id="jh8-p1-dav"/>
+                            <constraint firstItem="O6F-Hc-4JL" firstAttribute="trailing" secondItem="tF5-gM-LoE" secondAttribute="trailing" id="lOn-H2-Cep"/>
                             <constraint firstItem="O6F-Hc-4JL" firstAttribute="trailing" secondItem="M3S-rB-dCY" secondAttribute="trailing" id="q9a-Ve-59q"/>
                             <constraint firstItem="hqA-h6-Xpz" firstAttribute="leading" secondItem="O6F-Hc-4JL" secondAttribute="leading" constant="36" id="s6F-BU-nbN"/>
                             <constraint firstItem="M3S-rB-dCY" firstAttribute="leading" secondItem="O6F-Hc-4JL" secondAttribute="leading" id="skn-R1-l1O"/>
+                            <constraint firstItem="M3S-rB-dCY" firstAttribute="top" secondItem="tF5-gM-LoE" secondAttribute="bottom" id="vXG-g0-Ctk"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="O6F-Hc-4JL"/>
                     </view>
@@ -602,6 +615,7 @@
                         <outlet property="MapView" destination="frd-N8-i1y" id="36V-Fg-bRM"/>
                         <outlet property="PickupLabel" destination="Kuu-69-Nzd" id="RzW-g8-ckh"/>
                         <outlet property="RequesterLabel" destination="GXm-BB-zII" id="3YE-Ln-lgT"/>
+                        <outlet property="TimeLabel" destination="tF5-gM-LoE" id="Iog-0n-4tG"/>
                         <outlet property="mapView" destination="frd-N8-i1y" id="gnN-Te-H3M"/>
                     </connections>
                 </viewController>
@@ -1000,7 +1014,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOs-lv-8Zy">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOs-lv-8Zy">
                                 <rect key="frame" x="32" y="307" width="350" height="122"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="350" id="cBf-Dh-CoP"/>

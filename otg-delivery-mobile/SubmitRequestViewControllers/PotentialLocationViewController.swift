@@ -215,10 +215,6 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
 
-    func coordinateEqual(c1: CLLocationCoordinate2D, c2: CLLocationCoordinate2D) -> Bool {
-        return c1.latitude == c2.latitude && c1.longitude == c2.longitude
-    }
-
     @IBAction func CancelButton(_ sender: Any) {
         if (!infoHidden) {return}
         if (DescriptionText.isHidden) {
@@ -248,9 +244,5 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         mapView.isScrollEnabled = true
         CircleSlider.isEnabled = false
         CircleSlider.isHidden = true
-    }
-
-    func extractTime(date: String) -> String {
-        return date.components(separatedBy: " ")[1]
     }
 }

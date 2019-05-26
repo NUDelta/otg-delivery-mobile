@@ -12,6 +12,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     @IBOutlet weak var ETAPicker: UIDatePicker!
     @IBOutlet weak var AdditionalDetails: UITextField!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var CancelButton: UIButton!
 
     var request: CoffeeRequest? = nil
     let locationManager = CLLocationManager()
@@ -40,13 +41,17 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         mapView.delegate = self
         mapView.showsUserLocation = true
         mapView.isUserInteractionEnabled = true
-        view.sendSubviewToBack(DetailsView)
+        view.sendSubviewToBack(DetailsView) //hack
+        view.sendSubviewToBack(CancelButton)
         view.sendSubviewToBack(mapView)
         ETAPicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
 
         let circleRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCircleTap(_:)))
         circleRecognizer.delegate = self
         mapView.addGestureRecognizer(circleRecognizer)
+
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
     }
 
     @objc func handleCircleTap(_ gestureRecognizer: UIGestureRecognizer) {
@@ -89,7 +94,8 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
 
     func zoomToUser() {
         let userLocation = (locationManager.location?.coordinate)!
-        let span = MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        print(userLocation)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: userLocation, span: span)
         mapView.setRegion(region, animated: false)
     }
@@ -113,11 +119,8 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func addPotentialPoint(point: MeetingPoint) {
-        /*annotation.title = "\(point.startTime) -"
-        annotation.subtitle = point.endTime*/
-
-        let circleCoordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
-        let circle = MKCircle(center: circleCoordinate, radius: point.radius)
+        let pointCoordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
+        let circle = MKCircle(center: pointCoordinate, radius: point.radius)
         mapView.addOverlay(circle)
 
         circles[circle] = point
@@ -171,16 +174,33 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         request?.meetingPoint = chosenPoint!.id
         request?.eta = eta
         chosenPoint?.description = description
-        print(request?.eta)
 
-        //needs start time and end time so we can make sure helper doesn't change time to be outside the window later
         chosenPoint?.startTime = referencePoint!.startTime
         chosenPoint?.endTime = referencePoint!.endTime
 
         MeetingPoint.post(point: chosenPoint!)
     }
 
-    /*@IBAction func Cancel(_ sender: Any) {
-        backToMain(currentScreen: self)
-    }*/
+    @IBAction func Cancel(_ sender: Any) {
+        if (choosingPoint) {
+            cancelSettingPoint()
+        } else {
+            let alert = UIAlertController(title: "Cancel Acceptance.", message: "Are you sure you want to cancel your acceptance?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) {action in backToMain(currentScreen: self)})
+            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+
+    func cancelSettingPoint() {
+        choosingPoint = false
+        ConfirmLabel.isHidden = true
+        DetailsView.isHidden = true
+        mapView.isUserInteractionEnabled = true
+        referencePoint = nil
+        chosenPoint = nil
+        if (recentMarker != nil) {
+            mapView.removeAnnotation(recentMarker!)
+        }
+    }
 }

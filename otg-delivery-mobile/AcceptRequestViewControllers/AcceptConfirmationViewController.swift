@@ -18,7 +18,6 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     var request: CoffeeRequest? = nil
     let locationManager = CLLocationManager()
     var circles: [MKCircle: MeetingPoint] = [:]
-    var choosingPoint = false
     var chosenPoint: MeetingPoint?
     var referencePoint: MeetingPoint?
     var recentMarker: MKPointAnnotation?
@@ -28,6 +27,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
             TimeLabel.isHidden = confirmHidden
         }
     }
+    var activeCircle: MKCircleRenderer?
 
     override func viewDidLoad() {
         checkLocationAuthorizationStatus()
@@ -36,19 +36,18 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func checkLocationAuthorizationStatus() {
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            setUpMapView()
-            zoomToUser()
-        } else {
-            locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.authorizationStatus() != .authorizedAlways {
+            locationManager.requestAlwaysAuthorization()
         }
+        setUpMapView()
+        zoomToUser()
     }
 
     func setUpMapView() {
         mapView.delegate = self
         mapView.showsUserLocation = true
         mapView.isUserInteractionEnabled = true
-        view.sendSubviewToBack(DetailsView) //hack
+        view.sendSubviewToBack(DetailsView) //hacky
         view.sendSubviewToBack(CancelButton)
         view.sendSubviewToBack(mapView)
         ETAPicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
@@ -66,22 +65,26 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         let tappedPoint = gestureRecognizer.location(in: mapView)
         let tappedCoordinate = mapView.convert(tappedPoint, toCoordinateFrom: mapView)
         let mapPoint = MKMapPoint(tappedCoordinate)
-        for (circle, point) in circles {
-            let renderer = MKCircleRenderer(circle: circle)
-            let viewPoint = renderer.point(for: mapPoint)
-            if (renderer.path.contains(viewPoint)) {
-                if (choosingPoint) {
-                    chosenPoint = MeetingPoint(latitude: tappedCoordinate.latitude, longitude: tappedCoordinate.longitude, radius: 0.0, requestId: request!.requestId)
-                    if (recentMarker != nil) {
-                        mapView.removeAnnotation(recentMarker!)
-                    }
-                    addMarker(coordinate: tappedCoordinate)
-                } else {
+        if (activeCircle != nil) {
+            let viewPoint = activeCircle!.point(for: mapPoint)
+            if activeCircle!.path.contains(viewPoint) {
+                chosenPoint = MeetingPoint(latitude: tappedCoordinate.latitude, longitude: tappedCoordinate.longitude, radius: 0.0, requestId: request!.requestId)
+                if (recentMarker != nil) {
+                    mapView.removeAnnotation(recentMarker!)
+                }
+                addMarker(coordinate: tappedCoordinate)
+            }
+        } else {
+            for (circle, point) in circles {
+                let renderer = MKCircleRenderer(circle: circle)
+                let viewPoint = renderer.point(for: mapPoint)
+                if (renderer.path.contains(viewPoint)) {
                     zoomToPoint(point: CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude))
                     referencePoint = point
-                    choosingPoint = true
                     confirmHidden = false
+                    mapView.isScrollEnabled = false
                     TimeLabel.text = "Requester in radius from \(extractTime(date: point.startTime)) - \(extractTime(date: point.endTime))"
+                    activeCircle = renderer
                 }
             }
         }
@@ -102,7 +105,6 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
 
     func zoomToUser() {
         let userLocation = (locationManager.location?.coordinate)!
-        print(userLocation)
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: userLocation, span: span)
         mapView.setRegion(region, animated: false)
@@ -171,26 +173,25 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                 ConfirmLabel.setTitle("Accept Order", for: .normal)
             }
         } else {
-            saveMeetingPoint(description: AdditionalDetails.text!, eta: LocationUpdate.dateToString(d: ETAPicker.date))
-            User.accept(requestId: request!.requestId, userId: defaults.string(forKey: "userId")!)
-            User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
-            backToMain(currentScreen: self)
+            saveMeetingPoint(description: AdditionalDetails.text!, completionHandler: { meetingPoint in
+                DispatchQueue.main.async {
+                    User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
+                    User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
+                    backToMain(currentScreen: self)
+                }
+            })
         }
     }
 
-    func saveMeetingPoint(description: String, eta: String) {
-        request?.meetingPoint = chosenPoint!.id
-        request?.eta = eta
+    func saveMeetingPoint(description: String, completionHandler: @escaping (MeetingPoint) -> Void) {
         chosenPoint?.description = description
-
         chosenPoint?.startTime = referencePoint!.startTime
         chosenPoint?.endTime = referencePoint!.endTime
-
-        MeetingPoint.post(point: chosenPoint!)
+        MeetingPoint.post(point: chosenPoint!, completionHandler: completionHandler)
     }
 
     @IBAction func Cancel(_ sender: Any) {
-        if (choosingPoint) {
+        if (activeCircle != nil) {
             cancelSettingPoint()
         } else {
             let alert = UIAlertController(title: "Cancel Acceptance.", message: "Are you sure you want to cancel your acceptance?", preferredStyle: .alert)
@@ -201,14 +202,15 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func cancelSettingPoint() {
-        choosingPoint = false
         confirmHidden = true
         DetailsView.isHidden = true
         mapView.isUserInteractionEnabled = true
+        mapView.isScrollEnabled = true
         referencePoint = nil
         chosenPoint = nil
         if (recentMarker != nil) {
             mapView.removeAnnotation(recentMarker!)
         }
+        activeCircle = nil
     }
 }

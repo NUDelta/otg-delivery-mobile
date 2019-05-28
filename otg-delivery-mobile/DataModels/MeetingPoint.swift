@@ -36,7 +36,7 @@ struct MeetingPoint : Codable {
 }
 
 extension MeetingPoint {
-    static func post(point: MeetingPoint) {
+    static func post(point: MeetingPoint, completionHandler: @escaping (MeetingPoint) -> Void) {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "latitude", value: "\(point.latitude)"),
@@ -60,6 +60,23 @@ extension MeetingPoint {
 
         let task = session.dataTask(with: requestURL) { data, response, error in
             print("Meeting Point: Data post successful.")
+            guard let data = data else {
+                return
+            }
+
+            var meetingPoint: MeetingPoint?
+            let httpResponse = response as? HTTPURLResponse
+
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    meetingPoint = try decoder.decode(MeetingPoint.self, from: data)
+                    completionHandler(meetingPoint!)
+                } catch {
+                    print("MEETING POINT: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
         }
 
         task.resume()

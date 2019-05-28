@@ -39,7 +39,7 @@ class RequestConfirmationViewController: UIViewController {
                 for var point in self.meetingPoints {
                     point.requestId = requestId!
                     print(requestId!)
-                    MeetingPoint.post(point: point)
+                    MeetingPoint.post(point: point, completionHandler: {_ in })
                 }
             }
         })

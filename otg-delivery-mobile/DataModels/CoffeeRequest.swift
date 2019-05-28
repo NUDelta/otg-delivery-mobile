@@ -233,33 +233,32 @@ extension CoffeeRequest {
         }
         task.resume()
     }
-//
-//    static func updateRequest(with_id id: String, withRequest coffeeRequest: CoffeeRequest, completionHandler: @escaping () -> Void) {
-//        print("In update request ")
-//        let session: URLSession = URLSession.shared
-//        let url = URL(string: (CoffeeRequest.apiUrl + "/\(id)"))
-//        var requestURL = URLRequest(url: url!)
-//
-//        requestURL.httpMethod = "PATCH"
-//        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//
-//        var components = URLComponents(string: "")
-//        components?.queryItems = [
-//            URLQueryItem(name: "requester", value: coffeeRequest.requesterId),
-//            URLQueryItem(name: "helper", value: coffeeRequest.helperId),
-//            URLQueryItem(name: "status", value: coffeeRequest.status)
-//        ]
-//
-//        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
-//        let httpBodyString: String? = components?.url?.absoluteString
-//        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
-//
-//        let task = session.dataTask(with: requestURL){ data, response, error in
-//            print("COFFEE REQUEST: Data post successful.")
-//        }
-//
-//        task.resume()
-//    }
+
+    static func acceptRequest(with_id id: String, pointId: String, eta: String, completionHandler: @escaping () -> Void) {
+        print("In update request ")
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(id)"))
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "meetingPoint", value: pointId),
+            URLQueryItem(name: "eta", value: eta)
+        ]
+
+        //These two lines are cancerous :: something severly wrong with my hack with URLComponents
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Data post successful.")
+        }
+
+        task.resume()
+    }
 
     // Method that takes an ID and deletes the request from the database
     static func deleteRequest(with_id id: String) {

@@ -210,14 +210,22 @@ extension User {
         task.resume()
     }
 
-    static func accept(requestId: String, userId: String) {
+    static func accept(requestId: String, userId: String, meetingPointId: String, eta: String) {
         let session: URLSession = URLSession.shared
         let url = URL(string: (User.apiUrl + "/\(userId)/accept/\(requestId)"))
         var requestURL = URLRequest(url: url!)
-        
+
         requestURL.httpMethod = "PATCH"
         requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
+
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "meetingPointId", value: meetingPointId),
+            URLQueryItem(name: "eta", value: eta),
+        ]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             print("COFFEE REQUEST: Accept")
         }

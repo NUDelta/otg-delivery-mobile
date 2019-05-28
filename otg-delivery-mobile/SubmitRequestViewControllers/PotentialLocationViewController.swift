@@ -49,10 +49,10 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     func checkLocationAuthorizationStatus() {
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+        if CLLocationManager.authorizationStatus() == .authorizedAlways {
             setUpMapView()
         } else {
-            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestAlwaysAuthorization()
         }
     }
 

@@ -1041,6 +1041,9 @@
                                 <state key="normal" title="Order Completed">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="CompleteOrder:" destination="n3y-lJ-EjJ" eventType="touchUpInside" id="Gd1-bW-2I8"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1059,6 +1062,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDP-xP-aqS"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="R25-4u-5f5" id="Doe-0w-jdx"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pEP-oV-UJL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

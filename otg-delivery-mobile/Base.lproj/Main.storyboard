@@ -1014,32 +1014,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qOs-lv-8Zy">
-                                <rect key="frame" x="32" y="307" width="350" height="122"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="350" id="cBf-Dh-CoP"/>
-                                </constraints>
-                                <string key="text">Your Request Was Accepted!
- Please wait for your helper to pick up your order. 
-</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPh-PM-Z5K">
-                                <rect key="frame" x="155" y="666" width="104" height="30"/>
-                                <state key="normal" title="Contact Helper"/>
+                                <rect key="frame" x="0.0" y="616" width="414" height="60"/>
+                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="nh2-UU-doC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Contact Helper">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
                                     <action selector="ContactHelper:" destination="n3y-lJ-EjJ" eventType="touchUpInside" id="y03-aO-GCP"/>
                                 </connections>
                             </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="R25-4u-5f5">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="616"/>
+                            </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mry-vD-w4Q">
+                                <rect key="frame" x="0.0" y="676" width="414" height="60"/>
+                                <color key="backgroundColor" red="0.52269905809999995" green="0.75433188679999996" blue="0.63135844470000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="UMd-uT-scb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Order Completed">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="qOs-lv-8Zy" firstAttribute="centerX" secondItem="961-Jf-qMR" secondAttribute="centerX" id="LjT-VB-Qjh"/>
+                            <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="YPh-PM-Z5K" secondAttribute="trailing" id="3g2-ij-hIL"/>
+                            <constraint firstItem="R25-4u-5f5" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Bn2-O7-M8T"/>
+                            <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="R25-4u-5f5" secondAttribute="trailing" id="JLM-e3-5bH"/>
+                            <constraint firstItem="YPh-PM-Z5K" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Lar-07-Xb2"/>
+                            <constraint firstItem="EDP-xP-aqS" firstAttribute="bottom" secondItem="mry-vD-w4Q" secondAttribute="bottom" id="NdA-4t-Gsa"/>
+                            <constraint firstItem="mry-vD-w4Q" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Y35-iE-4cb"/>
+                            <constraint firstItem="mry-vD-w4Q" firstAttribute="top" secondItem="YPh-PM-Z5K" secondAttribute="bottom" id="bti-Y2-eAy"/>
+                            <constraint firstItem="R25-4u-5f5" firstAttribute="top" secondItem="961-Jf-qMR" secondAttribute="top" id="fHs-sv-sLw"/>
+                            <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="mry-vD-w4Q" secondAttribute="trailing" id="pf4-xh-Uq0"/>
                             <constraint firstItem="YPh-PM-Z5K" firstAttribute="centerX" secondItem="961-Jf-qMR" secondAttribute="centerX" id="tVR-qk-TtD"/>
-                            <constraint firstItem="EDP-xP-aqS" firstAttribute="bottom" secondItem="YPh-PM-Z5K" secondAttribute="bottom" constant="40" id="tgv-Dm-S04"/>
-                            <constraint firstItem="qOs-lv-8Zy" firstAttribute="centerY" secondItem="961-Jf-qMR" secondAttribute="centerY" id="wFf-bV-2x7"/>
+                            <constraint firstItem="YPh-PM-Z5K" firstAttribute="top" secondItem="R25-4u-5f5" secondAttribute="bottom" id="veF-Mm-XuP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDP-xP-aqS"/>
                     </view>

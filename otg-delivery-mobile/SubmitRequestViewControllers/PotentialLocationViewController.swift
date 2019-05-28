@@ -91,6 +91,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
+        annotation.title = "title"
         mapView.addAnnotation(annotation)
         recentAnnotation = annotation
 
@@ -101,6 +102,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         CircleSlider.isEnabled = true
         currentPoint = MeetingPoint(latitude: touchMapCoordinate.latitude, longitude: touchMapCoordinate.longitude, radius: 0.0, requestId: currentRequest!.requestId)
 
+        mapView.isUserInteractionEnabled = false
         mapView.isScrollEnabled = false
     }
 
@@ -137,12 +139,16 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if (annotation.isEqual(mapView.userLocation)) {return nil}
+        if (annotation is MKUserLocation) {return nil}
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "annotation")
-        annotationView.canShowCallout = false
         annotationView.pinTintColor = .purple
-
         return annotationView
+    }
+
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        for view in views {
+            view.canShowCallout = false
+        }
     }
 
     func initializeRequest() {
@@ -160,7 +166,6 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             DescriptionText.text = "Select Start Time"
             CircleSlider.isEnabled = false
             CircleSlider.isHidden = true
-            mapView.isUserInteractionEnabled = false
             DatePicker.isHidden = false
             currentPoint?.radius = recentCircle!.radius
         } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
@@ -216,11 +221,15 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     }
 
     @IBAction func CancelButton(_ sender: Any) {
-        if (!infoHidden) {return}
-        if (DescriptionText.isHidden) {
+        if (!infoHidden) {
+            infoHidden = true
+            mapView.isUserInteractionEnabled = true
+            mapView.deselectAnnotation(recentAnnotation, animated: true)
+            recentAnnotation = nil
+        } else if (DescriptionText.isHidden) {
             if (meetingPoints.count > 0) {
                 let alert = UIAlertController(title: "Cancel Request.", message: "Are you sure you want to cancel your request?", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Yes", style: .default) {action in backToMain(currentScreen: self)})
+                alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in backToMain(currentScreen: self)})
                 alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {
@@ -235,8 +244,9 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     func cancelSetting() {
         if (recentAnnotation != nil) {mapView.removeAnnotation(recentAnnotation!)}
         if (recentCircle != nil) {mapView.removeOverlay(recentCircle!)}
-        ConfirmOutlet.setTitle("Confirm", for: .normal)
+        recentAnnotation = nil
         recentCircle = nil
+        ConfirmOutlet.setTitle("Confirm", for: .normal)
         DescriptionText.isHidden = true
         mapView.isUserInteractionEnabled = true
         DatePicker.isHidden = true

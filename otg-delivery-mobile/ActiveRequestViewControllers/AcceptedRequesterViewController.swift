@@ -1,11 +1,3 @@
-//
-//  InitialRequesterViewControllwe.swift
-//  otg-delivery-mobile
-//
-//  Created by Cooper Barth on 5/1/19.
-//  Copyright © 2019 Sam Naser. All rights reserved.
-//
-
 import UIKit
 import MessageUI
 

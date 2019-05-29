@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  another_example
-//
-//  Created by Sam Naser on 1/19/18.
-//  Copyright © 2018 Sam Naser. All rights reserved.
-//
-
 import UIKit
 import UserNotifications
 import CoreLocation
@@ -100,7 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
 
-        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: "Fake")
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: "Fake")
         LocationUpdate.post(locUpdate: locUpdate)
     }
 	

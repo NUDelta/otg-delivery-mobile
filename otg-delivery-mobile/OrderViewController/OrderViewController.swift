@@ -153,7 +153,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
 
-        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: timestamp, userId: requesterId)
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
         LocationUpdate.post(locUpdate: locUpdate)
     }
 
@@ -243,12 +243,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         cell.locationDetailsLabel.text = "From: \(Location.camelCaseToWords(camelCaseString: request.pickupLocation))"
 
         if (isMyRequest(indexPath: indexPath)) { //user made request
-            if (request.status ==  "Accepted") {
+            if (request.status == "Accepted" || request.status == "Picked Up") {
                 defaults.set(request.requestId, forKey: "ActiveRequestId")
-                performSegue(withIdentifier: "RequesterAccepted", sender: nil)
-            } else if (request.status == "Picked Up") {
-                defaults.set(request.requestId, forKey: "ActiveRequestId")
-                performSegue(withIdentifier: "RequesterPickedUp", sender: nil)
+                performSegue(withIdentifier: "OrderAccepted", sender: nil)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
                 cell.contactRequesterButton.isHidden = true
@@ -259,11 +256,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         } else if (request.helper?.username == defaults.string(forKey: "username")) { //user is helper
             defaults.set(request.requestId, forKey: "ActiveRequestId")
-            if (request.status == "Accepted") {
-                performSegue(withIdentifier: "HelperAccepted", sender: nil)
-            } else if (request.status == "Picked Up") {
-                performSegue(withIdentifier: "HelperPickedUp", sender: nil)
-            }
+            performSegue(withIdentifier: "OrderAccepted", sender: nil)
         } else { //user not involved
             if (request.status == "Accepted") {
                 cell.statusLabel.text = "Accepted by someone else."

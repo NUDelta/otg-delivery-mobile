@@ -81,10 +81,7 @@
                         <outlet property="requestTableView" destination="WNl-P1-zh6" id="QJK-ve-Q4a"/>
                         <segue destination="nOO-Ni-irR" kind="presentation" identifier="loginSegue" id="der-fs-K6I"/>
                         <segue destination="bY6-iV-ULI" kind="presentation" identifier="orderFormSegue" id="8tg-LY-YmZ"/>
-                        <segue destination="bcJ-bH-nzi" kind="presentation" identifier="HelperAccepted" id="qBp-5L-dyo"/>
-                        <segue destination="n3y-lJ-EjJ" kind="presentation" identifier="RequesterAccepted" id="MI3-kq-JfB"/>
-                        <segue destination="e0a-9O-fM1" kind="presentation" identifier="RequesterPickedUp" id="yJy-CN-SV1"/>
-                        <segue destination="YOG-su-8gr" kind="presentation" identifier="HelperPickedUp" id="BZ7-GK-tgn"/>
+                        <segue destination="n3y-lJ-EjJ" kind="presentation" identifier="OrderAccepted" id="MI3-kq-JfB"/>
                         <segue destination="mnl-jJ-IwL" kind="presentation" identifier="acceptRequest" id="AhN-fh-gbM"/>
                     </connections>
                 </viewController>
@@ -829,187 +826,10 @@
             </objects>
             <point key="canvasLocation" x="-2552" y="695"/>
         </scene>
-        <!--Accepted Helper View Controller-->
-        <scene sceneID="b3u-sj-2xm">
-            <objects>
-                <viewController id="bcJ-bH-nzi" customClass="AcceptedHelperViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="FzJ-rZ-Mce">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="120" translatesAutoresizingMaskIntoConstraints="NO" id="ejE-DV-XTB">
-                                <rect key="frame" x="44.666666666666657" y="118.33333333333334" width="325" height="499.66666666666663"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order: [Item] from [Location]" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ctb-i8-E23">
-                                        <rect key="frame" x="0.0" y="0.0" width="325" height="20.333333333333332"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="325" id="hM9-J7-DiZ"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="93d-yl-Qd6">
-                                        <rect key="frame" x="100" y="140.33333333333337" width="125" height="134.33333333333337"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h7F-iY-f2i">
-                                                <rect key="frame" x="18.666666666666686" y="0.0" width="87.333333333333329" height="20.333333333333332"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtV-dH-8W5">
-                                                <rect key="frame" x="0.0" y="47.333333333333314" width="125" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="125" id="BPG-yL-ent"/>
-                                                </constraints>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ul2-p9-1Mf">
-                                                <rect key="frame" x="10.333333333333343" y="104.33333333333331" width="104" height="30"/>
-                                                <state key="normal" title="Picked Up Item"/>
-                                                <connections>
-                                                    <action selector="PickedUpOrder:" destination="bcJ-bH-nzi" eventType="touchUpInside" id="dnh-CZ-AE5"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="45" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-jI-q60">
-                                        <rect key="frame" x="96" y="394.66666666666669" width="133" height="105"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DDZ-Nj-s27">
-                                                <rect key="frame" x="0.0" y="0.0" width="133" height="30"/>
-                                                <state key="normal" title="Contact Requester"/>
-                                                <connections>
-                                                    <action selector="ContactRequester:" destination="bcJ-bH-nzi" eventType="touchUpInside" id="IqL-YZ-76c"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U2m-1c-Bvo">
-                                                <rect key="frame" x="0.0" y="75" width="133" height="30"/>
-                                                <state key="normal" title="Cancel Acceptance"/>
-                                                <connections>
-                                                    <action selector="CancelAcceptance:" destination="bcJ-bH-nzi" eventType="touchUpInside" id="niM-05-5d3"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="ejE-DV-XTB" firstAttribute="centerX" secondItem="FzJ-rZ-Mce" secondAttribute="centerX" id="6V1-Cn-bp5"/>
-                            <constraint firstItem="ejE-DV-XTB" firstAttribute="centerY" secondItem="FzJ-rZ-Mce" secondAttribute="centerY" id="c8Z-vk-nYn"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="6e9-f8-JBd"/>
-                    </view>
-                    <connections>
-                        <outlet property="PriceTextField" destination="BtV-dH-8W5" id="5BW-jK-4wG"/>
-                        <outlet property="detailsLabel" destination="ctb-i8-E23" id="nji-la-Hfl"/>
-                        <segue destination="YOG-su-8gr" kind="presentation" identifier="HelperPickedUp" id="STh-rX-wBx"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ras-Pd-GbI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2552" y="1449"/>
-        </scene>
-        <!--Picked Up Helper View Controller-->
-        <scene sceneID="LbB-wM-peO">
-            <objects>
-                <viewController id="YOG-su-8gr" customClass="PickedUpHelperViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="pwe-l6-j0P">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="7ib-nJ-e63">
-                                <rect key="frame" x="81.666666666666671" y="313" width="250.66666666666663" height="110.33333333333331"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meet Requester at Meeting Point" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hdj-Fh-3IO">
-                                        <rect key="frame" x="0.0" y="0.0" width="250.66666666666666" height="20.333333333333332"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iUI-pV-FqC">
-                                        <rect key="frame" x="67.999999999999986" y="80.333333333333314" width="115.00000000000001" height="30"/>
-                                        <state key="normal" title="Confirm Delivery"/>
-                                        <connections>
-                                            <action selector="ConfirmDelivery:" destination="YOG-su-8gr" eventType="touchUpInside" id="B2a-dV-WYO"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="7ib-nJ-e63" firstAttribute="centerX" secondItem="pwe-l6-j0P" secondAttribute="centerX" id="6mv-4W-RHy"/>
-                            <constraint firstItem="7ib-nJ-e63" firstAttribute="centerY" secondItem="pwe-l6-j0P" secondAttribute="centerY" id="oo3-tL-twx"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="350-DD-nGp"/>
-                    </view>
-                    <connections>
-                        <outlet property="RequesterLabel" destination="hdj-Fh-3IO" id="8ON-5F-kgf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8tF-B7-kAh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2552" y="2158"/>
-        </scene>
-        <!--Picked Up Requester View Controller-->
-        <scene sceneID="jS1-DA-hRx">
-            <objects>
-                <viewController id="e0a-9O-fM1" customClass="PickedUpRequesterViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="JLj-2L-cUJ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="Llq-i7-DjO">
-                                <rect key="frame" x="93" y="291.66666666666669" width="228" height="152.66666666666669"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meet Helper at Meeting Point." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewE-35-ACK">
-                                        <rect key="frame" x="0.0" y="0.0" width="228" height="20.333333333333332"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total: $0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pOX-cz-fEx">
-                                        <rect key="frame" x="68.333333333333343" y="61.333333333333321" width="91.333333333333343" height="20.333333333333336"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnH-Rk-e4f">
-                                        <rect key="frame" x="56.666666666666657" y="122.66666666666663" width="115" height="30"/>
-                                        <state key="normal" title="Confirm Delivery"/>
-                                        <connections>
-                                            <action selector="ConfirmDelivered:" destination="e0a-9O-fM1" eventType="touchUpInside" id="ggF-YT-qfN"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Llq-i7-DjO" firstAttribute="centerY" secondItem="JLj-2L-cUJ" secondAttribute="centerY" id="O4Q-hp-M2E"/>
-                            <constraint firstItem="Llq-i7-DjO" firstAttribute="centerX" secondItem="JLj-2L-cUJ" secondAttribute="centerX" id="ys9-XV-PlN"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Bj7-0e-JCB"/>
-                    </view>
-                    <connections>
-                        <outlet property="HelperLabel" destination="ewE-35-ACK" id="Xbm-RZ-mNs"/>
-                        <outlet property="PriceLabel" destination="pOX-cz-fEx" id="Jsa-HU-oMs"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CXO-XQ-r0T" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1810.144927536232" y="2157.880434782609"/>
-        </scene>
-        <!--Accepted Requester View Controller-->
+        <!--Accepted View Controller-->
         <scene sceneID="gu4-s6-3Yw">
             <objects>
-                <viewController id="n3y-lJ-EjJ" customClass="AcceptedRequesterViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="n3y-lJ-EjJ" customClass="AcceptedViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="961-Jf-qMR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1021,7 +841,7 @@
                                     <constraint firstAttribute="height" constant="60" id="nh2-UU-doC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Contact Helper">
+                                <state key="normal" title="Contact">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -1045,24 +865,49 @@
                                     <action selector="CompleteOrder:" destination="n3y-lJ-EjJ" eventType="touchUpInside" id="Gd1-bW-2I8"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gs7-B0-KGu">
+                                <rect key="frame" x="0.0" y="20" width="414" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="RbT-eQ-ucY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Helper Tools ▾">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                            </button>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gh-J9-ehM">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="YPh-PM-Z5K" secondAttribute="trailing" id="3g2-ij-hIL"/>
                             <constraint firstItem="R25-4u-5f5" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Bn2-O7-M8T"/>
+                            <constraint firstItem="7gh-J9-ehM" firstAttribute="top" secondItem="961-Jf-qMR" secondAttribute="top" id="IIx-Vh-shO"/>
                             <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="R25-4u-5f5" secondAttribute="trailing" id="JLM-e3-5bH"/>
                             <constraint firstItem="YPh-PM-Z5K" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Lar-07-Xb2"/>
                             <constraint firstItem="EDP-xP-aqS" firstAttribute="bottom" secondItem="mry-vD-w4Q" secondAttribute="bottom" id="NdA-4t-Gsa"/>
+                            <constraint firstItem="gs7-B0-KGu" firstAttribute="top" secondItem="EDP-xP-aqS" secondAttribute="top" id="T2j-NU-Ch5"/>
+                            <constraint firstItem="gs7-B0-KGu" firstAttribute="trailing" secondItem="EDP-xP-aqS" secondAttribute="trailing" id="TMT-0e-JC7"/>
                             <constraint firstItem="mry-vD-w4Q" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="Y35-iE-4cb"/>
                             <constraint firstItem="mry-vD-w4Q" firstAttribute="top" secondItem="YPh-PM-Z5K" secondAttribute="bottom" id="bti-Y2-eAy"/>
+                            <constraint firstItem="gs7-B0-KGu" firstAttribute="top" secondItem="7gh-J9-ehM" secondAttribute="bottom" id="ezs-e7-slB"/>
                             <constraint firstItem="R25-4u-5f5" firstAttribute="top" secondItem="961-Jf-qMR" secondAttribute="top" id="fHs-sv-sLw"/>
+                            <constraint firstAttribute="trailing" secondItem="7gh-J9-ehM" secondAttribute="trailing" id="juC-pa-pMo"/>
+                            <constraint firstItem="gs7-B0-KGu" firstAttribute="leading" secondItem="EDP-xP-aqS" secondAttribute="leading" id="lyX-eq-4ON"/>
                             <constraint firstItem="EDP-xP-aqS" firstAttribute="trailing" secondItem="mry-vD-w4Q" secondAttribute="trailing" id="pf4-xh-Uq0"/>
                             <constraint firstItem="YPh-PM-Z5K" firstAttribute="centerX" secondItem="961-Jf-qMR" secondAttribute="centerX" id="tVR-qk-TtD"/>
                             <constraint firstItem="YPh-PM-Z5K" firstAttribute="top" secondItem="R25-4u-5f5" secondAttribute="bottom" id="veF-Mm-XuP"/>
+                            <constraint firstItem="7gh-J9-ehM" firstAttribute="leading" secondItem="961-Jf-qMR" secondAttribute="leading" id="xHu-BO-Zad"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="EDP-xP-aqS"/>
                     </view>
                     <connections>
+                        <outlet property="ContactLabel" destination="YPh-PM-Z5K" id="VqS-8H-eGE"/>
+                        <outlet property="HelperDropdown" destination="gs7-B0-KGu" id="qa1-vT-aYV"/>
+                        <outlet property="HelperFiller" destination="7gh-J9-ehM" id="mc9-va-8l0"/>
                         <outlet property="mapView" destination="R25-4u-5f5" id="Doe-0w-jdx"/>
                     </connections>
                 </viewController>
@@ -1142,7 +987,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="BZ7-GK-tgn"/>
         <segue reference="JUl-uq-RFC"/>
     </inferredMetricsTieBreakers>
 </document>

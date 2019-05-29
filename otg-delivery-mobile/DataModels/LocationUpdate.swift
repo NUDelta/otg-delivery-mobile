@@ -18,7 +18,7 @@ struct LocationUpdate : Codable {
     let speed: Double
     let direction: Double
     let uncertainty: Double
-    let timestamp: Date
+    let timestamp: String
     let userId: String
 }
 
@@ -31,7 +31,8 @@ extension LocationUpdate {
             URLQueryItem(name: "speed", value: String(locUpdate.speed)),
             URLQueryItem(name: "direction", value: String(locUpdate.direction)),
             URLQueryItem(name: "uncertainty", value: String(locUpdate.uncertainty)),
-            URLQueryItem(name: "timestamp", value: dateToString(d: locUpdate.timestamp)),
+            URLQueryItem(name: "timestamp", value: locUpdate.timestamp),
+            URLQueryItem(name: "userId", value: String(locUpdate.userId))
         ]
 
         let url = URL(string: LocationUpdate.apiUrl)
@@ -58,8 +59,9 @@ extension LocationUpdate {
 
         task.resume()
     }
-    
+
     static func getRecent(withId userId: String, completionHandler: @escaping (LocationUpdate?) -> Void) {
+        print(userId)
         let url = URL(string: "\(LocationUpdate.apiUrl)/\(userId)/recent")
         let session: URLSession = URLSession.shared
         let requestURL = URLRequest(url: url!)

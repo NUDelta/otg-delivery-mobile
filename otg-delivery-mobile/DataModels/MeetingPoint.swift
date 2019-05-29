@@ -110,8 +110,37 @@ extension MeetingPoint {
         task.resume()
     }
 
-    static func getByRequest(with_id requestId: String, completionHandler: @escaping ([MeetingPoint]) -> Void) {
+    static func getById(with_id requestId: String, completionHandler: @escaping (MeetingPoint) -> Void) {
         let url = URL(string: "\(MeetingPoint.apiUrl)/\(requestId)")
+        let session: URLSession = URLSession.shared
+        let requestURL = URLRequest(url: url!)
+
+        let task = session.dataTask(with: requestURL) { data, response, error in
+            print("Meeting Point: Data retrieved successfully.")
+            guard let data = data else {
+                return
+            }
+
+            var meetingPoint: MeetingPoint?
+            let httpResponse = response as? HTTPURLResponse
+
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    meetingPoint = try decoder.decode(MeetingPoint.self, from: data)
+                    completionHandler(meetingPoint!)
+                } catch {
+                    print("MEETING POINT: error trying to convert data to JSON...")
+                    print(error)
+                }
+            }
+        }
+
+        task.resume()
+    }
+
+    static func getByRequest(with_id requestId: String, completionHandler: @escaping ([MeetingPoint]) -> Void) {
+        let url = URL(string: "\(MeetingPoint.apiUrl)/\(requestId)/request")
         let session: URLSession = URLSession.shared
         let requestURL = URLRequest(url: url!)
 

@@ -45,12 +45,4 @@ class AcceptedHelperViewController: UIViewController, MFMessageComposeViewContro
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         self.dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func CancelAcceptance(_ sender: Any) {
-        CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
-        CoffeeRequest.removeHelper(requestId: requestId)
-        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
-        defaults.set("", forKey: "ActiveRequestId")
-        backToMain(currentScreen: self)
-    }
 }

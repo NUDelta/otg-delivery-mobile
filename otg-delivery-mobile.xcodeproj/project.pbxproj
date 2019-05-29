@@ -34,7 +34,7 @@
 		CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */; };
 		CD32831822756A1E00BCA4B9 /* RequestTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD32831722756A1E00BCA4B9 /* RequestTableView.swift */; };
 		CD676CAA227A48DF00ECE78E /* AcceptedHelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */; };
-		CD676CAD227A9F3B00ECE78E /* AcceptedRequesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CAC227A9F3B00ECE78E /* AcceptedRequesterViewController.swift */; };
+		CD676CAD227A9F3B00ECE78E /* AcceptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
 		CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
@@ -76,7 +76,7 @@
 		CD32831722756A1E00BCA4B9 /* RequestTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableView.swift; sourceTree = "<group>"; };
 		CD6704C82298915A00833E27 /* Lisa's Cafe.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Lisa's Cafe.gpx"; sourceTree = "<group>"; };
 		CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedHelperViewController.swift; sourceTree = "<group>"; };
-		CD676CAC227A9F3B00ECE78E /* AcceptedRequesterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedRequesterViewController.swift; sourceTree = "<group>"; };
+		CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedViewController.swift; sourceTree = "<group>"; };
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
 		CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialLocationViewController.swift; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 				22AD278820129CCE005BA4B9 /* AppDelegate.swift */,
 				CD86302F226836720024FCA2 /* OrderViewController */,
 				394DD8082225EECB002504E9 /* SubmitRequestViewControllers */,
-				CD2B19012276789700A262C7 /* AcceptRequestViewControllers */,
+				CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */,
 				CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */,
 				3987A3012234371F001132AF /* DataModels */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
@@ -183,14 +183,6 @@
 			path = LocationSelectionViewController;
 			sourceTree = "<group>";
 		};
-		CD2B19012276789700A262C7 /* AcceptRequestViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */,
-			);
-			path = AcceptRequestViewControllers;
-			sourceTree = "<group>";
-		};
 		CD58E18422769E9000317EDE /* RequestTableView */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,10 +195,8 @@
 		CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */,
-				CD676CAC227A9F3B00ECE78E /* AcceptedRequesterViewController.swift */,
-				CD21201F227B90E900B1206C /* PickedUpHelperViewController.swift */,
-				CD21201D227B908100B1206C /* PickedUpRequesterViewController.swift */,
+				CDB5B26E229E20CD00D8FD67 /* Old */,
+				CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */,
 			);
 			path = ActiveRequestViewControllers;
 			sourceTree = "<group>";
@@ -243,6 +233,16 @@
 				22BD7F162045E741008A877B /* image-resources */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CDB5B26E229E20CD00D8FD67 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				CD21201D227B908100B1206C /* PickedUpRequesterViewController.swift */,
+				CD21201F227B90E900B1206C /* PickedUpHelperViewController.swift */,
+				CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,7 +334,7 @@
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				3987A3002234370C001132AF /* MeetingPoint.swift in Sources */,
 				394DD8122232DA1E002504E9 /* ItemSelectionTableViewCell.swift in Sources */,
-				CD676CAD227A9F3B00ECE78E /* AcceptedRequesterViewController.swift in Sources */,
+				CD676CAD227A9F3B00ECE78E /* AcceptedViewController.swift in Sources */,
 				CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */,
 				CD21201E227B908100B1206C /* PickedUpRequesterViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,

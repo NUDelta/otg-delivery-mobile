@@ -27,13 +27,10 @@
 		39C13EEF21ED2A06005833B8 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EEE21ED2A06005833B8 /* Location.swift */; };
 		39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF021F695B0005833B8 /* LocationUpdate.swift */; };
 		39C13EF321F769B0005833B8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C13EF221F769B0005833B8 /* Constants.swift */; };
-		CD21201E227B908100B1206C /* PickedUpRequesterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD21201D227B908100B1206C /* PickedUpRequesterViewController.swift */; };
-		CD212020227B90E900B1206C /* PickedUpHelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD21201F227B90E900B1206C /* PickedUpHelperViewController.swift */; };
 		CD212022227B99DC00B1206C /* HelperFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD212021227B99DC00B1206C /* HelperFuncs.swift */; };
 		CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B18FD2276642A00A262C7 /* LocationSelectionViewController.swift */; };
 		CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */; };
 		CD32831822756A1E00BCA4B9 /* RequestTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD32831722756A1E00BCA4B9 /* RequestTableView.swift */; };
-		CD676CAA227A48DF00ECE78E /* AcceptedHelperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */; };
 		CD676CAD227A9F3B00ECE78E /* AcceptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
 		CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */; };
@@ -67,15 +64,12 @@
 		39C13EF021F695B0005833B8 /* LocationUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationUpdate.swift; sourceTree = "<group>"; };
 		39C13EF221F769B0005833B8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		39C13EF421FF5DF4005833B8 /* anyoneNeedAnythingFromTown.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = anyoneNeedAnythingFromTown.gpx; sourceTree = "<group>"; };
-		CD21201D227B908100B1206C /* PickedUpRequesterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickedUpRequesterViewController.swift; sourceTree = "<group>"; };
-		CD21201F227B90E900B1206C /* PickedUpHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickedUpHelperViewController.swift; sourceTree = "<group>"; };
 		CD212021227B99DC00B1206C /* HelperFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperFuncs.swift; sourceTree = "<group>"; };
 		CD2B18FD2276642A00A262C7 /* LocationSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectionViewController.swift; sourceTree = "<group>"; };
 		CD2B18FF2276643A00A262C7 /* LocationSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		CD305E4D22775E950088732A /* meetMeAtNorris.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = meetMeAtNorris.gpx; sourceTree = "<group>"; };
 		CD32831722756A1E00BCA4B9 /* RequestTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableView.swift; sourceTree = "<group>"; };
 		CD6704C82298915A00833E27 /* Lisa's Cafe.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Lisa's Cafe.gpx"; sourceTree = "<group>"; };
-		CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedHelperViewController.swift; sourceTree = "<group>"; };
 		CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptedViewController.swift; sourceTree = "<group>"; };
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
@@ -195,7 +189,6 @@
 		CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CDB5B26E229E20CD00D8FD67 /* Old */,
 				CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */,
 			);
 			path = ActiveRequestViewControllers;
@@ -233,16 +226,6 @@
 				22BD7F162045E741008A877B /* image-resources */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		CDB5B26E229E20CD00D8FD67 /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				CD21201D227B908100B1206C /* PickedUpRequesterViewController.swift */,
-				CD21201F227B90E900B1206C /* PickedUpHelperViewController.swift */,
-				CD676CA9227A48DF00ECE78E /* AcceptedHelperViewController.swift */,
-			);
-			path = Old;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,7 +319,6 @@
 				394DD8122232DA1E002504E9 /* ItemSelectionTableViewCell.swift in Sources */,
 				CD676CAD227A9F3B00ECE78E /* AcceptedViewController.swift in Sources */,
 				CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */,
-				CD21201E227B908100B1206C /* PickedUpRequesterViewController.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				CD32831822756A1E00BCA4B9 /* RequestTableView.swift in Sources */,
 				CD212022227B99DC00B1206C /* HelperFuncs.swift in Sources */,
@@ -346,9 +328,7 @@
 				CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
-				CD676CAA227A48DF00ECE78E /* AcceptedHelperViewController.swift in Sources */,
 				CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */,
-				CD212020227B90E900B1206C /* PickedUpHelperViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,
 				CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */,
 				391F3845218659BD00F1C91B /* Logging.swift in Sources */,
@@ -522,14 +502,14 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
 				CODE_SIGN_STYLE = Manual;
 				"CODE_SIGN_STYLE[sdk=*]" = Manual;
-				DEVELOPMENT_TEAM = 823S57WQK3;
+				DEVELOPMENT_TEAM = W4E2C6X642;
 				INFOPLIST_FILE = "$(SRCROOT)/otg-delivery-mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.northwestern.delta.otgDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "c37343a3-1d1c-42db-9e45-1c96cd21b117";
-				PROVISIONING_PROFILE_SPECIFIER = "Delta Lab B";
+				PROVISIONING_PROFILE_SPECIFIER = "OTG Dev";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

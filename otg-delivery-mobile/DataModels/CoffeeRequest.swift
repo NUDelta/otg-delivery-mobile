@@ -234,6 +234,25 @@ extension CoffeeRequest {
         task.resume()
     }
 
+    static func updateETA(requestId: String, eta: String) {
+        let session: URLSession = URLSession.shared
+        let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/eta"))
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "PATCH"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        var components = URLComponents(string: "")
+        components?.queryItems = [URLQueryItem(name: "eta", value: eta)]
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL){ data, response, error in
+            print("COFFEE REQUEST: Update ETA")
+        }
+        task.resume()
+    }
+
     static func acceptRequest(with_id id: String, pointId: String, eta: String, completionHandler: @escaping () -> Void) {
         print("In update request ")
         let session: URLSession = URLSession.shared

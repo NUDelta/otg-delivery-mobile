@@ -7,17 +7,28 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
     @IBOutlet weak var HelperDropdown: UIButton!
     @IBOutlet weak var HelperFiller: UIView!
     @IBOutlet weak var ContactLabel: UIButton!
-    
+    @IBOutlet weak var ChangeETALabel: UIButton!
+    @IBOutlet weak var CancelAcceptanceLabel: UIButton!
+    @IBOutlet weak var ETAView: UIView!
+    @IBOutlet weak var ETAChanger: UIDatePicker!
+
     let requestId = defaults.string(forKey: "ActiveRequestId")!
     var request: CoffeeRequest?
     var meetingPoint: MeetingPoint?
     let locationManager = CLLocationManager()
     var otherId: String?
     var status: String?
+    var meetingPointAnnotation: MKPointAnnotation?
     var helperVisible: Bool = false {
         didSet {
             HelperDropdown.isHidden = !helperVisible
             HelperFiller.isHidden = !helperVisible
+        }
+    }
+    var buttonsVisible: Bool = false {
+        didSet {
+            ChangeETALabel.isHidden = !buttonsVisible
+            CancelAcceptanceLabel.isHidden = !buttonsVisible
         }
     }
 
@@ -45,8 +56,6 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
             status = "Helper"
             ContactLabel.setTitle("Contact Requester", for: .normal)
             helperVisible = true
-
-            //helper tools are cancel and change ETA
         }
     }
 
@@ -60,6 +69,11 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         let tapRecognizer = UIGestureRecognizer(target: self, action: #selector(deselectAnnotations(_:)))
         tapRecognizer.delegate = self
         mapView.addGestureRecognizer(tapRecognizer)
+
+        ChangeETALabel.layer.borderColor = UIColor.black.cgColor
+        ChangeETALabel.layer.borderWidth = 0.25
+        CancelAcceptanceLabel.layer.borderColor = UIColor.black.cgColor
+        CancelAcceptanceLabel.layer.borderWidth = 0.25
 
         zoomToUser()
         retrievePoint()
@@ -86,9 +100,10 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         if (meetingPoint == nil) {return}
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: meetingPoint!.latitude, longitude: meetingPoint!.longitude)
-        annotation.title = (meetingPoint?.description == "") ? "No Description" : meetingPoint?.description
-        annotation.subtitle = (request?.eta)
+        annotation.title = ("ETA: \(extractTime(date: request!.eta))")
+        annotation.subtitle = (meetingPoint?.description == "") ? "No Description" : meetingPoint?.description
         self.reloadAnnotations(newAnnotation: annotation)
+        meetingPointAnnotation = annotation
 
         //make a loading screen?
     }
@@ -145,6 +160,52 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         self.present(messageVC, animated: false, completion: nil)
     }
 
+    @IBAction func HelperDropDown(_ sender: Any) {
+        buttonsVisible = !buttonsVisible
+    }
+
+    @IBAction func ChangeETA(_ sender: Any) {
+        buttonsVisible = false
+        ETAView.isHidden = false
+        HelperDropdown.isEnabled = false
+        mapView.isScrollEnabled = false
+        ETAChanger.minimumDate = Date()
+        ETAChanger.maximumDate = LocationUpdate.stringToDate(d: meetingPoint!.endTime)
+        ETAChanger.date = LocationUpdate.stringToDate(d: request!.eta)
+    }
+
+    @IBAction func SetETA(_ sender: Any) {
+        let stringDate = LocationUpdate.dateToString(d: ETAChanger!.date)
+        let stringTime = extractTime(date: stringDate)
+        if (stringDate != request!.eta) {
+            request?.eta = stringDate
+            CoffeeRequest.updateETA(requestId: request!.requestId, eta: request!.eta)
+            if (meetingPointAnnotation != nil) {
+                meetingPointAnnotation!.title = stringTime
+            }
+            User.sendNotification(deviceId: (request?.requester!.deviceId)!, message: "Your helper has updated their ETA to \(stringTime). Please be ready at the meeting point.")
+        }
+        HelperDropdown.isEnabled = true
+        ETAView.isHidden = true
+        mapView.isScrollEnabled = true
+    }
+
+    @IBAction func CancelAcceptance(_ sender: Any) {
+        let alert = UIAlertController(title: "Cancel Acceptance.", message: "Are you sure you want to cancel your acceptance? You will need to pay for any items you have picked up already.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in self.cancel()})
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func cancel() {
+        CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
+        CoffeeRequest.removeHelper(requestId: requestId)
+        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
+        defaults.set("", forKey: "ActiveRequestId")
+        //TODO: Show Feedback why they cancelled
+        backToMain(currentScreen: self)
+    }
+
     @IBAction func CompleteOrder(_ sender: Any) {
         //handle pricing
         //move to feedback screens
@@ -154,19 +215,13 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         for annotation in mapView.annotations {
             mapView.deselectAnnotation(annotation, animated: true)
         }
+        buttonsVisible = false
+        ETAView.isHidden = true
+        HelperDropdown.isEnabled = true
+        mapView.isScrollEnabled = true
     }
 
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         self.dismiss(animated: true, completion: nil)
     }
-
-/*
-    @IBAction func CancelAcceptance(_ sender: Any) {
-        CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
-        CoffeeRequest.removeHelper(requestId: requestId)
-        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
-        defaults.set("", forKey: "ActiveRequestId")
-        backToMain(currentScreen: self)
-    }
- */
 }

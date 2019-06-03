@@ -32,7 +32,7 @@ class FeedbackViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 
     @IBAction func SubmitFeedback(_ sender: Any) {
-        let alert = UIAlertController(title: "Order Completion", message: "Has the request been completed successfully? (i.e. Item and money has been exchanged.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Order Completion", message: "Has the request been completed successfully? (i.e. Item and money has been exchanged.)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in self.endOrder()})
         self.present(alert, animated: true, completion: nil)
     }

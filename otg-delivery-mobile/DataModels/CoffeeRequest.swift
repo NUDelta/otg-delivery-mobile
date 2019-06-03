@@ -311,12 +311,13 @@ extension CoffeeRequest {
                     do {
                         let decoder = JSONDecoder()
                         coffeeRequest = try decoder.decode(CoffeeRequest.self, from: data)
+                        completionHandler(coffeeRequest)
                     } catch {
                         print("COFFEE REQUEST.get: error trying to convert data to JSON...")
                         print(error)
+                        completionHandler(CoffeeRequest()) //send an empty one if error
                     }
                 }
-                completionHandler(coffeeRequest)
             }
         }
 

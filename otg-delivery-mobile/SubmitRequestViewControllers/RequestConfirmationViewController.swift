@@ -8,7 +8,7 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
     @IBOutlet weak var itemLabel: UILabel!
     @IBOutlet weak var pickupLocationLabel: UILabel!
     @IBOutlet weak var TextField: UITextField!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,7 +46,6 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
             DispatchQueue.main.async {
                 for var point in self.meetingPoints {
                     point.requestId = requestId!
-                    print(requestId!)
                     MeetingPoint.post(point: point, completionHandler: {_ in })
                 }
             }

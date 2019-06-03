@@ -104,7 +104,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func zoomToUser() {
-        let userLocation = (locationManager.location?.coordinate)!
+        let userLocation = (locationManager.location != nil) ? (locationManager.location?.coordinate)! : CLLocationCoordinate2D(latitude: 42.060271, longitude: -87.675804)
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: userLocation, span: span)
         mapView.setRegion(region, animated: false)
@@ -173,12 +173,20 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                 ConfirmLabel.setTitle("Accept Order", for: .normal)
             }
         } else {
-            saveMeetingPoint(description: AdditionalDetails.text!, completionHandler: { meetingPoint in
-                DispatchQueue.main.async {
-                    User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
-                    User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
-                    self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 200.0, identifier: self.request!.requestId)
-                    backToMain(currentScreen: self)
+            CoffeeRequest.getRequest(with_id: request!.requestId, completionHandler: {request in
+                if request?.item == "" { //seeing if errored
+                    let alert = UIAlertController(title: "Error", message: "The specified request has been cancelled (or another error has occurred).", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Return to Main", style: .default) {_ in backToMain(currentScreen: self)})
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    self.saveMeetingPoint(description: self.AdditionalDetails.text!, completionHandler: { meetingPoint in
+                        DispatchQueue.main.async {
+                            User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
+                            User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
+                            self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 200.0, identifier: self.request!.requestId)
+                            backToMain(currentScreen: self)
+                        }
+                    })
                 }
             })
         }
@@ -207,7 +215,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
             cancelSettingPoint()
         } else {
             let alert = UIAlertController(title: "Cancel Acceptance.", message: "Are you sure you want to cancel your acceptance?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default) {action in backToMain(currentScreen: self)})
+            alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in backToMain(currentScreen: self)})
             alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }

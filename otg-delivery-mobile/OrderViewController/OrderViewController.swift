@@ -19,6 +19,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     let updateDistance: CLLocationDistance = 10
 
     var timer: Timer!
+    let activeRequestId = defaults.string(forKey: "ActiveRequestId")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,7 +136,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         }
                         self.openRequests = myRequests + nearCoffeeRequests
                         self.requestTableView.reloadData()
-                        self.reloadTimer()
+                        if self.timer == nil {
+                            self.reloadTimer()
+                        }
                     }
                 })
             }
@@ -143,7 +146,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
 
     func reloadTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.loadData), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(self.loadData), userInfo: nil, repeats: true)
     }
 
 
@@ -175,8 +178,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
 
-        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
-        LocationUpdate.post(locUpdate: locUpdate)
+        if activeRequestId != nil {
+            let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
+            LocationUpdate.post(locUpdate: locUpdate)
+        }
     }
 
     func removeCachedGeofenceLocation() {
@@ -210,8 +215,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered \(region.identifier) Geofence.")
-        if (defaults.string(forKey: "ActiveRequestId") != nil) {
-            if region.identifier == defaults.string(forKey: "ActiveRequestId") {
+        if (activeRequestId != nil) {
+            if region.identifier == activeRequestId {
                 User.sendNotification(deviceId: defaults.string(forKey: "RequesterId")!, message: "Your helper is within 200m of the meeting point. Please proceed to the specified location.")
             }
         } else {

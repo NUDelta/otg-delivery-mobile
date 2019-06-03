@@ -280,11 +280,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 performSegue(withIdentifier: "OrderAccepted", sender: nil)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
-                cell.contactRequesterButton.isHidden = true
                 cell.statusLabel.font = UIFont.boldSystemFont(ofSize: 16.0)
                 cell.itemDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
                 cell.locationDetailsLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
-                cell.contactRequesterButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
             }
         } else if (request.helper?.username == defaults.string(forKey: "username")) { //user is helper
             defaults.set(request.requestId, forKey: "ActiveRequestId")
@@ -293,18 +291,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         } else { //user not involved
             if (request.status == "Accepted") {
                 cell.statusLabel.text = "Accepted by someone else."
-                cell.contactRequesterButton.isHidden = true
             } else {
                 cell.statusLabel.text = ""
             }
-            let phoneNumber = request.requester?.phoneNumber ?? "0"
-            cell.contactRequesterButton.tag = Int(phoneNumber) ?? 0
-            cell.contactRequesterButton.setTitle("Contact Requester", for: .normal)
-            cell.contactRequesterButton.addTarget(self, action: #selector(contactUser), for: .touchUpInside)
         }
         return cell
     }
-
 
      // Support conditional editing of the table view.
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

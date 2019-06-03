@@ -186,7 +186,6 @@ extension CoffeeRequest {
     static func updateStatus(requestId: String, status: String) {
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/status"))
-        print(url)
         var requestURL = URLRequest(url: url!)
 
         requestURL.httpMethod = "PATCH"

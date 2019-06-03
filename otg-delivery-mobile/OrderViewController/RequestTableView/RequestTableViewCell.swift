@@ -6,7 +6,6 @@ class RequestTableViewCell: UITableViewCell {
     let statusLabel = UILabel()
     let itemDetailsLabel = UILabel()
     let locationDetailsLabel = UILabel()
-    var contactRequesterButton = UIButton.init(type: .system)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,16 +29,7 @@ class RequestTableViewCell: UITableViewCell {
             label.numberOfLines = 0
             addSubview(label)
         }
-        addContactRequesterButton()
         addConstraints()
-    }
-
-    func addContactRequesterButton() {
-        contactRequesterButton.backgroundColor = UIColor.clear
-        contactRequesterButton.setTitleColor(self.tintColor, for: .normal)
-        contactRequesterButton.setTitle("Contact Requester", for: .normal)
-        contactRequesterButton.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(contactRequesterButton)
     }
 
     func addConstraints() {
@@ -59,7 +49,7 @@ class RequestTableViewCell: UITableViewCell {
                                                       multiplier: 1.0,
                                                       constant: 0.0)
 
-        let bottomMarginConstraint = NSLayoutConstraint(item: contactRequesterButton,
+        let bottomMarginConstraint = NSLayoutConstraint(item: locationDetailsLabel,
                                                         attribute: .bottom,
                                                         relatedBy: .equal,
                                                         toItem: self,
@@ -86,9 +76,6 @@ class RequestTableViewCell: UITableViewCell {
 
             locationDetailsLabel.topAnchor.constraint(equalTo: itemDetailsLabel.bottomAnchor),
             locationDetailsLabel.leftAnchor.constraint(equalTo: itemDetailsLabel.leftAnchor),
-
-            contactRequesterButton.topAnchor.constraint(equalTo: locationDetailsLabel.bottomAnchor),
-            contactRequesterButton.leftAnchor.constraint(equalTo: locationDetailsLabel.leftAnchor)
         ]
 
         NSLayoutConstraint.activate(constraints)

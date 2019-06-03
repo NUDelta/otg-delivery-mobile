@@ -183,10 +183,10 @@ extension CoffeeRequest {
     }
 
     //Method that takes an ID and changes the status of the request
-    //Method that grabs a CoffeeRequest from server and parses into object
     static func updateStatus(requestId: String, status: String) {
         let session: URLSession = URLSession.shared
         let url = URL(string: (CoffeeRequest.apiUrl + "/\(requestId)/status"))
+        print(url)
         var requestURL = URLRequest(url: url!)
 
         requestURL.httpMethod = "PATCH"

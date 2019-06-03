@@ -129,6 +129,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
     }
 
     func addPotentialPoint(point: MeetingPoint) {
+        if (LocationUpdate.stringToDate(d: point.endTime) < Date()) {return}
         let pointCoordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
         let circle = MKCircle(center: pointCoordinate, radius: point.radius)
         mapView.addOverlay(circle)

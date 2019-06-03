@@ -257,7 +257,6 @@
                                 </state>
                                 <connections>
                                     <action selector="submitButton:" destination="5eo-rU-udR" eventType="touchUpInside" id="xZP-yW-n0A"/>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="JUl-uq-RFC"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="55" translatesAutoresizingMaskIntoConstraints="NO" id="ULy-Qs-GiR">
@@ -357,6 +356,7 @@
                         <outlet property="TextField" destination="QYE-oN-Xao" id="rZt-h7-efi"/>
                         <outlet property="itemLabel" destination="dZg-Nu-uYI" id="E9F-jE-dgJ"/>
                         <outlet property="pickupLocationLabel" destination="Gm2-va-Zoa" id="cTh-1g-wmh"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="Submit" id="Aqg-wr-5zg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubf-g8-rSN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1238,6 +1238,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="gbl-Va-tRa"/>
-        <segue reference="D5R-8p-GXI"/>
+        <segue reference="Aqg-wr-5zg"/>
     </inferredMetricsTieBreakers>
 </document>

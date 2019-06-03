@@ -174,18 +174,23 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             DescriptionText.text = "Select End Time"
             ConfirmOutlet.setTitle("Add Point", for: .normal)
         } else if (ConfirmOutlet.titleLabel?.text == "Add Point") {
-            if (DatePicker.date <= currentStartDate!) {return}
-            currentPoint?.startTime = LocationUpdate.dateToString(d: currentStartDate!)
-            currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
-            zoomToUser()
-            ConfirmOutlet.setTitle("Confirm", for: .normal)
-            DescriptionText.isHidden = true
-            mapView.isUserInteractionEnabled = true
-            DatePicker.isHidden = true
-            meetingPoints.append(currentPoint!)
-            recentCircle = nil
-            currentPoint = nil
-            mapView.isScrollEnabled = true
+            if (DatePicker.date <= currentStartDate!) {
+                let alertController = UIAlertController(title: "Error", message: "End Time Must Be After Start Time", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                currentPoint?.startTime = LocationUpdate.dateToString(d: currentStartDate!)
+                currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
+                zoomToUser()
+                ConfirmOutlet.setTitle("Confirm", for: .normal)
+                DescriptionText.isHidden = true
+                mapView.isUserInteractionEnabled = true
+                DatePicker.isHidden = true
+                meetingPoints.append(currentPoint!)
+                recentCircle = nil
+                currentPoint = nil
+                mapView.isScrollEnabled = true
+            }
         } else if (ConfirmOutlet.titleLabel?.text == "Confirm") {
             if (meetingPoints.count == 0) {
                 let alert = UIAlertController(title: "No meeting points selected.", message: "You must select at least one potential location.", preferredStyle: .alert)

@@ -42,49 +42,40 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
         currentRequest?.status = "Searching for Helper"
         currentRequest?.description = TextField.text!
 
-        CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!, completionHandler: { requestId in
-            DispatchQueue.main.async {
-                for var point in self.meetingPoints {
-                    point.requestId = requestId!
-                    MeetingPoint.post(point: point, completionHandler: {_ in })
-                }
+        var latestEndTime = Date()
+        var validEndTimes = false
+        for point in meetingPoints {
+            if LocationUpdate.stringToDate(d: point.endTime) > latestEndTime {
+                validEndTimes = true
+                latestEndTime = LocationUpdate.stringToDate(d: point.endTime)
             }
-        })
+        }
+
+        if validEndTimes {
+            CoffeeRequest.postCoffeeRequest(coffeeRequest: currentRequest!, completionHandler: { requestId in
+                DispatchQueue.main.async {
+                    for var point in self.meetingPoints {
+                        point.requestId = requestId!
+                        MeetingPoint.post(point: point, completionHandler: {_ in })
+                    }
+                    defaults.set(requestId!, forKey: "expireId")
+                    let timer = Timer.init(fireAt: latestEndTime, interval: 0, target: self, selector: #selector(self.expire), userInfo: nil, repeats: false)
+                    RunLoop.main.add(timer, forMode: .common)
+                }
+            })
+            performSegue(withIdentifier: "Submit", sender: self)
+        } else {
+            let alertController = UIAlertController(title: "Error", message: "You have no meeting points with end times after now.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }
 
         let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int + 1
         defaults.set(requestsPlaced, forKey: "requestsPlaced")
+    }
 
-        /*
-        // Set up notifications
-        let secondsNowToStartTime = (CoffeeRequest.stringToDate(s: currentRequest!.orderStartTime)).timeIntervalSinceNow
-
-        // Set up request acceptance notification
-        let seconds1hr15min = 60 * 75
-        let secondsNowToAcceptanceTime =
-            Int(secondsNowToStartTime) + seconds1hr15min
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToAcceptanceTime), execute: {
-            User.sendNotification(deviceId: Constants.myUserId, message: "Send \(String(describing: defaults.object(forKey: "username"))) notification that their request has been accepted. Tell DTR helper to be ready in 15 min and to choose a meeting point. Meeting points: \(CoffeeRequest.prettyParseArray(arr: self.currentRequest!.deliveryLocationOptions))")
-        })
-
-        // Set up text user notification
-        let seconds1hr23min = 60 * 83
-        let secondsNowToTextTime = Int(secondsNowToStartTime) + seconds1hr23min
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToTextTime), execute: {
-            User.sendNotification(deviceId: Constants.myUserId, message: "Text user \(String(describing: defaults.object(forKey: "username")))")
-        })
-
-        // Set up helper arriving soon notification
-        // Set up text user notification
-        let seconds1hr25min = 60 * 85
-        let secondsNowToArrivalNotification = Int(secondsNowToStartTime) + seconds1hr25min
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(secondsNowToArrivalNotification), execute: {
-            #if !targetEnvironment(simulator)
-            // Simulators can't receive notifications
-            User.sendNotification(deviceId: defaults.object(forKey:"tokenId") as! String, message: "Your helper is arriving soon! Please go meet them at the meeting point now.")
-            #endif
-            User.sendNotification(deviceId: Constants.myUserId, message: "Tell DTR helper to head to meeting point now to meets.")
-        })
- */
+    @objc func expire() {
+        CoffeeRequest.updateStatus(requestId: defaults.string(forKey: "expireId")!, status: "Expired")
     }
 
     func setTimeProbabilities(request: CoffeeRequest) -> CoffeeRequest {

@@ -178,7 +178,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
 
-        if activeRequestId != nil {
+        if activeRequestId != nil { //remove when testing for location updates
             let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
             LocationUpdate.post(locUpdate: locUpdate)
         }

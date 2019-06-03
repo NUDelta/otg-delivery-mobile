@@ -156,7 +156,7 @@ extension User {
             guard let data = data else {
                 return
             }
-            print("USER MODEL: Getting current user's requests")
+            //print("USER MODEL: Getting current user's requests")
 
             var coffeeRequests: [CoffeeRequest] = []
             let httpResponse = response as? HTTPURLResponse

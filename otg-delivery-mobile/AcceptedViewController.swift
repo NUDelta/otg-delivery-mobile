@@ -19,6 +19,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
     var otherId: String?
     var status: String?
     var meetingPointAnnotation: MKPointAnnotation?
+    var timer: Timer?
     var helperVisible: Bool = false {
         didSet {
             HelperDropdown.isHidden = !helperVisible
@@ -75,7 +76,6 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         CancelAcceptanceLabel.layer.borderColor = UIColor.black.cgColor
         CancelAcceptanceLabel.layer.borderWidth = 0.25
 
-        zoomToUser()
         retrievePoint()
         addOtherUserLocation()
     }
@@ -104,17 +104,20 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         annotation.subtitle = (meetingPoint?.description == "") ? "No Description" : meetingPoint?.description
         self.reloadAnnotations(newAnnotation: annotation)
         meetingPointAnnotation = annotation
-
-        //make a loading screen?
+        self.zoomToUser()
     }
 
-    func addOtherUserLocation() {
+    @objc func addOtherUserLocation() {
         LocationUpdate.getRecent(withId: otherId!, completionHandler: {location in
             if (location != nil) {
                 let helperAnnotation = MKPointAnnotation()
                 helperAnnotation.coordinate = CLLocationCoordinate2D(latitude: location!.latitude, longitude: location!.longitude)
                 helperAnnotation.title = (self.status == "Requester") ? "Requester" : "Helper"
                 self.reloadAnnotations(newAnnotation: helperAnnotation)
+                self.zoomToUser()
+            }
+            if self.timer == nil {
+                self.timer = Timer(timeInterval: 5.0, target: self, selector: #selector(self.addOtherUserLocation), userInfo: nil, repeats: true)
             }
         })
     }
@@ -183,7 +186,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
             if (meetingPointAnnotation != nil) {
                 meetingPointAnnotation!.title = stringTime
             }
-            User.sendNotification(deviceId: (request?.requester!.deviceId)!, message: "Your helper has updated their ETA to \(stringTime). Please be ready at the meeting point.")
+            User.sendNotification(deviceId: (request?.requester!.deviceId)!, message: "Your helper has updated their ETA to \(stringTime). Please be ready at the meeting point with payment.")
         }
         HelperDropdown.isEnabled = true
         ETAView.isHidden = true
@@ -200,15 +203,16 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
     func cancel() {
         CoffeeRequest.updateStatus(requestId: requestId, status: "Pending")
         CoffeeRequest.removeHelper(requestId: requestId)
-        User.sendNotification(deviceId: request!.requester!.deviceId, message: "Your helper has cancelled your order.")
+        User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(request!.helper!.username) has cancelled your order. Your placed request will be re-opened.")
         defaults.set("", forKey: "ActiveRequestId")
         //TODO: Show Feedback why they cancelled
         backToMain(currentScreen: self)
     }
 
     @IBAction func CompleteOrder(_ sender: Any) {
-        //handle pricing
-        //move to feedback screens
+        CoffeeRequest.updateStatus(requestId: requestId, status: "Completed")
+        defaults.set(true, forKey: "FeedbackActive")
+        performSegue(withIdentifier: "GoToFeedback", sender: self)
     }
 
     @objc func deselectAnnotations(_ gestureRecognizer: UIGestureRecognizer) {

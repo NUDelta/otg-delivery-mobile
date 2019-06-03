@@ -338,7 +338,7 @@ extension CoffeeRequest {
 
         let task = session.dataTask(with: requestURL){ data, response, error in
             if let data = data {
-                print("COFFEE REQUEST: Get all open requests.")
+                //print("COFFEE REQUEST: Get all open requests.")
 
                 var coffeeRequests: [CoffeeRequest] = []
                 let httpResponse = response as? HTTPURLResponse

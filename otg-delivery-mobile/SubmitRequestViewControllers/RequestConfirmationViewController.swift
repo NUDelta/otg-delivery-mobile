@@ -1,7 +1,7 @@
 import UIKit
 import UserNotifications
 
-class RequestConfirmationViewController: UIViewController {
+class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDelegate {
     var currentRequest: CoffeeRequest?
     var meetingPoints: [MeetingPoint] = []
 
@@ -24,6 +24,14 @@ class RequestConfirmationViewController: UIViewController {
 
         itemLabel.text = currentRequest!.item
         pickupLocationLabel.text = currentRequest!.pickupLocation
+
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(endEditing))
+        tapRecognizer.delegate = self
+        view.addGestureRecognizer(tapRecognizer)
+    }
+
+    @objc func endEditing() {
+        view.endEditing(true)
     }
 
     @IBAction func cancelButton(_ sender: Any) {

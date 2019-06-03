@@ -34,7 +34,9 @@
 		CD676CAD227A9F3B00ECE78E /* AcceptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */; };
 		CD863035226839100024FCA2 /* Locations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD863034226839100024FCA2 /* Locations.swift */; };
 		CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */; };
+		CD9E3AAF22A4C9B200AA856A /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9E3AAE22A4C9B200AA856A /* Feedback.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
+		CDB7D4E122A0FCB4000F231C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */; };
 		CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6586622756BE200AED274 /* RequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -74,7 +76,9 @@
 		CD863034226839100024FCA2 /* Locations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locations.swift; sourceTree = "<group>"; };
 		CD863038226858710024FCA2 /* lisasrun.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = lisasrun.gpx; sourceTree = "<group>"; };
 		CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PotentialLocationViewController.swift; sourceTree = "<group>"; };
+		CD9E3AAE22A4C9B200AA856A /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptConfirmationViewController.swift; sourceTree = "<group>"; };
+		CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		CDF6586622756BE200AED274 /* RequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,7 +117,8 @@
 				CD86302F226836720024FCA2 /* OrderViewController */,
 				394DD8082225EECB002504E9 /* SubmitRequestViewControllers */,
 				CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */,
-				CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */,
+				CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */,
+				CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */,
 				3987A3012234371F001132AF /* DataModels */,
 				2246A29B2049CD7A00CE518B /* LoginViewController.swift */,
 				CD863033226838F00024FCA2 /* Resources */,
@@ -149,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				22BD7F122043D308008A877B /* CoffeeRequest.swift */,
+				CD9E3AAE22A4C9B200AA856A /* Feedback.swift */,
 				228907D820756C6800072961 /* Item.swift */,
 				3987A2FF2234370C001132AF /* MeetingPoint.swift */,
 				226180DC20997DE2007D92A0 /* User.swift */,
@@ -184,14 +190,6 @@
 				CDF6586622756BE200AED274 /* RequestTableViewCell.swift */,
 			);
 			path = RequestTableView;
-			sourceTree = "<group>";
-		};
-		CD676CAB227A490800ECE78E /* ActiveRequestViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				CD676CAC227A9F3B00ECE78E /* AcceptedViewController.swift */,
-			);
-			path = ActiveRequestViewControllers;
 			sourceTree = "<group>";
 		};
 		CD86302E22682C390024FCA2 /* Routes */ = {
@@ -321,6 +319,7 @@
 				CD2B19002276643A00A262C7 /* LocationSelectionTableViewCell.swift in Sources */,
 				2246A29C2049CD7A00CE518B /* LoginViewController.swift in Sources */,
 				CD32831822756A1E00BCA4B9 /* RequestTableView.swift in Sources */,
+				CD9E3AAF22A4C9B200AA856A /* Feedback.swift in Sources */,
 				CD212022227B99DC00B1206C /* HelperFuncs.swift in Sources */,
 				39C13EEF21ED2A06005833B8 /* Location.swift in Sources */,
 				394DD8142232DA34002504E9 /* ItemSelectionViewController.swift in Sources */,
@@ -328,6 +327,7 @@
 				CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
+				CDB7D4E122A0FCB4000F231C /* FeedbackViewController.swift in Sources */,
 				CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,
 				CD2B18FE2276642A00A262C7 /* LocationSelectionViewController.swift in Sources */,

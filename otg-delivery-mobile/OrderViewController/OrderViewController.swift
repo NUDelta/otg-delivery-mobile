@@ -18,6 +18,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyNearestTenMeters
     let updateDistance: CLLocationDistance = 10
 
+    var timer: Timer!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,6 +48,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         requestTableView.delegate = self
         requestTableView.dataSource = self
 
+        if defaults.bool(forKey: "FeedbackActive") == true {
+            performSegue(withIdentifier: "BackToFeedback", sender: self)
+        }
+
         loadData()
 
         // Initialize listener for whenever app becoming active
@@ -59,6 +65,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         //If user not logged in, transition to login page
         let userID = defaults.object(forKey: "userId")
         if userID == nil {
+            timer = nil
             performSegue(withIdentifier: "loginSegue", sender: nil)
         } else {
             print("User with ID ", userID as! String)
@@ -78,7 +85,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             self.performSegue(withIdentifier: "orderFormSegue", sender: self)
         }
 
-        /*// Check time - only open 11AM - 5PM
+    //Check time - only open 11AM - 5PM
         if (checkDeliveryAvailabilityTimeframe()) {
             self.currentActionType = .Order
             self.performSegue(withIdentifier: "orderFormSegue", sender: self)
@@ -87,7 +94,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
             }))
             self.present(alert, animated: true, completion: nil)
-        }*/
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,22 +115,37 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             DispatchQueue.main.async {
                 CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
                     DispatchQueue.main.async {
-                        self.openRequests = myRequests + coffeeRequests
+                        var nearCoffeeRequests: [CoffeeRequest] = []
+                        for request in coffeeRequests {
+                            for location in pickupLocations {
+                                if request.pickupLocation == location.locationName {
+                                    let pickupLocationCoordinate = CLLocation(latitude: location.location.latitude, longitude: location.location.longitude)
+                                    if self.locationManager!.location != nil {
+                                        let distance = pickupLocationCoordinate.distance(from: self.locationManager!.location!)
+                                        if distance <= 100.0 {
+                                            nearCoffeeRequests.append(request)
+                                            break
+                                        }
+                                    } else {
+                                        nearCoffeeRequests.append(request)
+                                        break
+                                    }
+                                }
+                            }
+                        }
+                        self.openRequests = myRequests + nearCoffeeRequests
                         self.requestTableView.reloadData()
+                        self.reloadTimer()
                     }
                 })
             }
         })
-
-/*
-        User.getMyTasks(completionHandler: { coffeeRequests in
-            DispatchQueue.main.async {
-                self.openRequests = coffeeRequests
-                self.requestTableView.reloadData()
-            }
-        })
-*/
     }
+
+    func reloadTimer() {
+        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(self.loadData), userInfo: nil, repeats: true)
+    }
+
 
 
 
@@ -162,10 +184,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        if (status == CLAuthorizationStatus.authorizedAlways) {
-            for coffeeLocation in (pickupLocations + meetingPointLocations) {
-                setUpGeofence(geofenceRegionCenter: coffeeLocation.1, radius: geofenceRadius, identifier: coffeeLocation.0)
-            }
+        for coffeeLocation in (pickupLocations + meetingPointLocations) {
+            setUpGeofence(geofenceRegionCenter: coffeeLocation.1, radius: geofenceRadius, identifier: coffeeLocation.0)
         }
     }
 
@@ -190,14 +210,20 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered \(region.identifier) Geofence.")
-        if (defaults.string(forKey: "tokenId") != nil) {
-            //for request in openRequests {
-                //if (request.pickupLocation == region.identifier) {
-                    User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Open requests available at \(region.identifier)")
-                    print("Notification sent to \(defaults.string(forKey: "tokenId")!) at \(region.identifier).")
-                    //break
-                //}
-            //}
+        if (defaults.string(forKey: "ActiveRequestId") != nil) {
+            if region.identifier == defaults.string(forKey: "ActiveRequestId") {
+                User.sendNotification(deviceId: defaults.string(forKey: "RequesterId")!, message: "Your helper is within 200m of the meeting point. Please proceed to the specified location.")
+            }
+        } else {
+            for request in openRequests {
+                if (request.pickupLocation == region.identifier) {
+                    if (defaults.string(forKey: "tokenId") != nil) {
+                        User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Open requests available at \(region.identifier)")
+                        print("Notification sent to \(defaults.string(forKey: "tokenId")!) at \(region.identifier).")
+                    }
+                    break
+                }
+            }
         }
     }
 
@@ -245,6 +271,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         if (isMyRequest(indexPath: indexPath)) { //user made request
             if (request.status == "Accepted" || request.status == "Picked Up") {
                 defaults.set(request.requestId, forKey: "ActiveRequestId")
+                timer = nil
                 performSegue(withIdentifier: "OrderAccepted", sender: nil)
             } else {
                 cell.statusLabel.text = "Your request is pending acceptance."
@@ -256,6 +283,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             }
         } else if (request.helper?.username == defaults.string(forKey: "username")) { //user is helper
             defaults.set(request.requestId, forKey: "ActiveRequestId")
+            timer = nil
             performSegue(withIdentifier: "OrderAccepted", sender: nil)
         } else { //user not involved
             if (request.status == "Accepted") {
@@ -416,7 +444,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let nowDateValue = now as Date
         let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
         let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
-        
+
         return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
     }
 }

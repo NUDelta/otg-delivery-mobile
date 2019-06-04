@@ -83,7 +83,6 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
         ConfirmOutlet.setTitle("Select Timeframe", for: .normal)
         DescriptionText.text = "Select Radius"
-        DescriptionText.isHidden = false
 
         let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         let region = MKCoordinateRegion(center: touchMapCoordinate, span: span)
@@ -162,13 +161,13 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     @IBOutlet weak var ConfirmOutlet: UIButton!
     @IBAction func ConfirmButton(_ sender: Any) {
         if (ConfirmOutlet.titleLabel?.text == "Select Timeframe") {
-            ConfirmOutlet.setTitle("Select End Time", for: .normal)
+            ConfirmOutlet.setTitle("Continue", for: .normal)
             DescriptionText.text = "Select Start Time"
             CircleSlider.isEnabled = false
             CircleSlider.isHidden = true
             DatePicker.isHidden = false
             currentPoint?.radius = recentCircle!.radius
-        } else if (ConfirmOutlet.titleLabel?.text == "Select End Time") {
+        } else if (ConfirmOutlet.titleLabel?.text == "Continue") {
             currentStartDate = DatePicker.date
             DatePicker.setDate(DatePicker.date.addingTimeInterval(TimeInterval(3600.0)), animated: true)
             DescriptionText.text = "Select End Time"
@@ -183,7 +182,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
                 currentPoint?.endTime = LocationUpdate.dateToString(d: DatePicker.date)
                 zoomToUser()
                 ConfirmOutlet.setTitle("Confirm", for: .normal)
-                DescriptionText.isHidden = true
+                DescriptionText.text = "Place Radii"
                 mapView.isUserInteractionEnabled = true
                 DatePicker.isHidden = true
                 meetingPoints.append(currentPoint!)
@@ -231,7 +230,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             mapView.isUserInteractionEnabled = true
             mapView.deselectAnnotation(recentAnnotation, animated: true)
             recentAnnotation = nil
-        } else if (DescriptionText.isHidden) {
+        } else if (DescriptionText.text! == "Place Radii") {
             if (meetingPoints.count > 0) {
                 let alert = UIAlertController(title: "Cancel Request.", message: "Are you sure you want to cancel your request?", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in backToMain(currentScreen: self)})
@@ -252,7 +251,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         recentAnnotation = nil
         recentCircle = nil
         ConfirmOutlet.setTitle("Confirm", for: .normal)
-        DescriptionText.isHidden = true
+        DescriptionText.text = "Place Radii"
         mapView.isUserInteractionEnabled = true
         DatePicker.isHidden = true
         currentPoint = nil

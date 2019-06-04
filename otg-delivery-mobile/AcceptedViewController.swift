@@ -101,7 +101,13 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         let annotation = MKPointAnnotation()
         annotation.coordinate = CLLocationCoordinate2D(latitude: meetingPoint!.latitude, longitude: meetingPoint!.longitude)
         annotation.title = ("ETA: \(extractTime(date: request!.eta))")
-        annotation.subtitle = (meetingPoint?.description == "") ? "No Description" : meetingPoint?.description
+        if status == "Requester" {
+            annotation.subtitle = (meetingPoint?.description == "") ? "No Description" : meetingPoint?.description
+        } else if status == "Helper" {
+            annotation.subtitle = (request?.description == "") ? "No Description" : request!.description
+        } else {
+            annotation.subtitle = ""
+        }
         self.reloadAnnotations(newAnnotation: annotation)
         meetingPointAnnotation = annotation
         self.zoomToUser()

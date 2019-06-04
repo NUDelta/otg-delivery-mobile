@@ -90,8 +90,10 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
     func retrievePoint() {
         if (request != nil) {
             MeetingPoint.getById(with_id: request!.meetingPoint, completionHandler: {point in
-                self.meetingPoint = point
-                self.addMeetingPoint()
+                DispatchQueue.main.async {
+                    self.meetingPoint = point
+                    self.addMeetingPoint()
+                }
             })
         }
     }
@@ -115,15 +117,17 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
 
     @objc func addOtherUserLocation() {
         LocationUpdate.getRecent(withId: otherId!, completionHandler: {location in
-            if (location != nil) {
-                let helperAnnotation = MKPointAnnotation()
-                helperAnnotation.coordinate = CLLocationCoordinate2D(latitude: location!.latitude, longitude: location!.longitude)
-                helperAnnotation.title = (self.status == "Requester") ? "Requester" : "Helper"
-                self.reloadAnnotations(newAnnotation: helperAnnotation)
-                self.zoomToUser()
-            }
-            if self.timer == nil {
-                self.timer = Timer(timeInterval: 5.0, target: self, selector: #selector(self.addOtherUserLocation), userInfo: nil, repeats: true)
+            DispatchQueue.main.async {
+                if (location != nil) {
+                    let helperAnnotation = MKPointAnnotation()
+                    helperAnnotation.coordinate = CLLocationCoordinate2D(latitude: location!.latitude, longitude: location!.longitude)
+                    helperAnnotation.title = (self.status == "Requester") ? "Requester" : "Helper"
+                    self.reloadAnnotations(newAnnotation: helperAnnotation)
+                    self.zoomToUser()
+                }
+                if self.timer == nil {
+                    self.timer = Timer(timeInterval: 5.0, target: self, selector: #selector(self.addOtherUserLocation), userInfo: nil, repeats: true)
+                }
             }
         })
     }
@@ -139,6 +143,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         for annotation in removedAnnotations {
             if !(annotation is MKUserLocation) {
                 mapView.addAnnotation(annotation)
+                mapView.selectAnnotation(annotation, animated: true)
             }
         }
     }

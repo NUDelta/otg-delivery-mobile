@@ -177,19 +177,21 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         } else {
             let additionalDetails = AdditionalDetails.text! //this is to allow access to this US element from a non-main thread later
             CoffeeRequest.getRequest(with_id: request!.requestId, completionHandler: {request in
-                if request?.item == "" { //seeing if errored
-                    let alert = UIAlertController(title: "Error", message: "The specified request has been cancelled (or another error has occurred).", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Return to Main", style: .default) {_ in backToMain(currentScreen: self)})
-                    self.present(alert, animated: true, completion: nil)
-                } else {
-                    self.saveMeetingPoint(description: additionalDetails, completionHandler: { meetingPoint in
-                        DispatchQueue.main.async {
-                            User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
-                            User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
-                            self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 200.0, identifier: self.request!.requestId)
-                            backToMain(currentScreen: self)
-                        }
-                    })
+                DispatchQueue.main.async {
+                    if request?.item == "" { //seeing if errored
+                        let alert = UIAlertController(title: "Error", message: "The specified request has been cancelled (or another error has occurred).", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "Return to Main", style: .default) {_ in backToMain(currentScreen: self)})
+                        self.present(alert, animated: true, completion: nil)
+                    } else {
+                        self.saveMeetingPoint(description: additionalDetails, completionHandler: { meetingPoint in
+                            DispatchQueue.main.async {
+                                User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
+                                User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
+                                self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 200.0, identifier: self.request!.requestId)
+                                backToMain(currentScreen: self)
+                            }
+                        })
+                    }
                 }
             })
         }

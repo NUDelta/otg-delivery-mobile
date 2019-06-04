@@ -32,6 +32,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
             initializeRequest()
         }
         setUpHiddenItems()
+        setMaximumTime()
         addTapRecognizer()
     }
 
@@ -42,6 +43,17 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         DatePicker.clipsToBounds = true
         DatePicker.layer.cornerRadius = 5.0
         DatePicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
+    }
+
+    func setMaximumTime() {
+        if currentRequest == nil {return}
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        let currentDateString = LocationUpdate.dateToString(d: DatePicker.date)
+        let maxDate = currentDateString.components(separatedBy: " ")[0] + " 19:00"
+        let maxDateTime = formatter.date(from: maxDate)
+        DatePicker.maximumDate = maxDateTime
+        DatePicker.minimumDate = Date()
     }
 
     override func viewDidAppear(_ animated: Bool) {

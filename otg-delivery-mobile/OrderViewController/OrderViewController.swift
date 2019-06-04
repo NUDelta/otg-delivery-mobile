@@ -82,20 +82,25 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
         } else {
-            self.currentActionType = .Order
-            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+            if (checkDeliveryAvailabilityTimeframe()) {
+                self.currentActionType = .Order
+                self.performSegue(withIdentifier: "orderFormSegue", sender: self)
+            } else {
+                let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
+    }
 
-    //Check time - only open 11AM - 5PM
-        if (checkDeliveryAvailabilityTimeframe()) {
-            self.currentActionType = .Order
-            self.performSegue(withIdentifier: "orderFormSegue", sender: self)
-        } else {
-            let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            }))
-            self.present(alert, animated: true, completion: nil)
-        }
+    func checkDeliveryAvailabilityTimeframe() -> Bool {
+        let now = NSDate()
+        let nowDateValue = now as Date
+        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
+        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
+
+        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -434,14 +439,5 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
         
         task.resume()
-    }
-
-    func checkDeliveryAvailabilityTimeframe() -> Bool {
-        let now = NSDate()
-        let nowDateValue = now as Date
-        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
-        let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
-
-        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
     }
 }

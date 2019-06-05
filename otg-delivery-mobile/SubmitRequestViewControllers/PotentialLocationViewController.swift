@@ -50,7 +50,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         let currentDateString = LocationUpdate.dateToString(d: DatePicker.date)
-        let maxDate = currentDateString.components(separatedBy: " ")[0] + " 19:00"
+        let maxDate = currentDateString.components(separatedBy: " ")[0] + " 17:00"
         let maxDateTime = formatter.date(from: maxDate)
         DatePicker.maximumDate = maxDateTime
         DatePicker.minimumDate = Date()
@@ -106,7 +106,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         mapView.addAnnotation(annotation)
         recentAnnotation = annotation
 
-        let circle = MKCircle(center: touchMapCoordinate, radius: CLLocationDistance(CircleSlider.value * 200.0 + 50.0))
+        let circle = MKCircle(center: touchMapCoordinate, radius: CLLocationDistance((CircleSlider.value * 50.0) + 50.0))
         mapView.addOverlay(circle)
         recentCircle = circle
         CircleSlider.isHidden = false
@@ -120,7 +120,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
     @IBAction func CircleSlide(_ sender: Any) {
         if (recentCircle != nil) {
             mapView.removeOverlay(recentCircle!)
-            recentCircle = MKCircle(center: recentCircle!.coordinate, radius: CLLocationDistance((CircleSlider.value * 200.0) + 50.0))
+            recentCircle = MKCircle(center: recentCircle!.coordinate, radius: CLLocationDistance((CircleSlider.value * 50.0) + 50.0))
             mapView.addOverlay(recentCircle!)
         }
     }

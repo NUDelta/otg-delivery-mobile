@@ -16,7 +16,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var locationManager: CLLocationManager?
     let geofenceRadius: CLLocationDistance = 100
     let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyNearestTenMeters
-    let updateDistance: CLLocationDistance = 10
+    let updateDistance: CLLocationDistance = 5
 
     var timer: Timer!
     let activeRequestId = defaults.string(forKey: "ActiveRequestId")
@@ -86,7 +86,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 self.currentActionType = .Order
                 self.performSegue(withIdentifier: "orderFormSegue", sender: self)
             } else {
-                let alert = UIAlertController(title: "You can only submit requests between 11AM - 5PM each day.", message: "", preferredStyle: .alert)
+                let alert = UIAlertController(title: "You can only submit requests between 9AM - 5PM each day.", message: "", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -97,10 +97,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func checkDeliveryAvailabilityTimeframe() -> Bool {
         let now = NSDate()
         let nowDateValue = now as Date
-        let todayAt11AM = Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: nowDateValue)
+        let todayAt9AM = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: nowDateValue)
         let todayAt5PM = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: nowDateValue)
 
-        return nowDateValue >= todayAt11AM! && nowDateValue <= todayAt5PM!
+        return nowDateValue >= todayAt9AM! && nowDateValue <= todayAt5PM!
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -178,15 +178,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         let uncertainty = Double(locToSave.horizontalAccuracy)
         let timestamp = Date()
 
-        guard let requesterId = defaults.object(forKey: "userId") as? String else {
+        guard let requesterId = defaults.string(forKey: "userId") else {
             print("Helper ID not in defaults")
             return
         }
 
-        if activeRequestId != nil { //remove when testing for location updates
+        //if activeRequestId != nil { //remove when testing for location updates
             let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
             LocationUpdate.post(locUpdate: locUpdate)
-        }
+        //}
     }
 
     func removeCachedGeofenceLocation() {

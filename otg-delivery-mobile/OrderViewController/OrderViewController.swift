@@ -49,12 +49,6 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         requestTableView.delegate = self
         requestTableView.dataSource = self
 
-        if defaults.bool(forKey: "FeedbackActive") == true {
-            performSegue(withIdentifier: "BackToFeedback", sender: self)
-        }
-
-        loadData()
-
         // Initialize listener for whenever app becoming active
         // To reload request data and update table
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -71,7 +65,23 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         } else {
             print("User with ID ", userID as! String)
         }
-        loadData()
+
+        if (activeRequestId != nil && activeRequestId != "") {
+            CoffeeRequest.getRequest(with_id: activeRequestId!, completionHandler: {request in
+                DispatchQueue.main.async {
+                    let userID = defaults.string(forKey: "userId")
+                    if request?.status == userID {
+                        //nothing
+                    } else if request?.status == request?.helper?.userId {
+                        self.performSegue(withIdentifier: "BackToFeedback", sender: self)
+                    } else {
+                        self.performSegue(withIdentifier: "OrderAccepted", sender: self)
+                    }
+                }
+            })
+        } else {
+            loadData()
+        }
     }
 
     //On schedule delivery button pressed
@@ -220,9 +230,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered \(region.identifier) Geofence.")
-        if (activeRequestId != nil) {
+        if (activeRequestId != nil && activeRequestId != "") {
             if region.identifier == activeRequestId {
-                User.sendNotification(deviceId: defaults.string(forKey: "RequesterId")!, message: "Your helper is within 200m of the meeting point. Please proceed to the specified location.")
+                User.sendNotification(deviceId: defaults.string(forKey: "RequesterId")!, message: "Your helper is within 100m of the meeting point. Please proceed to the specified location.")
             }
         } else {
             for request in openRequests {
@@ -272,6 +282,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let request = openRequests[indexPath.row]
         let cell = RequestTableViewCell()
+
+        if request.status == defaults.string(forKey: "userId") {
+            return cell
+        }
 
         cell.contentView.isUserInteractionEnabled = true
 
@@ -414,30 +428,5 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     
     func isMyRequest(indexPath: IndexPath) -> Bool {
         return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
-    }
-
-    func sendFeedback(feedbackText: String?){
-        //In case the input doesn't exist
-        guard let feedbackText = feedbackText else {
-            print("FEEDBACK: Nil found as feedback value, exiting gracefully.")
-            return
-        }
-        
-        //let apiUrl: String = "https://otg-delivery.herokuapp.com/feedback"
-        let apiUrl: String = "\(Constants.apiUrl)feedback"
-        
-        let url = URL(string: apiUrl)
-        let session: URLSession = URLSession.shared
-        var requestURL = URLRequest(url: url!)
-        
-        requestURL.httpMethod = "POST"
-        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        requestURL.httpBody = "feedbackText=\(feedbackText)".data(using: .utf8)
-        
-        let task = session.dataTask(with: requestURL){ data, response, error in
-            print("Feedback post: Data post successful.")
-        }
-        
-        task.resume()
     }
 }

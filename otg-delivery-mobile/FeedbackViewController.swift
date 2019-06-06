@@ -46,9 +46,15 @@ class FeedbackViewController: UIViewController, UIGestureRecognizerDelegate {
                                 disruption: RatingLabel2.text!,
                                 waiting: segmentOptions[YesNoSegmented.selectedSegmentIndex])
         Feedback.post(feedback: feedback)
-        CoffeeRequest.updateStatus(requestId: activeID!, status: "Completed")
-        
-        defaults.set(false, forKey: "FeedbackActive")
+
+        CoffeeRequest.getRequest(with_id: activeID!, completionHandler: {request in
+            if request?.status == request?.requester?.userId || request?.status == request?.helper?.userId  {
+                CoffeeRequest.updateStatus(requestId: request!.requestId, status: "Completed")
+            } else {
+                CoffeeRequest.updateStatus(requestId: request!.requestId, status: self.userID!)
+            }
+        })
+
         defaults.set("", forKey: "ActiveRequestId")
         performSegue(withIdentifier: "EndFeedback", sender: self)
     }

@@ -121,13 +121,19 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
                 if (location != nil) {
                     let helperAnnotation = MKPointAnnotation()
                     helperAnnotation.coordinate = CLLocationCoordinate2D(latitude: location!.latitude, longitude: location!.longitude)
-                    helperAnnotation.title = (self.status == "Requester") ? "Requester" : "Helper"
+                    helperAnnotation.title = (self.status == "Requester") ? "Helper" : "Requester"
                     self.reloadAnnotations(newAnnotation: helperAnnotation)
                     self.zoomToUser()
                 }
                 if self.timer == nil {
                     self.timer = Timer(timeInterval: 5.0, target: self, selector: #selector(self.addOtherUserLocation), userInfo: nil, repeats: true)
                 }
+            }
+        })
+        CoffeeRequest.getRequest(with_id: requestId, completionHandler: {request in
+            if request?.status == "Feedback" {
+                defaults.set(true, forKey: "FeedbackActive")
+                self.performSegue(withIdentifier: "GoToFeedback", sender: self)
             }
         })
     }
@@ -166,7 +172,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
     }
 
     @IBAction func ContactHelper(_ sender: Any) {
-        let phoneNumber = request!.helper!.phoneNumber
+        let phoneNumber = (status == "Helper") ? request!.requester!.phoneNumber : request!.helper!.phoneNumber
         let messageVC = MFMessageComposeViewController()
         messageVC.body = ""
         messageVC.recipients = [phoneNumber]
@@ -216,13 +222,10 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         CoffeeRequest.removeHelper(requestId: requestId)
         User.sendNotification(deviceId: request!.requester!.deviceId, message: "\(request!.helper!.username) has cancelled your order. Your placed request will be re-opened.")
         defaults.set("", forKey: "ActiveRequestId")
-        //TODO: Show Feedback why they cancelled
         backToMain(currentScreen: self)
     }
 
     @IBAction func CompleteOrder(_ sender: Any) {
-        CoffeeRequest.updateStatus(requestId: requestId, status: "Completed")
-        defaults.set(true, forKey: "FeedbackActive")
         performSegue(withIdentifier: "GoToFeedback", sender: self)
     }
 

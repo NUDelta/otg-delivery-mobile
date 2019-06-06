@@ -187,7 +187,9 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                             DispatchQueue.main.async {
                                 User.accept(requestId: self.request!.requestId, userId: defaults.string(forKey: "userId")!, meetingPointId: meetingPoint.id, eta: LocationUpdate.dateToString(d: self.ETAPicker.date))
                                 User.sendNotification(deviceId: self.request!.requester!.deviceId, message: "\(defaults.string(forKey: "username")!) has accepted your order. Prepare to meet your helper at the designated meeting location.")
-                                self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 200.0, identifier: self.request!.requestId)
+                                let activeRequestId = self.request!.requestId
+                                defaults.set(activeRequestId, forKey: "ActiveRequestId")
+                                self.setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D(latitude: self.chosenPoint!.latitude, longitude: self.chosenPoint!.longitude), radius: 100.0, identifier: activeRequestId)
                                 backToMain(currentScreen: self)
                             }
                         })
@@ -202,7 +204,6 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                                               radius: radius,
                                               identifier: identifier)
         geofenceRegion.notifyOnEntry = true
-        geofenceRegion.notifyOnExit = true
 
         locationManager.startMonitoring(for: geofenceRegion)
         defaults.set(request!.requester!.deviceId, forKey: "RequesterId")

@@ -43,6 +43,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         zoomToUser()
     }
 
+    //Setting up the view
     func setUpMapView() {
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -60,6 +61,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         view.addGestureRecognizer(tapGesture)
     }
 
+    //handling taps inside a radius
     @objc func handleCircleTap(_ gestureRecognizer: UIGestureRecognizer) {
         InfoView.isHidden = true
         let tappedPoint = gestureRecognizer.location(in: mapView)
@@ -117,6 +119,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         DetailsLabel.text = request?.description
     }
 
+    //getting a meeting point's potential requests
     func retrieveMeetingPoints() {
         if (request == nil) {return}
         MeetingPoint.getByRequest(with_id: request!.requestId, completionHandler: { points in
@@ -129,6 +132,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         })
     }
 
+    //displaying potential points on map
     func addPotentialPoint(point: MeetingPoint) {
         if (LocationUpdate.stringToDate(d: point.endTime) < Date()) {return}
         let pointCoordinate = CLLocationCoordinate2D(latitude: point.latitude, longitude: point.longitude)
@@ -161,6 +165,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         InfoView.isHidden = !InfoView.isHidden
     }
 
+    //fires on accept order button being pressed
     @IBAction func AcceptOrder(_ sender: Any) {
         if (ConfirmLabel.title(for: .normal) == "Set Meeting Point") {
             if (recentMarker == nil) {
@@ -175,7 +180,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
                 ConfirmLabel.setTitle("Accept Order", for: .normal)
             }
         } else {
-            let additionalDetails = AdditionalDetails.text! //this is to allow access to this US element from a non-main thread later
+            let additionalDetails = AdditionalDetails.text!
             CoffeeRequest.getRequest(with_id: request!.requestId, completionHandler: {request in
                 DispatchQueue.main.async {
                     if request?.item == "" { //seeing if errored
@@ -199,6 +204,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         }
     }
 
+    //sets up so requester is notified when helper nears meeting point
     func setUpGeofence(geofenceRegionCenter: CLLocationCoordinate2D, radius: CLLocationDistance, identifier: String) {
         let geofenceRegion = CLCircularRegion(center: geofenceRegionCenter,
                                               radius: radius,
@@ -209,6 +215,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         defaults.set(request!.requester!.deviceId, forKey: "RequesterId")
     }
 
+    //POST request for the meeting point
     func saveMeetingPoint(description: String, completionHandler: @escaping (MeetingPoint) -> Void) {
         chosenPoint?.description = description
         chosenPoint?.startTime = referencePoint!.startTime
@@ -216,6 +223,7 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         MeetingPoint.post(point: chosenPoint!, completionHandler: completionHandler)
     }
 
+    //cancels request acceptance
     @IBAction func Cancel(_ sender: Any) {
         if (activeCircle != nil) {
             cancelSettingPoint()

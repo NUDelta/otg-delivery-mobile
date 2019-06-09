@@ -47,6 +47,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         }
     }
 
+    //stores the other user's ID
     func setOtherId() {
         if (request?.requester?.userId! == defaults.string(forKey: "userId")) {
             otherId = request?.helper?.userId!
@@ -60,6 +61,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         }
     }
 
+    //set up map UI
     func setUpMapView() {
         mapView.delegate = self
         mapView.showsUserLocation = true
@@ -87,6 +89,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         mapView.setRegion(region, animated: false)
     }
 
+    //gets the request's meeting point
     func retrievePoint() {
         if (request != nil) {
             MeetingPoint.getById(with_id: request!.meetingPoint, completionHandler: {point in
@@ -98,6 +101,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         }
     }
 
+    //adds the meeting point to the map
     func addMeetingPoint() {
         if (meetingPoint == nil) {return}
         let annotation = MKPointAnnotation()
@@ -115,6 +119,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         self.zoomToUser()
     }
 
+    //add the other user's location to the map
     @objc func addOtherUserLocation() {
         LocationUpdate.getRecent(withId: otherId!, completionHandler: {location in
             DispatchQueue.main.async {
@@ -138,6 +143,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         })
     }
 
+    //reload all annotations and add in new one
     func reloadAnnotations(newAnnotation: MKPointAnnotation) {
         let removedAnnotations = mapView.annotations
         for annotation in mapView.annotations {
@@ -184,6 +190,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         buttonsVisible = !buttonsVisible
     }
 
+    //enables helper to change ETA
     @IBAction func ChangeETA(_ sender: Any) {
         buttonsVisible = false
         ETAView.isHidden = false
@@ -210,6 +217,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         mapView.isScrollEnabled = true
     }
 
+    //cancel order acceptance in emergency
     @IBAction func CancelAcceptance(_ sender: Any) {
         let alert = UIAlertController(title: "Cancel Acceptance.", message: "Are you sure you want to cancel your acceptance? You will need to pay for any items you have picked up already.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default) {_ in self.cancel()})
@@ -229,6 +237,7 @@ class AcceptedViewController: UIViewController, MFMessageComposeViewControllerDe
         performSegue(withIdentifier: "GoToFeedback", sender: self)
     }
 
+    //handles deselecting of callouts on map tap
     @objc func deselectAnnotations(_ gestureRecognizer: UIGestureRecognizer) {
         for annotation in mapView.annotations {
             mapView.deselectAnnotation(annotation, animated: true)

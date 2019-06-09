@@ -39,6 +39,7 @@ class ItemSelectionViewController: UITableViewController {
         return cell
     }
 
+    //fires on item select
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedItem = items[indexPath.row]
         currentRequest!.item = selectedItem.name
@@ -56,6 +57,7 @@ class ItemSelectionViewController: UITableViewController {
         currentRequest!.price = "0.00"
     }
 
+    //load locations into table
     func loadData() {
         Location.getAll(completionHandler: { locations in
             for l in locations {

@@ -38,6 +38,7 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
         backToMain(currentScreen: self)
     }
 
+    //submits order
     @IBAction func submitButton(_ sender: Any) {
         currentRequest?.status = "Searching for Helper"
         currentRequest?.description = TextField.text!
@@ -74,6 +75,7 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
         defaults.set(requestsPlaced, forKey: "requestsPlaced")
     }
 
+    //handles order expiry
     @objc func expire() {
         CoffeeRequest.updateStatus(requestId: defaults.string(forKey: "expireId")!, status: "Expired")
     }

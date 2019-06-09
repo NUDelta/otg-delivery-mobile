@@ -36,6 +36,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         addTapRecognizer()
     }
 
+    //UI setup
     func setUpHiddenItems() {
         DescriptionText.layer.cornerRadius = 5.0
         DescriptionText.clipsToBounds = true
@@ -45,6 +46,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         DatePicker.locale = NSLocale(localeIdentifier: "en_US") as Locale
     }
 
+    //sets time selection to have a minimum/maximum time
     func setMaximumTime() {
         if currentRequest == nil {return}
         let formatter = DateFormatter()
@@ -73,6 +75,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         zoomToUser()
     }
 
+    //zooms map to user's location
     func zoomToUser() {
         if (locationManager.location != nil) {
             let userLocation = (locationManager.location?.coordinate)!
@@ -88,6 +91,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         mapView.addGestureRecognizer(tapRecognizer)
     }
 
+    //handles taps on map
     @objc func addMarker(_ gestureRecognizer: UIGestureRecognizer) {
         if (gestureRecognizer.state != .ended || ConfirmOutlet.titleLabel?.text == "Select Timeframe") {return}
         let touchPoint = gestureRecognizer.location(in: mapView)
@@ -117,6 +121,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         mapView.isScrollEnabled = false
     }
 
+    //handles circle radius resizing
     @IBAction func CircleSlide(_ sender: Any) {
         if (recentCircle != nil) {
             mapView.removeOverlay(recentCircle!)
@@ -125,6 +130,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
 
+    //sets up radius UI properties
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if (overlay is MKCircle) {
             let renderer = MKCircleRenderer(circle: overlay as! MKCircle)
@@ -135,6 +141,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         return MKOverlayRenderer(overlay: overlay)
     }
 
+    //Handles point information showing
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         cancelSetting() //I hate MapKit
         let annotationCoordinate = view.annotation!.coordinate
@@ -170,6 +177,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         currentRequest!.price = "0.00"
     }
 
+    //handles logic of bottom button -> different actions in different stages of placement
     @IBOutlet weak var ConfirmOutlet: UIButton!
     @IBAction func ConfirmButton(_ sender: Any) {
         if (ConfirmOutlet.titleLabel?.text == "Select Timeframe") {
@@ -216,6 +224,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
 
+    //handles marker deletion
     @IBAction func DeleteMarker(_ sender: Any) {
         infoHidden = true
         if (recentAnnotation != nil) {
@@ -236,6 +245,7 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
         }
     }
 
+    //handles order acceptance cancellation
     @IBAction func CancelButton(_ sender: Any) {
         if (!infoHidden) {
             infoHidden = true

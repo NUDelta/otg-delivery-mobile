@@ -14,9 +14,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var activeEditingRequest: CoffeeRequest?
 
     var locationManager: CLLocationManager?
-    let geofenceRadius: CLLocationDistance = 100
+    let geofenceRadius: CLLocationDistance = 100 //Radii of geofences around pickup locations
     let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyNearestTenMeters
-    let updateDistance: CLLocationDistance = 5
+    let updateDistance: CLLocationDistance = 5 //location update refresh distance
 
     var timer: Timer!
     let activeRequestId = defaults.string(forKey: "ActiveRequestId")
@@ -66,6 +66,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             print("User with ID ", userID as! String)
         }
 
+        //Move to active request pages if we have an active request
         if (activeRequestId != nil && activeRequestId != "") {
             CoffeeRequest.getRequest(with_id: activeRequestId!, completionHandler: {request in
                 DispatchQueue.main.async {
@@ -104,6 +105,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
     }
 
+    //set to limit times that app is active for study
     func checkDeliveryAvailabilityTimeframe() -> Bool {
         let now = NSDate()
         let nowDateValue = now as Date
@@ -126,9 +128,12 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
     }
 
+    //getting the requests to be shown in the table
     @objc func loadData() {
+        //get current user's requests
         User.getMyRequests(completionHandler: { myRequests in
             DispatchQueue.main.async {
+                //get all requests and filter by nearby pickup locations
                 CoffeeRequest.getAllOpen(completionHandler: { coffeeRequests in
                     DispatchQueue.main.async {
                         var nearCoffeeRequests: [CoffeeRequest] = []
@@ -160,6 +165,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         })
     }
 
+    //refresh the page every 15 seconds
+    //TODO: maybe cut this because we're sending too many location updates and causing battery drain
     func reloadTimer() {
         timer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(self.loadData), userInfo: nil, repeats: true)
     }
@@ -174,6 +181,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
 
 
+    //sends a location update whenever user moves
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
 
@@ -193,7 +201,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
 
-        //if activeRequestId != nil { //remove when testing for location updates
+        //if activeRequestId != nil {
             let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
             LocationUpdate.post(locUpdate: locUpdate)
         //}
@@ -203,6 +211,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         defaults.removeObject(forKey:"currentGeofenceLocation")
     }
 
+    //set up geofences around the pickup locations
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         for coffeeLocation in (pickupLocations + meetingPointLocations) {
             setUpGeofence(geofenceRegionCenter: coffeeLocation.1, radius: geofenceRadius, identifier: coffeeLocation.0)
@@ -425,7 +434,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             break;
         }
     }
-    
+
     func isMyRequest(indexPath: IndexPath) -> Bool {
         return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
     }

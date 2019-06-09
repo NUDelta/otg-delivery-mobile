@@ -37,6 +37,7 @@ class LocationSelectionViewController: UITableViewController {
         return cell
     }
 
+    //fired when location is selected
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedLocation = locations[indexPath.row]
         currentRequest!.pickupLocation = selectedLocation.name
@@ -54,6 +55,7 @@ class LocationSelectionViewController: UITableViewController {
         currentRequest!.price = "0.00"
     }
 
+    //loads locations for table
     func loadData() {
         Location.getAll(completionHandler: {locations in self.locations = locations
             DispatchQueue.main.async {

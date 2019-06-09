@@ -1,31 +1,37 @@
-# otg-delivery-mobile
+otg-delivery-mobile
 
 This project is the mobile client that users interact with to make food orders and receive notifications to pick up food. As of now, it consists of some data models that can ask our server for information on pending requests and view controllers that handle user interactions.
 
-**OrderViewController.swift:** view controller for the main page of the application, where users can make new requests and see their active requests and tasks. Handles notifications and location tracking as well.
+View Controllers
 
-**CoffeeRequest.swift:** data model that represents a request. Swift lets us use the Codable interface to create these objects from JSON responses.
+OrderViewController.swift: View controller for the main page of the application, where users can view nearby open requests and make new requests. Handles notifications and location tracking as well.
 
-**Item.swift:** data model that represents a menu item, that can be requested.
+LocationSelectionViewController.swift: View Controller to select a request's pickup location.
 
-**User.swift:** data model that represents a user.
+ItemSelectionViewController.swift: View Controller to select a request's item.
 
-**Logging.swift:** data model that represents a log entry. 
+PotentialLocationViewController.swift: Interface for requesters to place their present and future locations and timeframes for a request.
 
-**CoffeeRequest.swift:** data model that represents a request. Swift lets us use the Codable interface to create these objects from JSON responses.
+RequestConfirmationViewController.swift: View Controller for requesters to confirm order placement.
 
-**OrderModalViewController.swift:** view controller to submit an order.
+AcceptConfirmationViewController.swift: View Controller for helpers to accept requests and place meeting points.
 
-**LoginViewController.swift:** logic for logins. No authentication involved.
+AcceptedViewController.swift: Screen shown to helpers and requesters as an order is in progress.
 
-**HelperLocationFormViewController.swift:** view controller that asks helper where they are headed when they accept a task.
+FeedbackViewController.swift: Screen for in-app feedback for the SQ19 study.
 
-**MeetingPointTableViewController.swift:** view controller for requesters to submit potential meeting points they are willing to meet at.
+LoginViewController.swift: Logic for user logins. No authentication involved.
 
-**AllRequestsTableViewController.swift:** view controller for users to see all available tasks in the system.
+Data Models
 
-**TaskConfirmationViewController.swift:** view controller for potential helpers to see the details of the task they are being asked to complete. 
+CoffeeRequest.swift: data model that represents a request.
 
-**RequestStatusTableViewController.swift:** view controller for table view that displays user's current requests.
+Feedback.swift: data model that represents a user's feedback.
 
-**AcceptedRequestsTableViewController.swift:** view controller for table view that displays user's active tasks.
+Item.swift: data model that represents a menu item, that can be requested.
+
+LocationUpdate.swift data model that represents a user's location and direction.
+
+MeetingPoint.swift data model that represents a meeting point, whether a potential point with a radius before a request is accepted or one belonging to a request after acceptance.
+
+User.swift: data model that represents a user.

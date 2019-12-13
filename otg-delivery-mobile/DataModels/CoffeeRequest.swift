@@ -56,23 +56,21 @@ class CoffeeRequest : Codable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        // Decode data from JSON
-        requester = try container.decode(User.self, forKey: .requester)
-        helper = try container.decode(User.self, forKey: .helper)
-        //orderStartTime = try container.decode(String.self, forKey: .orderStartTime)
-        //orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
         item = try container.decode(String.self, forKey: .item)
-        status = try container.decode(String.self, forKey: .status)
-        meetingPoint = try container.decode(String.self, forKey: .meetingPoint)
-        pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
-
-        let unparsedmeetingPoint = try container.decodeIfPresent(String.self, forKey: .meetingPointOptions) ?? ""
-        meetingPointOptions = CoffeeRequest.JSONStringToArray(json: unparsedmeetingPoint)
-
-        let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
-        timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
-
+        // Decode data from JSON
+        
+        do {
+            requester = try container.decode(User.self, forKey: .requester)
+        } catch {
+            
+        }
+        
+        do {
+            helper = try container.decode(User.self, forKey: .helper)
+        } catch {
+            
+        }
+        
         requestId = try container.decode(String.self, forKey: .requestId)
         if (requester != nil) {
             requesterId = requester!.userId!
@@ -85,6 +83,22 @@ class CoffeeRequest : Codable {
         } else {
             helperId = "No ID"
         }
+        
+        
+        
+        //orderStartTime = try container.decode(String.self, forKey: .orderStartTime)
+        //orderEndTime = try container.decode(String.self, forKey: .orderEndTime)
+        
+        status = try container.decode(String.self, forKey: .status)
+        meetingPoint = try container.decode(String.self, forKey: .meetingPoint)
+        pickupLocation = try container.decode(String.self, forKey: .pickupLocation)
+
+        let unparsedmeetingPoint = try container.decodeIfPresent(String.self, forKey: .meetingPointOptions) ?? ""
+        meetingPointOptions = CoffeeRequest.JSONStringToArray(json: unparsedmeetingPoint)
+
+        let unparsedTimeProbabilities = try container.decodeIfPresent(String.self, forKey: .timeProbabilities) ?? ""
+        timeProbabilities = CoffeeRequest.JSONStringToArray(json: unparsedTimeProbabilities)
+
         price = try container.decode(String.self, forKey: .price)
         description = try container.decode(String.self, forKey: .description)
         eta = try container.decode(String.self, forKey: .eta)
@@ -331,7 +345,8 @@ extension CoffeeRequest {
         }
 
         let session: URLSession = URLSession.shared
-        let url = URL(string: "\(CoffeeRequest.apiUrl)?&excluding=\(userId)")
+        print("iiiddd: \(userId)")
+        let url = URL(string: "\(CoffeeRequest.apiUrl)?excluding=\(userId)")
         //let url = URL(string: "\(CoffeeRequest.apiUrl)?status=Pending?&excluding=\(userId)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
@@ -346,6 +361,8 @@ extension CoffeeRequest {
                 if(httpResponse?.statusCode != 400) {
                     do {
                         let decoder = JSONDecoder()
+                        print("abizar")
+                        print(data)
                         coffeeRequests = try decoder.decode([CoffeeRequest].self, from: data)
                     } catch {
                         print("COFFEE REQUEST.getAllOpen: error trying to convert data to JSON...")

@@ -93,15 +93,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
         } else {
-            if (checkDeliveryAvailabilityTimeframe()) {
+           // if (checkDeliveryAvailabilityTimeframe()) {
                 self.currentActionType = .Order
                 self.performSegue(withIdentifier: "orderFormSegue", sender: self)
-            } else {
-                let alert = UIAlertController(title: "You can only submit requests between 9AM - 5PM each day.", message: "", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-                }))
-                self.present(alert, animated: true, completion: nil)
-            }
+//            } else {
+//                let alert = UIAlertController(title: "You can only submit requests between 9AM - 5PM each day.", message: "", preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+//                }))
+//                self.present(alert, animated: true, completion: nil)
+//            }
         }
     }
 

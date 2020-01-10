@@ -3,7 +3,7 @@ import UserNotifications
 import CoreLocation
 import MessageUI
 
-class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource, MFMessageComposeViewControllerDelegate {
+class OrderViewController: UIViewController {
 
     public static let sharedManager = OrderViewController()
     @IBOutlet weak var requestTableView: RequestTableView!
@@ -16,7 +16,8 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     var locationManager: CLLocationManager?
     let geofenceRadius: CLLocationDistance = 100 //Radii of geofences around pickup locations
     let desiredAccuracy: CLLocationAccuracy = kCLLocationAccuracyNearestTenMeters
-    let updateDistance: CLLocationDistance = 5 //location update refresh distance
+    let passiveUpdateDistance: CLLocationDistance = 20 //location update refresh distance not during orders
+    let activeUpdateDistance: CLLocationDistance = 5 //location update refresh distance during orders
 
     var timer: Timer!
     let activeRequestId = defaults.string(forKey: "ActiveRequestId")
@@ -32,24 +33,19 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.pausesLocationUpdatesAutomatically = false
 
-        if CLLocationManager.authorizationStatus() == .notDetermined {
+        if CLLocationManager.authorizationStatus() == .notDetermined || CLLocationManager.authorizationStatus() == .denied {
             locationManager?.requestAlwaysAuthorization()
-            locationManager?.requestWhenInUseAuthorization()
+            // locationManager?.requestWhenInUseAuthorization()
         }
 
         // Accuracy of location data
         locationManager?.desiredAccuracy = desiredAccuracy
 
-        // The minimum distance before an update event is generated
-        locationManager?.distanceFilter = updateDistance
-        locationManager?.startUpdatingLocation()
-        locationManager?.startMonitoringSignificantLocationChanges()
-
         requestTableView.register(RequestTableViewCell.self, forCellReuseIdentifier: RequestTableViewCell.reuseIdentifier)
         requestTableView.delegate = self
         requestTableView.dataSource = self
 
-        // Initialize listener for whenever app becoming active
+        // Initialize listener for whenever app becomes active
         // To reload request data and update table
         NotificationCenter.default.addObserver(self, selector: #selector(loadData), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
@@ -68,6 +64,10 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
         //Move to active request pages if we have an active request
         if (activeRequestId != nil && activeRequestId != "") {
+            self.locationManager?.distanceFilter = self.activeUpdateDistance
+            locationManager?.startUpdatingLocation()
+            locationManager?.startMonitoringSignificantLocationChanges()
+
             CoffeeRequest.getRequest(with_id: activeRequestId!, completionHandler: {request in
                 DispatchQueue.main.async {
                     let userID = defaults.string(forKey: "userId")
@@ -81,9 +81,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 }
             })
         } else {
+            self.locationManager?.distanceFilter = self.passiveUpdateDistance
+            locationManager?.startUpdatingLocation()
+            locationManager?.startMonitoringSignificantLocationChanges()
+
             loadData()
         }
     }
+
+    // MARK: UI Management
 
     //On schedule delivery button pressed
     @IBAction func createNewOrder() {
@@ -93,15 +99,15 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
         } else {
-            if (checkDeliveryAvailabilityTimeframe()) {
+            // if (checkDeliveryAvailabilityTimeframe()) {
                 self.currentActionType = .Order
                 self.performSegue(withIdentifier: "orderFormSegue", sender: self)
-            } else {
+            /* } else {
                 let alert = UIAlertController(title: "You can only submit requests between 9AM - 5PM each day.", message: "", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                 }))
                 self.present(alert, animated: true, completion: nil)
-            }
+            } */
         }
     }
 
@@ -157,7 +163,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                         self.openRequests = myRequests + nearCoffeeRequests
                         self.requestTableView.reloadData()
                         if self.timer == nil {
-                            self.reloadTimer()
+                            // self.reloadTimer()
                         }
                     }
                 })
@@ -171,15 +177,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         timer = Timer.scheduledTimer(timeInterval: 15.0, target: self, selector: #selector(self.loadData), userInfo: nil, repeats: true)
     }
 
+}
 
-
-
-
-
-
-
-
-
+extension OrderViewController: CLLocationManagerDelegate {
 
     //sends a location update whenever user moves
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -201,6 +201,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
             return
         }
 
+        // TODO: This is being sent too often, causing battery drain
         //if activeRequestId != nil {
             let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
             LocationUpdate.post(locUpdate: locUpdate)
@@ -266,16 +267,9 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     }
  */
 
+}
 
-
-
-
-
-
-
-
-
-    // MARK: Table View Configuration
+extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
 
     //Return number of sections in table view
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -330,7 +324,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          // Return false if you do not want the specified item to be deletable.
          return isMyRequest(indexPath: indexPath)
-     }
+    }
 
      // Override to support editing the table view.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -346,7 +340,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
                 let deleteID = deletedRequest.requestId
                 CoffeeRequest.deleteRequest(with_id: deleteID)
                 self.requestTableView.reloadData()
-            } )
+            })
             // Do nothing on 'Cancel'
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
 
@@ -363,7 +357,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (isMyRequest(indexPath: indexPath)) {
             // Launch request editor on click
-            /*let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
+            let editAlert = UIAlertController(title: "Would you like to edit your request?", message: "You will have to reselect all fields of request", preferredStyle: .alert)
 
             let action = UIAlertAction(title: "OK", style: .default, handler: { (_) in
                 self.currentActionType = .Edit
@@ -375,7 +369,7 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
 
             editAlert.addAction(action)
             editAlert.addAction(cancel)
-            present(editAlert, animated: true, completion: nil)*/
+            present(editAlert, animated: true, completion: nil)
         } else {
             let acceptPage: AcceptConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "acceptConfirmationViewController") as! AcceptConfirmationViewController
             acceptPage.request = self.openRequests[indexPath.row]
@@ -384,17 +378,14 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
 
+    func isMyRequest(indexPath: IndexPath) -> Bool {
+        return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
+    }
 
+}
 
+extension OrderViewController: MFMessageComposeViewControllerDelegate {
 
-
-
-
-
-
-
-
-    //TODO: Rewrite to actually contact user rather than researcher
     @objc func contactUser(sender: UIButton) {
         print("In contact user")
         //let phoneNumber = String(sender.tag)
@@ -435,7 +426,4 @@ class OrderViewController: UIViewController, CLLocationManagerDelegate, UITableV
         }
     }
 
-    func isMyRequest(indexPath: IndexPath) -> Bool {
-        return openRequests[indexPath.row].requester?.userId == defaults.string(forKey: "userId")
-    }
 }

@@ -44,7 +44,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Location always in use privacy</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Describe the location privacy</string>
+	<string>Location is required for use of application</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

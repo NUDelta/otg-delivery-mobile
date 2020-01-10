@@ -157,10 +157,10 @@
 				CD9E3AAE22A4C9B200AA856A /* Feedback.swift */,
 				228907D820756C6800072961 /* Item.swift */,
 				3987A2FF2234370C001132AF /* MeetingPoint.swift */,
-				226180DC20997DE2007D92A0 /* User.swift */,
 				39C13EF021F695B0005833B8 /* LocationUpdate.swift */,
 				39C13EEE21ED2A06005833B8 /* Location.swift */,
 				391F3844218659BD00F1C91B /* Logging.swift */,
+				226180DC20997DE2007D92A0 /* User.swift */,
 			);
 			path = DataModels;
 			sourceTree = "<group>";
@@ -499,7 +499,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "otg-delivery-mobile/otg-delivery-mobile.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Northwestern University";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Cooper Barth (XC656DW42X)";
 				CODE_SIGN_STYLE = Manual;
 				"CODE_SIGN_STYLE[sdk=*]" = Manual;
 				DEVELOPMENT_TEAM = 823S57WQK3;

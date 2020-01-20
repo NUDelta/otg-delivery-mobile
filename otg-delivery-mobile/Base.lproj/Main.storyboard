@@ -617,7 +617,7 @@
         <!--Pick drink-->
         <scene sceneID="xjq-Il-z0Q">
             <objects>
-                <tableViewController storyboardIdentifier="ItemSelectionTableViewController" id="3bA-oZ-i0R" customClass="ItemSelectionViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ItemSelectionTableViewController" modalPresentationStyle="fullScreen" id="3bA-oZ-i0R" customClass="ItemSelectionViewController" customModule="otg_delivery_mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cvg-Lr-Idz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

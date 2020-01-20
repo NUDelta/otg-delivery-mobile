@@ -240,11 +240,13 @@ extension OrderViewController: CLLocationManagerDelegate {
     // called when user enters a monitored region
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         print("Entered \(region.identifier) Geofence.")
+
+        // Called when helper approaches meeting point
         if (activeRequestId != nil && activeRequestId != "") {
             if region.identifier == activeRequestId {
                 User.sendNotification(deviceId: defaults.string(forKey: "RequesterId")!, message: "Your helper is within 100m of the meeting point. Please proceed to the specified location.")
             }
-        } else {
+        } else { // Called when a potential helper enters a restaurant geofence with an open request
             for request in openRequests {
                 if (request.pickupLocation == region.identifier) {
                     if (defaults.string(forKey: "tokenId") != nil) {
@@ -254,18 +256,21 @@ extension OrderViewController: CLLocationManagerDelegate {
                     break
                 }
             }
+
+            // Mark user as being in region
         }
     }
 
     // called when user leaves a monitored region
-/*
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         print("Exited \(region.identifier) Geofence")
-        if (defaults.string(forKey: "tokenId") != nil) {
+        /* if (defaults.string(forKey: "tokenId") != nil) {
             User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Leaving \(region.identifier)!")
-        }
+        } */
+
+        // Remove user from being marked in region
+        
     }
- */
 
 }
 

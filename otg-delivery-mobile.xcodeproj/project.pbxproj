@@ -37,6 +37,7 @@
 		CD9E3AAF22A4C9B200AA856A /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9E3AAE22A4C9B200AA856A /* Feedback.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
 		CDB7D4E122A0FCB4000F231C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */; };
+		CDD5B54223D6581100E04E01 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD5B54123D6581100E04E01 /* Notification.swift */; };
 		CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6586622756BE200AED274 /* RequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -79,6 +80,7 @@
 		CD9E3AAE22A4C9B200AA856A /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptConfirmationViewController.swift; sourceTree = "<group>"; };
 		CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		CDD5B54123D6581100E04E01 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		CDF6586622756BE200AED274 /* RequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +162,7 @@
 				39C13EF021F695B0005833B8 /* LocationUpdate.swift */,
 				39C13EEE21ED2A06005833B8 /* Location.swift */,
 				391F3844218659BD00F1C91B /* Logging.swift */,
+				CDD5B54123D6581100E04E01 /* Notification.swift */,
 				226180DC20997DE2007D92A0 /* User.swift */,
 			);
 			path = DataModels;
@@ -327,6 +330,7 @@
 				CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */,
 				22AD278920129CCE005BA4B9 /* AppDelegate.swift in Sources */,
 				CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */,
+				CDD5B54223D6581100E04E01 /* Notification.swift in Sources */,
 				CDB7D4E122A0FCB4000F231C /* FeedbackViewController.swift in Sources */,
 				CD9199D0229202CE0046540F /* PotentialLocationViewController.swift in Sources */,
 				CD863035226839100024FCA2 /* Locations.swift in Sources */,

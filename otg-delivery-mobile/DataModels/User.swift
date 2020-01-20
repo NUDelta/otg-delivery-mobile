@@ -9,6 +9,7 @@ struct User : Codable{
         case deviceId
         case username
         case phoneNumber
+        case currentLocation
     }
 
     //all fields that go into a request
@@ -16,6 +17,7 @@ struct User : Codable{
     let deviceId: String
     let username: String
     let phoneNumber: String
+    let currentLocation: Location?
 }
 
 //Define HTTP requests
@@ -75,11 +77,11 @@ extension User {
         let url = URL(string: "\(User.apiUrl)/\(id)")
         var requestURL = URLRequest(url: url!)
         requestURL.httpMethod = "GET"
-        
+
         let task = session.dataTask(with: requestURL){ data, response, error in
             if let data = data {
                 print("USER: Get user \(id).")
-                
+
                 var userModel: User?
                 let httpResponse = response as? HTTPURLResponse
                 

@@ -62,8 +62,9 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
                     defaults.set(requestId!, forKey: "expireId")
                     let timer = Timer.init(fireAt: latestEndTime, interval: 0, target: self, selector: #selector(self.expire), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
-                    // Get all users currently within the geofence of the given point
-                    // Notify them
+
+                    // Notify all users currently within the geofence of the pickup location
+                    
                 }
             })
             performSegue(withIdentifier: "Submit", sender: self)

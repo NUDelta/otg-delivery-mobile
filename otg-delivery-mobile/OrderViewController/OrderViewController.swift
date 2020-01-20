@@ -251,6 +251,7 @@ extension OrderViewController: CLLocationManagerDelegate {
                 if (request.pickupLocation == region.identifier) {
                     if (defaults.string(forKey: "tokenId") != nil) {
                         User.sendNotification(deviceId: defaults.string(forKey: "tokenId")!, message: "Open requests available at \(region.identifier)")
+                        Notification.save(userId: defaults.string(forKey: "userId")!, type: "RequestAvailable")
                         print("Notification sent to \(defaults.string(forKey: "tokenId")!) at \(region.identifier).")
                     }
                     break

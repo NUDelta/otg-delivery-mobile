@@ -27,13 +27,13 @@ struct Notification : Codable {
 }
 
 extension Notification {
-    static func save(user: User, type: String, completionHandler: @escaping() -> Void) {
+    static func save(userId: String, type: String) {
         print("Saving notification")
 
         if (validTypes.contains(type)) {
             var components = URLComponents(string: "")
             components?.queryItems = [
-                URLQueryItem(name: "recipient", value: user.userId),
+                URLQueryItem(name: "recipient", value: userId),
                 URLQueryItem(name: "type", value: type)
             ]
 

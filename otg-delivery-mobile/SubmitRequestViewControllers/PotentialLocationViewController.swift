@@ -93,6 +93,13 @@ class PotentialLocationViewController: UIViewController, MKMapViewDelegate, CLLo
 
     //handles taps on map
     @objc func addMarker(_ gestureRecognizer: UIGestureRecognizer) {
+
+        // NOTE: This line sets the meeting point maximum to 1 for current study
+        // Remove this line to enable multiple meeting point placement
+        if meetingPoints.count == 1 {
+            return
+        }
+
         if (gestureRecognizer.state != .ended || ConfirmOutlet.titleLabel?.text == "Select Timeframe") {return}
         let touchPoint = gestureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)

@@ -194,16 +194,15 @@ extension OrderViewController: CLLocationManagerDelegate {
         let speed = Double(locToSave.speed)
         let direction = Double(locToSave.course)
         let uncertainty = Double(locToSave.horizontalAccuracy)
-        let timestamp = Date()
 
-        guard let requesterId = defaults.string(forKey: "userId") else {
+        guard let userId = defaults.string(forKey: "userId") else {
             print("Helper ID not in defaults")
             return
         }
 
         // TODO: This is being sent too often, causing battery drain
         //if activeRequestId != nil {
-            let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: requesterId)
+            let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, userId: userId)
             LocationUpdate.post(locUpdate: locUpdate)
         //}
     }

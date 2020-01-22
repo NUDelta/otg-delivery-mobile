@@ -9,7 +9,6 @@ struct LocationUpdate : Codable {
         case speed
         case direction
         case uncertainty
-        case timestamp
         case userId
     }
 
@@ -18,7 +17,6 @@ struct LocationUpdate : Codable {
     let speed: Double
     let direction: Double
     let uncertainty: Double
-    let timestamp: String
     let userId: String
 }
 
@@ -31,7 +29,6 @@ extension LocationUpdate {
             URLQueryItem(name: "speed", value: String(locUpdate.speed)),
             URLQueryItem(name: "direction", value: String(locUpdate.direction)),
             URLQueryItem(name: "uncertainty", value: String(locUpdate.uncertainty)),
-            URLQueryItem(name: "timestamp", value: locUpdate.timestamp),
             URLQueryItem(name: "userId", value: String(locUpdate.userId))
         ]
 
@@ -90,6 +87,7 @@ extension LocationUpdate {
         task.resume()
     }
 
+/*
     static func dateToString(d: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -103,4 +101,5 @@ extension LocationUpdate {
 
         return formatter.date(from: d)!
     }
+*/
 }

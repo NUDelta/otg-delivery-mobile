@@ -90,9 +90,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let speed = Double(locToSave.speed)
         let direction = Double(locToSave.course)
         let uncertainty = Double(locToSave.horizontalAccuracy)
-        let timestamp = Date()
 
-        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, timestamp: LocationUpdate.dateToString(d: timestamp), userId: "Fake")
+        guard let userId = defaults.string(forKey: "userId") else {
+            return
+        }
+
+        let locUpdate = LocationUpdate(latitude: latitude, longitude: longitude, speed: speed, direction: direction, uncertainty: uncertainty, userId: userId)
         LocationUpdate.post(locUpdate: locUpdate)
     }
 	

@@ -63,13 +63,13 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
                     let timer = Timer.init(fireAt: latestEndTime, interval: 0, target: self, selector: #selector(self.expire), userInfo: nil, repeats: false)
                     RunLoop.main.add(timer, forMode: .common)
 
-                    // Notify all users currently within the geofence of the pickup location
-                    
+                    // TODO: Notify all users currently within the geofence of the pickup location
                 }
             })
             performSegue(withIdentifier: "Submit", sender: self)
         } else {
-            let alertController = UIAlertController(title: "Error", message: "You have no meeting points with end times after now.", preferredStyle: .alert)
+            // let alertController = UIAlertController(title: "Error", message: "You have no meeting points with end times after now.", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Error", message: "Meeting point end time must be in the future", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alertController, animated: true, completion: nil)
         }
@@ -83,17 +83,4 @@ class RequestConfirmationViewController: UIViewController, UIGestureRecognizerDe
         CoffeeRequest.updateStatus(requestId: defaults.string(forKey: "expireId")!, status: "Expired")
     }
 
-    func setTimeProbabilities(request: CoffeeRequest) -> CoffeeRequest {
-        let requestsPlaced = defaults.object(forKey: "requestsPlaced") as! Int
-
-        if (requestsPlaced < 1) {
-            request.timeProbabilities[1] = "30%"
-            request.timeProbabilities[3] = "60%"
-        } else {
-            request.timeProbabilities[1] = "60%"
-            request.timeProbabilities[3] = "30%"
-        }
-
-        return request
-    }
 }

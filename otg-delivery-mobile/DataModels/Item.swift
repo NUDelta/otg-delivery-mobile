@@ -56,7 +56,6 @@ extension Item {
     }
 
     static func getAll(forLocation id: String, name: String, completionHandler: @escaping ([Item]) -> Void) {
-        print("Get all items for location \(name)")
 
         let url = URL(string: "\(Item.apiUrl)/\(id)/\(name)")
         let session: URLSession = URLSession.shared

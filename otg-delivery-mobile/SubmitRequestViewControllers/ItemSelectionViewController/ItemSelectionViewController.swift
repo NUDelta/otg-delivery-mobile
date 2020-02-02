@@ -44,7 +44,7 @@ class ItemSelectionViewController: UITableViewController {
         let selectedItem = items[indexPath.row]
         currentRequest!.item = selectedItem.name
 
-        let nextPage: PotentialLocationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "PotentialLocation") as! PotentialLocationViewController
+        let nextPage: TimeSelectionViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TimeSelectionViewController") as! TimeSelectionViewController
         nextPage.currentRequest = currentRequest
         self.present(nextPage, animated: true, completion: nil)
     }

@@ -87,7 +87,6 @@ extension LocationUpdate {
         task.resume()
     }
 
-/*
     static func dateToString(d: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -101,5 +100,5 @@ extension LocationUpdate {
 
         return formatter.date(from: d)!
     }
-*/
+
 }

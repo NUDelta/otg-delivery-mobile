@@ -37,6 +37,7 @@
 		CD9E3AAF22A4C9B200AA856A /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9E3AAE22A4C9B200AA856A /* Feedback.swift */; };
 		CDAAA7E92276793C00C3DE44 /* AcceptConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */; };
 		CDB7D4E122A0FCB4000F231C /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */; };
+		CDCDC7B723E7693200DC26C4 /* TimeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCDC7B623E7693200DC26C4 /* TimeSelectionViewController.swift */; };
 		CDD5B54223D6581100E04E01 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD5B54123D6581100E04E01 /* Notification.swift */; };
 		CDF6586722756BE200AED274 /* RequestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF6586622756BE200AED274 /* RequestTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		CD9E3AAE22A4C9B200AA856A /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		CDAAA7E82276793C00C3DE44 /* AcceptConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptConfirmationViewController.swift; sourceTree = "<group>"; };
 		CDB7D4E022A0FCB4000F231C /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		CDCDC7B623E7693200DC26C4 /* TimeSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectionViewController.swift; sourceTree = "<group>"; };
 		CDD5B54123D6581100E04E01 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		CDF6586622756BE200AED274 /* RequestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 			children = (
 				CD2B18FA227662A800A262C7 /* LocationSelectionViewController */,
 				CD2B18F92276628C00A262C7 /* ItemSelectionViewController */,
+				CDCDC7B623E7693200DC26C4 /* TimeSelectionViewController.swift */,
 				CD9199CF229202CE0046540F /* PotentialLocationViewController.swift */,
 				394DD80B2225EFB1002504E9 /* RequestConfirmationViewController.swift */,
 			);
@@ -314,6 +317,7 @@
 				39C13EF121F695B0005833B8 /* LocationUpdate.swift in Sources */,
 				22BD7F132043D308008A877B /* CoffeeRequest.swift in Sources */,
 				228907D920756C6800072961 /* Item.swift in Sources */,
+				CDCDC7B723E7693200DC26C4 /* TimeSelectionViewController.swift in Sources */,
 				394DD80C2225EFB1002504E9 /* RequestConfirmationViewController.swift in Sources */,
 				22AD278B20129CCE005BA4B9 /* OrderViewController.swift in Sources */,
 				3987A3002234370C001132AF /* MeetingPoint.swift in Sources */,

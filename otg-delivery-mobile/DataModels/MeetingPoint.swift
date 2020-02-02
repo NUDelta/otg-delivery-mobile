@@ -166,4 +166,46 @@ extension MeetingPoint {
         }
         task.resume()
     }
+
+    static func value(userId: String, meetingPointLatitude: Double, meetingPointLongitude: Double, meetingPointEndTime: String, completionHandler: @escaping (Double) -> Void) {
+        var components = URLComponents(string: "")
+        components?.queryItems = [
+            URLQueryItem(name: "userId", value: userId),
+            URLQueryItem(name: "meetingPointLatitude", value: String(meetingPointLatitude)),
+            URLQueryItem(name: "meetingPointLongitude", value: String(meetingPointLongitude)),
+            URLQueryItem(name: "meetingPointEndTime", value: meetingPointEndTime)
+        ]
+
+        let url = URL(string: "\(MeetingPoint.apiUrl)/value")
+        let session: URLSession = URLSession.shared
+        var requestURL = URLRequest(url: url!)
+
+        requestURL.httpMethod = "POST"
+        requestURL.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        let httpBodyString: String? = components?.url?.absoluteString
+        requestURL.httpBody = httpBodyString?.dropFirst(1).data(using: .utf8)
+
+        let task = session.dataTask(with: requestURL) { data, response, error in
+            print("Meeting Point: Value requested.")
+            guard let data = data else {
+                return
+            }
+
+            let httpResponse = response as? HTTPURLResponse
+
+            if(httpResponse?.statusCode != 400){
+                do {
+                    let decoder = JSONDecoder()
+                    let value = try decoder.decode(Double.self, from: data)
+                    completionHandler(value)
+                } catch {
+                    print("MEETING POINT VALUE: error trying to convert data to Double...")
+                    print(error)
+                }
+            }
+        }
+
+        task.resume()
+    }
 }

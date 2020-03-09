@@ -6,6 +6,10 @@ class PotentialLocationViewController: UIViewController, UIGestureRecognizerDele
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var DescriptionText: UILabel!
 
+    @IBOutlet weak var ValueView: UIView!
+    @IBOutlet weak var LikelihoodTextView: UILabel!
+    @IBOutlet weak var DisruptionTextView: UILabel!
+
     var currentRequest: CoffeeRequest?
     let locationManager = CLLocationManager()
     var mapBottomConstraint: NSLayoutConstraint?
@@ -44,18 +48,19 @@ class PotentialLocationViewController: UIViewController, UIGestureRecognizerDele
     // Handle taps on map
     @objc func addMarker(_ gestureRecognizer: UIGestureRecognizer) {
 
-        // This line sets the meeting point maximum to 1 for current study
-        // Remove this line to enable multiple meeting point placement
-        if meetingPoints.count == 1 {
+        if (gestureRecognizer.state != .ended || meetingPoints.count == 1) {
             return
         }
 
-        if (gestureRecognizer.state != .ended) {return}
+        if (recentAnnotation != nil) {
+            mapView.removeAnnotation(recentAnnotation!)
+        }
+
         let touchPoint = gestureRecognizer.location(in: mapView)
         let touchMapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
 
         ConfirmOutlet.setTitle("Confirm", for: .normal)
-        DescriptionText.text = "Select Radius"
+        DescriptionText.text = "Confirm Selection"
 
         let span = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
         let region = MKCoordinateRegion(center: touchMapCoordinate, span: span)
@@ -63,7 +68,6 @@ class PotentialLocationViewController: UIViewController, UIGestureRecognizerDele
 
         let annotation = MKPointAnnotation()
         annotation.coordinate = touchMapCoordinate
-        annotation.title = "title"
         mapView.addAnnotation(annotation)
         recentAnnotation = annotation
 
@@ -71,27 +75,40 @@ class PotentialLocationViewController: UIViewController, UIGestureRecognizerDele
 
         MeetingPoint.value(userId: defaults.string(forKey: "userId")!, meetingPointLatitude: currentPoint!.latitude, meetingPointLongitude: currentPoint!.longitude, meetingPointEndTime: LocationUpdate.dateToString(d: endDate!), completionHandler: showValue)
 
-        mapView.isUserInteractionEnabled = false
-        mapView.isScrollEnabled = false
     }
 
-    func showValue(value: Double) {
-        print(value)
+    func showValue(value: Dictionary<String, Double>) {
+        DispatchQueue.main.async {
+            if ((value["probability"] != nil) && value["disruption"] != nil) {
+                self.ValueView.isHidden = false
+                let disruption = String(value["disruption"]!)
+                let probability = String(value["probability"]! * 100)
+                let stringOffset = min(probability.count, disruption.count, 5)
+                var index: String.Index
+                if (probability.count < disruption.count) {
+                    index = probability.index(probability.startIndex, offsetBy: stringOffset)
+                } else {
+                    index = disruption.index(disruption.startIndex, offsetBy: stringOffset)
+                }
+                self.DisruptionTextView.text = "Disruption: " + disruption[..<index]
+                self.LikelihoodTextView.text = "Likelihood: " + probability[..<index] + "%"
+            } else {
+                self.ValueView.isHidden = true
+            }
+        }
     }
 
-    // handles logic of bottom button -> different actions in different stages of placement
+    // handles logic of bottom button
     @IBOutlet weak var ConfirmOutlet: UIButton!
     @IBAction func ConfirmButton(_ sender: Any) {
-        if (ConfirmOutlet.titleLabel?.text == "Confirm") {
-            currentPoint?.startTime = LocationUpdate.dateToString(d: Date())
-            currentPoint?.endTime = LocationUpdate.dateToString(d: endDate!)
-            meetingPoints.append(currentPoint!)
+        currentPoint?.startTime = LocationUpdate.dateToString(d: Date())
+        currentPoint?.endTime = LocationUpdate.dateToString(d: endDate!)
+        meetingPoints.append(currentPoint!)
 
-            let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
-            nextPage.currentRequest = currentRequest
-            nextPage.meetingPoints = meetingPoints
-            self.present(nextPage, animated: true, completion: nil)
-        }
+        let nextPage: RequestConfirmationViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RequestConfirmationViewController") as! RequestConfirmationViewController
+        nextPage.currentRequest = currentRequest
+        nextPage.meetingPoints = meetingPoints
+        self.present(nextPage, animated: true, completion: nil)
     }
 
     // MARK: Cancellation methods
@@ -151,6 +168,8 @@ extension PotentialLocationViewController: MKMapViewDelegate {
     func setUpHiddenItems() {
         DescriptionText.layer.cornerRadius = 5.0
         DescriptionText.clipsToBounds = true
+
+        ValueView.isHidden = true
     }
 
 }

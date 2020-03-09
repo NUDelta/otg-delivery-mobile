@@ -185,8 +185,8 @@ extension OrderViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locToSave = locations.last!
 
-        let loc = manager.location?.coordinate
-        print("\nUser is at (\(loc!.latitude), \(loc!.longitude))")
+        // let loc = manager.location?.coordinate
+        // print("\nUser is at (\(loc!.latitude), \(loc!.longitude))")
         //print(CLLocation(latitude: loc!.latitude, longitude: loc!.longitude).distance(from: CLLocation(latitude: 42.060271, longitude: -87.675804)), "meters from Lisa's Cafe")
 
         let latitude = Double(locToSave.coordinate.latitude)

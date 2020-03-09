@@ -167,7 +167,7 @@ extension MeetingPoint {
         task.resume()
     }
 
-    static func value(userId: String, meetingPointLatitude: Double, meetingPointLongitude: Double, meetingPointEndTime: String, completionHandler: @escaping (Double) -> Void) {
+    static func value(userId: String, meetingPointLatitude: Double, meetingPointLongitude: Double, meetingPointEndTime: String, completionHandler: @escaping ([String: Double]) -> Void) {
         var components = URLComponents(string: "")
         components?.queryItems = [
             URLQueryItem(name: "userId", value: userId),
@@ -197,10 +197,11 @@ extension MeetingPoint {
             if(httpResponse?.statusCode != 400){
                 do {
                     let decoder = JSONDecoder()
-                    let value = try decoder.decode(Double.self, from: data)
+                    let value = try decoder.decode(Dictionary<String, Double>.self, from: data)
+                    print(value)
                     completionHandler(value)
                 } catch {
-                    print("MEETING POINT VALUE: error trying to convert data to Double...")
+                    print("MEETING POINT VALUE: error trying to convert data to Dictionary<String, Double>...")
                     print(error)
                 }
             }

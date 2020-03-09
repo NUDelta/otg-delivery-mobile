@@ -124,7 +124,6 @@ class AcceptConfirmationViewController: UIViewController, MKMapViewDelegate, CLL
         if (request == nil) {return}
         MeetingPoint.getByRequest(with_id: request!.requestId, completionHandler: { points in
             DispatchQueue.main.async {
-                print(points)
                 for point in points {
                     self.addPotentialPoint(point: point)
                 }
